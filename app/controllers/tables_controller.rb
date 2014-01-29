@@ -10,8 +10,10 @@ class TablesController < ApplicationController
   # GET /tables/1
   # GET /tables/1.json
   def show
-    if !@table.tickets.empty?
-      @current_ticket = @table.tickets.last.open? ? @table.tickets.last : nil
+    if !params[:ticket] && !@table.tickets.empty?
+      @current_ticket = @table.tickets.last
+    else
+      @current_ticket = nil
     end
   end
 
@@ -66,14 +68,6 @@ class TablesController < ApplicationController
 
   def open
     @table.open! unless @table.status == "open"
-    redirect_to @table
-  end
-
-  def close
-    @table.close! unless @table.status == "closed"
-    if @table.status == "closed"
-      @table.tickets.last.close!
-    end
     redirect_to @table
   end
 

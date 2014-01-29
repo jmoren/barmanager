@@ -9,12 +9,17 @@ class Table < ActiveRecord::Base
 
   def open!
     self.update(status: "open")
-    self.tickets.create(trend_id: 1, date: Time.now, total: 0, status: "open")
+    ticket = self.tickets.new
+    ticket.trend_id = 1
+    ticket.date     = Time.now
+    ticket.total    = 0
+    ticket.status   = "open"
+
+    ticket.save
   end
 
   def close!
     self.update(status: "closed")
-    self.tickets.last.close! if self.tickets.last && self.open?
   end
 
 end

@@ -1,4 +1,10 @@
 class Ticket < ActiveRecord::Base
+  PAYMENT_TYPE= [
+    [1, "Cartao de credito"],
+    [2, "Efetivo"],
+    [3, "Combinado"],
+    [4, "Cheque"]
+  ]
   belongs_to :table
   has_many :item_tickets
 

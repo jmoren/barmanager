@@ -1,25 +1,40 @@
-= form_for @ticket do |f|
-  - if @ticket.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@ticket.errors.count, "error")} prohibited this ticket from being saved:"
-      %ul
-        - @ticket.errors.full_messages.each do |msg|
-          %li= msg
+.header
+  Atualizar ticket
+  = "%0.6d" % @ticket.number
+  .right
+    = l @ticket.created_at, format: :long
+.content
+  = form_for @ticket, html: {id: "update-ticket", class: "ui form" } do |f|
+    = f.hidden_field :status, value: "closed"
+    .ui.segment
+      .field.ui.message.success
+        Selecione metodo de pagamento
+        = f.select :payment, Ticket::PAYMENT_TYPE.map{|p| [p[1], p[0]]}, {}, class: "input"
 
-  .field
-    = f.label :trend_id
-    = f.number_field :trend_id
-  .field
-    = f.label :table_id
-    = f.number_field :table_id
-  .field
-    = f.label :date
-    = f.datetime_select :date
-  .field
-    = f.label :total
-    = f.text_field :total
-  .field
-    = f.label :payment
-    = f.number_field :payment
-  .actions
-    = f.submit 'Save'
+      .ui.divider
+      %table.table.ui
+        %thead
+          %th Item
+          %th Quantidade
+          %th Preco
+          %th Sub total
+        %tbody
+          - @ticket.item_tickets.each do |t|
+            %tr
+              %td= t.item.description
+              %td= t.quantity
+              %td= number_to_currency t.item.price
+              %td= number_to_currency t.sub_total
+        %tfoot
+          %tr
+            %td
+            %td
+            %td
+              %b
+                Total
+            %td
+              %b
+                = number_to_currency @ticket.total
+    .actions
+      = f.submit 'Salvar', class: "ui button positive"
+      = link_to "Cancelar", "#", class: "ui button"

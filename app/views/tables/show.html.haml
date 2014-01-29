@@ -2,73 +2,103 @@
   %i.icon.food
   = "Mesa Nro. #{@table.number}"
   .right
-    -if @table.open?
-      = link_to close_table_path(@table), method: :put,  class: "ui button red small", data: { confirm: "Estas seguro?"} do
-        Cerrar mesa
+    -if @table.open? && @current_ticket
+      = link_to "#", class: "close-table ui button red small", data: { id: @current_ticket.id } do
+        Fechar mesa
         %i.icon.lock
     - else
       = link_to open_table_path(@table), method: :put,  class: "ui button green small", data: { confirm: "Estas seguro?"} do
         Abrir mesa
         %i.icon.unlock
+.ui.divider
 - if @current_ticket
   .ui.segment
-    .left
-      .label.ui
-        %i.icon.time
-        = @current_ticket.date.strftime("%A, %d of %b, %H:%M %p")
-      .label.ui
-        %i.icon.payment
-        = @current_ticket.payment
-        tarjeta de credito
-    .right
-      = link_to "#" do
+    - if @current_ticket.open?
+      %h4
+        %i.icon.setting
+        Adicionar items
+        .right.label.ui.orange
+          %i.icon.payment
+          Pendente de pagamento
+      = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
+    - else
+      = link_to table_path(@table, ticket: false), class: "ui button mini  black" do
         %i.icon.close
+        Fechar
+  .ui.segment
+    .left
+      .ui.label
+        %b
+          %i.icon.tag
+          = "Bilhete nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
+    .right
+      .label.ui
+        %b
+          %i.icon.calendar
+          = l @current_ticket.date, format: :long
     %br
-    %h3
-      %i.icon.tag
-      = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
+    .ui.divider
+
     %table.table.ui
       %theader
         %th
         %th Item
-        %th Quantity
-        %th Price
+        %th Quantidade
+        %th Preço
         %th Sub-total
       %tbody
         - @current_ticket.item_tickets.each do |entry|
-          %tr
-            %td
-              = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete, data: {confirm: "Estas seguro?"} do
-                %i.icon.remove.red
-            %td= entry.item.description
-            %td= entry.quantity
-            %td= number_to_currency entry.item.price
-            %td= number_to_currency entry.sub_total
-      %tfoot
-        %tr
-          %td
-          %td
-          %td
-          %td
-            %b Total
-          %td
-            = number_to_currency @current_ticket.total
+          - unless entry.new_record?
+            %tr
+              %td
+                = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete, data: {confirm: "Estas seguro?"} do
+                  %i.icon.remove.red
+              %td= entry.item.description
+              %td= entry.quantity
+              %td= number_to_currency entry.item.price
+              %td= number_to_currency entry.sub_total
+    .ui.divider
+    .right.ui.label{style: "font-weight: bold;font-size: 20px;"}
+      Total
+      = number_to_currency @current_ticket.total
 
-  .ui.segment
-    %h4
-      %i.icon.setting
-      Agregar items
-    = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
-  .ui.segment
-    = link_to "#", class: "ui button mini" do
-      %i.icon.print
-      Imprimir
-- else
+    -unless @current_ticket.open?
+      .left{style: "margin-top: 10px"}
+        %i.icon.payment
+        Pagamento:
+        %b= Ticket::PAYMENT_TYPE[@current_ticket.payment-1][1]
+
   .ui.segment
     = link_to tickets_path(table_id: @table.id), class: "ui button mini" do
       %i.icon.tags
       Ver Tickets
+- else
+  .ui.segment
+    = link_to tickets_path(table_id: @table.id), class: "ui button mini blue" do
+      %i.icon.tags
+      Ver Bilhetes
+#modal-ticket.ui.modal
+
 :javascript
   $(document).ready(function(){
     $('.dropdown').chosen()
+    $(".close-table").click(function(e){
+      e.preventDefault();
+      id = $(this).data("id");
+      $.ajax({
+        url: "/tickets/"+id+"/edit",
+        type: "GET",
+        dataType: "html",
+        success: function(data){
+          $("#modal-ticket").html(data).modal('setting', {
+            onDeny: function(){
+              return false;
+            },
+            onApprove : function() {
+              console.log("Aca hay que actualizar el ticket y cerrar la mesa!")
+            }
+          }).modal('show')
+        }
+      })
+    })
   })

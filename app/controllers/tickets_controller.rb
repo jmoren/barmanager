@@ -23,6 +23,7 @@ class TicketsController < ApplicationController
 
   # GET /tickets/1/edit
   def edit
+    render :layout => request.xhr? ? false : true
   end
 
   # POST /tickets
@@ -46,7 +47,8 @@ class TicketsController < ApplicationController
   def update
     respond_to do |format|
       if @ticket.update(ticket_params)
-        format.html { redirect_to @ticket, notice: 'Ticket was successfully updated.' }
+        @ticket.table.close!
+        format.html { redirect_to @ticket.table, notice: 'Ticket was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -73,6 +75,6 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:trend_id, :table_id, :date, :total, :payment, :number)
+      params.require(:ticket).permit(:trend_id, :table_id, :date, :total, :payment, :number, :status)
     end
 end

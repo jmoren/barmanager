@@ -16,8 +16,11 @@
       <% end %>
       <%= link_to tickets_path, class: "item" do %>
         <i class="icon tags"></i>
-        Tickets
+        Bilhetes
       <% end %>
+      <a href="#" class="item right" style="margin-right:30px">
+        <%= I18n.default_locale == :pt ? '<img title="Idioma portugues" src="/assets/Brazil-flat-icon.png"></img>'.html_safe : nil %>
+      </a>
     </div>
   </div>
   <div class="main container">
