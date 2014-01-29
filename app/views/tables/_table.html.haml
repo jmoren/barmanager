@@ -1,0 +1,7 @@
+= link_to table do
+  %i.icon.info
+  = "Mesa Nro. #{table.number}"
+%p
+  %div{ class: table.status == "open" ? 'ui label green' : 'ui label red' }
+    .detail
+      = table.status

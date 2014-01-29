@@ -1,0 +1,20 @@
+ul.tables{
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+  li{
+    padding: 5px;
+    border-bottom: solid 1px #ccc;
+    &:hover{
+      a{color: #333;}
+    }
+    &.active{
+      background: #f1f1f1;
+      a{color: #333}
+    }
+    a{
+      color: #ccc;
+
+    }
+  }
+}

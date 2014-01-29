@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b Trend:
+  = @ticket.trend_id
+%p
+  %b Table:
+  = @ticket.table_id
+%p
+  %b Date:
+  = @ticket.date
+%p
+  %b Total:
+  = @ticket.total
+%p
+  %b Payment:
+  = @ticket.payment
+
+= link_to 'Edit', edit_ticket_path(@ticket)
+\|
+= link_to 'Back', tickets_path

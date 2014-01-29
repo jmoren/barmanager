@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Ticket:
+  = @item_ticket.ticket_id
+%p
+  %b Item:
+  = @item_ticket.item_id
+%p
+  %b Quantity:
+  = @item_ticket.quantity
+%p
+  %b Sub total:
+  = @item_ticket.sub_total
+
+= link_to 'Edit', edit_item_ticket_path(@item_ticket)
+\|
+= link_to 'Back', item_tickets_path

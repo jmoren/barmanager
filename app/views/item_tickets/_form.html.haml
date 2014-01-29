@@ -1,0 +1,11 @@
+= form_for [ticket, ticket.item_tickets.new], html: { class: "form ui"} do |f|
+  .two.fields
+    .field
+      = f.label :item_id
+      = f.select :item_id, Item.all.map{|i| [i.description, i.id]}, { }, class:"dropdown", style: "width: 100%"
+    .field
+      = f.label :quantity
+      = f.select :quantity, (1..50).map{|n| [n,n]}, {selected: 1}, class: "dropdown", style: "width: 80%", data: {placeholder: "Select item"}
+  .actions
+    %button.ui.button.mini.blue{ type:"submit"}
+      Agregar

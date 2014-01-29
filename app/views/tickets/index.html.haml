@@ -1,0 +1,37 @@
+%h2
+  - if params[:table_id]
+    = "Tickets de la mesa #{params[:table_id]}"
+  - else
+    Todos los tickets
+  .right
+    = link_to "Ver todos", tickets_path, class: "ui button mini blue"
+- if @tickets.empty?
+  .ui.message
+    %i.icon.info
+    No hay tickets todavia
+- else
+  %table.ui.table
+    %thead
+      %th Table
+      %th Date
+      %th Total
+      %th Payment
+      %th
+      %th
+      %th
+    %tbody
+      - @tickets.order("date").each do |ticket|
+        %tr
+          %td= "Mesa Nro. #{ticket.table.number}"
+          %td= ticket.date.strftime("%d/%m/%Y %H:%M %p")
+          %td= number_to_currency ticket.total
+          %td= ticket.payment
+          %td= link_to 'Imprimir', "#", class: "ui button tiny blue"
+          %td= link_to 'Apagar', ticket, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "ui button tiny red"
+
+.ui.divider
+= link_to "#", class: "ui button green" do
+  %i.icon.signal
+  Estadisiticas
+
+

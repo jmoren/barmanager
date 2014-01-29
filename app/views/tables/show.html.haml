@@ -1,0 +1,74 @@
+%h1
+  %i.icon.food
+  = "Mesa Nro. #{@table.number}"
+  .right
+    -if @table.open?
+      = link_to close_table_path(@table), method: :put,  class: "ui button red small", data: { confirm: "Estas seguro?"} do
+        Cerrar mesa
+        %i.icon.lock
+    - else
+      = link_to open_table_path(@table), method: :put,  class: "ui button green small", data: { confirm: "Estas seguro?"} do
+        Abrir mesa
+        %i.icon.unlock
+- if @current_ticket
+  .ui.segment
+    .left
+      .label.ui
+        %i.icon.time
+        = @current_ticket.date.strftime("%A, %d of %b, %H:%M %p")
+      .label.ui
+        %i.icon.payment
+        = @current_ticket.payment
+        tarjeta de credito
+    .right
+      = link_to "#" do
+        %i.icon.close
+    %br
+    %h3
+      %i.icon.tag
+      = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
+    %table.table.ui
+      %theader
+        %th
+        %th Item
+        %th Quantity
+        %th Price
+        %th Sub-total
+      %tbody
+        - @current_ticket.item_tickets.each do |entry|
+          %tr
+            %td
+              = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete, data: {confirm: "Estas seguro?"} do
+                %i.icon.remove.red
+            %td= entry.item.description
+            %td= entry.quantity
+            %td= number_to_currency entry.item.price
+            %td= number_to_currency entry.sub_total
+      %tfoot
+        %tr
+          %td
+          %td
+          %td
+          %td
+            %b Total
+          %td
+            = number_to_currency @current_ticket.total
+
+  .ui.segment
+    %h4
+      %i.icon.setting
+      Agregar items
+    = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
+  .ui.segment
+    = link_to "#", class: "ui button mini" do
+      %i.icon.print
+      Imprimir
+- else
+  .ui.segment
+    = link_to tickets_path(table_id: @table.id), class: "ui button mini" do
+      %i.icon.tags
+      Ver Tickets
+:javascript
+  $(document).ready(function(){
+    $('.dropdown').chosen()
+  })

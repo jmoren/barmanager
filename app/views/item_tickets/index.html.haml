@@ -1,0 +1,25 @@
+%h1 Listing item_tickets
+
+%table
+  %tr
+    %th Ticket
+    %th Item
+    %th Quantity
+    %th Sub total
+    %th
+    %th
+    %th
+
+  - @item_tickets.each do |item_ticket|
+    %tr
+      %td= item_ticket.ticket_id
+      %td= item_ticket.item_id
+      %td= item_ticket.quantity
+      %td= item_ticket.sub_total
+      %td= link_to 'Show', item_ticket
+      %td= link_to 'Edit', edit_item_ticket_path(item_ticket)
+      %td= link_to 'Destroy', item_ticket, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Item ticket', new_item_ticket_path

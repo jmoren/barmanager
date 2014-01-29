@@ -1,0 +1,31 @@
+%h1 Listing trends
+
+%table
+  %tr
+    %th Name
+    %th Description
+    %th Address
+    %th City
+    %th Country
+    %th Phone
+    %th Email
+    %th
+    %th
+    %th
+
+  - @trends.each do |trend|
+    %tr
+      %td= trend.name
+      %td= trend.description
+      %td= trend.address
+      %td= trend.city
+      %td= trend.country
+      %td= trend.phone
+      %td= trend.email
+      %td= link_to 'Show', trend
+      %td= link_to 'Edit', edit_trend_path(trend)
+      %td= link_to 'Destroy', trend, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Trend', new_trend_path

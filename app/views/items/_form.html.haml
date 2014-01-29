@@ -1,0 +1,55 @@
+= form_for [@category,@item], html: { class: "ui form"} do |f|
+  .field
+    = f.label :description, "Descricao"
+    = f.text_field :description
+  .field
+    = f.label :price, "Preco"
+    = f.text_field :price
+  .field
+    = f.label :stock
+    = f.number_field :stock
+  .field
+    = f.label :category_id, "Categoria"
+    = f.select :category_id, Category.all.map{|c| [c.name, c.id]}, {selected: @item.category_id}, class: "dropdown", style: "width: 100%"
+  .actions
+    %button.ui.button.small.green{type: "submit"}
+      Salvar
+    = link_to 'Voltar para Categoria', category_path(@item.category), class: "ui button small blue"
+    = link_to 'Voltar', items_path, class: "ui button small"
+
+:javascript
+  $(document).ready(function(){
+    $('.dropdown').chosen()
+
+    $('.ui.form').form({
+      description: {
+        identifier: 'item_description',
+        rules: [{
+          type   : 'empty'
+        }]
+      },
+      price: {
+        identifier: 'item_price',
+        rules: [
+          {
+            type   : 'empty'
+          },
+          {
+            type: 'not[0]'
+          }
+        ]
+      },
+      stock: {
+        identifier: 'item_stock',
+        rules: [
+          {
+            type   : 'empty'
+          },
+          {
+            type   : 'not[0]'
+          }
+        ]
+      },
+
+    })
+  })

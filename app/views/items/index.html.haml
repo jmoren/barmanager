@@ -1,0 +1,23 @@
+.ui.header
+  %i.icon.reorder
+  Items
+
+%table.ui.table
+  %thead
+    %th #
+    %th Descrcao
+    %th Preco
+    %th Stock
+    %th Categoia
+    %th
+  %tbody
+    - @items.each_with_index do |item, n|
+      %tr
+        %td= n+1
+        %td= item.description.titleize
+        %td= number_to_currency item.price
+        %td= item.stock
+        %td= link_to item.category.name, item.category
+        %td
+          = link_to new_category_item_path(item.category), class: "button ui black icon circular mini" do
+            %i.icon.add

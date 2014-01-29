@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ticket_id: 1
+  item_id: 1
+  quantity: 1
+  sub_total: 1.5
+
+two:
+  ticket_id: 1
+  item_id: 1
+  quantity: 1
+  sub_total: 1.5
