@@ -12,8 +12,8 @@
         %i.icon.unlock
 .ui.divider
 - if @current_ticket
-  .ui.segment
-    - if @current_ticket.open?
+  - if @current_ticket.open?
+    .ui.segment
       %h4
         %i.icon.setting
         Adicionar items
@@ -21,10 +21,10 @@
           %i.icon.payment
           Pendente de pagamento
       = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
-    - else
-      = link_to table_path(@table, ticket: false), class: "ui button mini  black" do
-        %i.icon.close
-        Fechar
+  - else
+    = link_to table_path(@table, ticket: false), class: "ui button mini  black" do
+      %i.icon.close
+      Fechar
   .ui.segment
     .left
       .ui.label
@@ -51,8 +51,9 @@
           - unless entry.new_record?
             %tr
               %td
-                = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete, data: {confirm: "Estas seguro?"} do
-                  %i.icon.remove.red
+                - if @table.open?
+                  = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete, data: {confirm: "Estas seguro?"} do
+                    %i.icon.remove.red
               %td= entry.item.description
               %td= entry.quantity
               %td= number_to_currency entry.item.price

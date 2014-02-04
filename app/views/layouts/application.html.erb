@@ -9,9 +9,9 @@
 <body>
   <div class="ui menu inverted fixed">
     <div class="container">
-      <%= link_to "Bar Manager", root_path, class: "item" %>
+      <%= link_to Organization.last.name, root_path, class: "item" %>
       <%= link_to items_path, class: "item" do %>
-        <i class="icon reorder"></i>
+        <i class="icon list"></i>
         Items
       <% end %>
       <%= link_to tickets_path, class: "item" do %>
@@ -39,5 +39,25 @@
       </div>
     </div>
   </div>
+  <div class="clearfix"></div>
+  <footer>
+    <div class="menu inverted container">
+      <div class="ui grid">
+        <div class="column five wide">
+          <p>Endereco</p>
+          <address>
+            <%= Organization.last.address %>
+          </address>
+        </div>
+        <div class="column five wide">
+          <p>Fale Conosco</p>
+          <div class="ui link list">
+            <div> <i class="icon phone"></i><%= Organization.last.phone %></div>
+            <div> <i class="icon facebook"></i>Facebook</div>
+            <div> <i class="icon twitter"></i>Twitter</div>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
