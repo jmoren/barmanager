@@ -15,9 +15,22 @@
 //= require_tree .
 
 $(document).ready(function(){
-  $('.dropdown').dropdown({
-    transition: 'drop'
+  $('.combo.dropdown').dropdown();
+
+  $("input[name=code_number]").focus();
+  $("input[name=code_number]").on("keyup", function(){
+    val = $(this).val();
+    $.ajax({
+      url: "/items?code=" + val,
+      method: "GET",
+      success: function(res){
+        console.log(res.id);
+        if(res.id)
+          $(".combo.dropdown").dropdown("set selected", res.id)
+      }
+    })
   });
+
   $(".close-table").on("click", function(e){
     e.preventDefault();
     id = $(this).data("id");

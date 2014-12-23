@@ -1,12 +1,12 @@
-%h1.ui.header
-  = "Mesa Nro. #{@table.number}"
+.ui.header
+  %h1= "Mesa Nro. #{@table.number}"
 
 -if @table.open? && @current_ticket
-  = link_to "#", class: "close-table ui labeled icon button", data: { id: @current_ticket.id } do
+  = link_to "#", class: "close-table ui labeled icon button teal", data: { id: @current_ticket.id } do
     %i.icon.lock
     Cerrar mesa
 - else
-  = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button" do
+  = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
     %i.icon.unlock
     Abrir mesa
 
@@ -20,12 +20,12 @@
       = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
 
 
-  .clearfix
-    .left
+  .ui.grid
+    .eight.wide.column
       .ui.label
         %i.icon.tag
         = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
-    .right
+    .eight.wide.column{style: "text-align: right"}
       .ui.label
         %i.icon.calendar
         = l @current_ticket.date, format: :long

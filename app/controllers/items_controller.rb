@@ -4,7 +4,12 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
+    if params[:code]
+      @item = Item.where(code: params[:code]).first
+      render json: { id: @item.try(:id) }
+    else
+      @items = Item.all
+    end
   end
 
   # GET /items/1
@@ -73,6 +78,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:description, :price, :stock, :category_id)
+      params.require(:item).permit(:description, :price, :stock, :category_id, :code)
     end
 end

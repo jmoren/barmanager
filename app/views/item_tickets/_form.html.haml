@@ -1,17 +1,19 @@
 = form_for [ticket, ticket.item_tickets.new], html: { class: "form ui"} do |f|
-  .two.fields
-    .field
-      .ui.fluid.search.selection.dropdown
+  .ui.grid
+    .three.wide.column
+      %input{type: "text", name: "code_number", placeholder: "Codigo", focus: true}
+    .eight.wide.column
+      .ui.fluid.search.selection.dropdown.combo
         = f.hidden_field :item_id
-        .i.dropdown.icon
+        %i.dropdown.icon
         .default.text Seleccione Item
         .menu
           - Item.all.each do |item|
             .item{ data: { value: item.id } }
               = item.description
-    .field
-      = f.number_field :quantity, placeholder: "Cantidad"
-
+    .four.wide.column
+      = f.number_field :quantity, placeholder: "Cantidad", min: "1"
+  .ui.divider
   .field
     %button.ui.button.orange{ type:"submit"}
       Adicionar
