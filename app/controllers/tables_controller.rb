@@ -10,7 +10,7 @@ class TablesController < ApplicationController
   # GET /tables/1
   # GET /tables/1.json
   def show
-    if !params[:ticket] && !@table.tickets.empty?
+    if !params[:ticket] && !@table.tickets.empty? && @table.tickets.last.try(:status) == 'open'
       @current_ticket = @table.tickets.last
     else
       @current_ticket = nil

@@ -12,5 +12,29 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require_tree .
+
+$(document).ready(function(){
+  $('.dropdown').dropdown({
+    transition: 'drop'
+  });
+  $(".close-table").on("click", function(e){
+    e.preventDefault();
+    id = $(this).data("id");
+    $.ajax({
+      url: "/tickets/"+id+"/edit",
+      type: "GET",
+      dataType: "html",
+      success: function(data){
+        $("#modal-ticket").html(data).modal('setting', {
+          onDeny: function(){
+            return false;
+          },
+          onApprove: function() {
+            return true;
+          }
+        }).modal('show')
+      }
+    })
+  })
+});

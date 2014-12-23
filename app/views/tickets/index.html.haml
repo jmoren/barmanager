@@ -29,7 +29,7 @@
           %td= link_to 'Apagar', ticket, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "ui button tiny red"
 
 .ui.divider
-= link_to "#", class: "ui button green" do
+= link_to statistics_index_path, class: "ui button green" do
   %i.icon.signal
   Estadisiticas
 

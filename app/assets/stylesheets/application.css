@@ -12,8 +12,8 @@
  *= require_tree .
  */
 body{
-  background: url('ubit_fondo.png');
   margin: 0;
+  font-family: 'Lato'
 }
 .ui.menu.fixed{
   z-index: 100 !important;

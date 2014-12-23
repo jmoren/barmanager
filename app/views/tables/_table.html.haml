@@ -1,7 +1,4 @@
-= link_to table do
-  %i.icon.info
+= link_to table, class: "item #{params[:id].to_i == table.id ? 'active' : ''}", style: "padding: 20px 10px" do
   = "Mesa Nro. #{table.number}"
-%p
-  %div{ class: table.status == "open" ? 'ui label green' : 'ui label red' }
-    .detail
-      = table.status
+  .ui.label{ class: table.status == "open" ? 'green' : 'red' }
+    = table.status

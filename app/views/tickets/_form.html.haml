@@ -1,3 +1,4 @@
+%i.close.icon
 .header
   Atualizar ticket
   = "%0.6d" % @ticket.number
@@ -6,35 +7,43 @@
 .content
   = form_for @ticket, html: {id: "update-ticket", class: "ui form" } do |f|
     = f.hidden_field :status, value: "closed"
-    .ui.segment
-      .field.ui.message.success
-        Selecione metodo de pagamento
-        = f.select :payment, Ticket::PAYMENT_TYPE.map{|p| [p[1], p[0]]}, {}, class: "input"
+    .ui.floating.labeled.icon.dropdown.button.orange
+      = f.hidden_field :payment
+      %i.payment.icon
+      .text Seleccione Metodo de pago
+      .menu
+        - Ticket::PAYMENT_TYPE.each do |payment|
+          .item{ data: { value: payment[0] } }
+            = payment[1]
 
-      .ui.divider
-      %table.table.ui
-        %thead
-          %th Item
-          %th Quantidade
-          %th Preco
-          %th Sub total
-        %tbody
-          - @ticket.item_tickets.each do |t|
-            %tr
-              %td= t.item.description
-              %td= t.quantity
-              %td= number_to_currency t.item.price
-              %td= number_to_currency t.sub_total
-        %tfoot
+    %table.table.ui
+      %thead
+        %th Item
+        %th Quantidade
+        %th Preco
+        %th Sub total
+      %tbody
+        - @ticket.item_tickets.each do |t|
           %tr
-            %td
-            %td
-            %td
-              %b
-                Total
-            %td
-              %b
-                = number_to_currency @ticket.total
-    .actions
+            %td= t.item.description
+            %td= t.quantity
+            %td= number_to_currency t.item.price
+            %td= number_to_currency t.sub_total
+      %tfoot
+        %tr
+          %td
+          %td
+          %td
+            %b
+              Total
+          %td
+            %b
+              = number_to_currency @ticket.total
+    .field
       = f.submit 'Salvar', class: "ui button positive"
-      = link_to "Cancelar", "#", class: "ui button"
+      = link_to "Cancelar", "#", class: "ui button close"
+
+:javascript
+  $('.dropdown').dropdown({
+    transition: 'drop'
+  });

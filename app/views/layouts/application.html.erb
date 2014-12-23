@@ -4,34 +4,30 @@
   <title>BarManager</title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
   <%= csrf_meta_tags %>
 </head>
 <body>
   <div class="ui menu inverted fixed">
     <div class="container">
-      <%= link_to Organization.last.name, root_path, class: "item" %>
+      <%= link_to "Bar Manager", root_path, class: "item" %>
       <%= link_to items_path, class: "item" do %>
         <i class="icon list"></i>
         Items
       <% end %>
       <%= link_to tickets_path, class: "item" do %>
         <i class="icon tags"></i>
-        Bilhetes
+        Tickets
       <% end %>
-      <a href="#" class="item right" style="margin-right:30px">
-        <%= I18n.default_locale == :pt ? '<img title="Idioma portugues" src="/assets/Brazil-flat-icon.png"></img>'.html_safe : nil %>
-      </a>
     </div>
   </div>
   <div class="main container">
     <div id="side">
-      <ul class="tables segment ui">
+      <div class="ui vertical menu">
         <% @tables.each do |table| %>
-          <li class="<%= table.id == params[:id].to_i && controller_name == 'tables' ? 'active' : nil %>">
-            <%= render table %>
-          </li>
+          <%= render table %>
         <% end %>
-      </ul>
+      </div>
     </div>
     <div id="panel">
       <div class="segment ui">
@@ -39,25 +35,5 @@
       </div>
     </div>
   </div>
-  <div class="clearfix"></div>
-  <footer>
-    <div class="menu inverted container">
-      <div class="ui grid">
-        <div class="column five wide">
-          <p>Endereco</p>
-          <address>
-            <%= Organization.last.address %>
-          </address>
-        </div>
-        <div class="column five wide">
-          <p>Fale Conosco</p>
-          <div class="ui link list">
-            <div> <i class="icon phone"></i><%= Organization.last.phone %></div>
-            <div> <i class="icon facebook"></i>Facebook</div>
-            <div> <i class="icon twitter"></i>Twitter</div>
-        </div>
-      </div>
-    </div>
-  </footer>
 </body>
 </html>

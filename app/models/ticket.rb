@@ -8,6 +8,11 @@ class Ticket < ActiveRecord::Base
   belongs_to :table
   has_many :item_tickets
 
+  scope :cartao, -> { where(payment: 1) }
+  scope :efetivo, -> { where(payment: 2) }
+  scope :combinado, -> { where(payment: 3) }
+  scope :cheque, -> { where(payment: 4) }
+
   before_create :set_serial_number
 
   def formatted_number
