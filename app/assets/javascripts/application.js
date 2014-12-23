@@ -26,7 +26,8 @@ $(document).ready(function(){
       success: function(res){
         console.log(res.id);
         if(res.id)
-          $(".combo.dropdown").dropdown("set selected", res.id)
+          $(".combo.dropdown").dropdown("set selected", res.id);
+          $("#item_ticket_item_id").val(res.id);
       }
     })
   });

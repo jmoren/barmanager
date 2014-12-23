@@ -1,16 +1,16 @@
-.ui.header
+.ui.header.center
   %h1= "Mesa Nro. #{@table.number}"
-
--if @table.open? && @current_ticket
-  = link_to "#", class: "close-table ui labeled icon button teal", data: { id: @current_ticket.id } do
-    %i.icon.lock
-    Cerrar mesa
-- else
-  = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
-    %i.icon.unlock
-    Abrir mesa
-
 .ui.divider
+.center
+  -if @table.open? && @current_ticket
+    = link_to "#", class: "close-table ui labeled icon button teal", data: { id: @current_ticket.id } do
+      %i.icon.lock
+      Cerrar mesa
+  - else
+    = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
+      %i.icon.unlock
+      Abrir mesa
+
 - if @current_ticket
   - if @current_ticket.open?
     .ui.segment
@@ -48,12 +48,13 @@
             %td= entry.item.description
             %td= entry.quantity
             %td= number_to_currency entry.item.price
-            %td= number_to_currency entry.sub_total
+            %td.center= number_to_currency entry.sub_total
     %tfooter
       %tr
-        %td{colspan: 3}
-        %td Total
-        %td= number_to_currency @current_ticket.total
+        %td{colspan: 4}
+        %td
+          .ui.label.blue{style: "font-size: 16px"}
+            = number_to_currency @current_ticket.total
 
     -unless @current_ticket.open?
       .left{style: "margin-top: 10px"}

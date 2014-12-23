@@ -15,12 +15,15 @@ body{
   margin: 0;
   font-family: 'Lato'
 }
+
 .ui.menu.fixed{
   z-index: 100 !important;
 }
+
 .main{
   padding-top: 70px;
 }
+
 .container{
   width: auto;
   margin-right: 150px;
@@ -38,10 +41,6 @@ body{
   width: 70%;
   float: left;
 }
-a{
-  text-decoration: none;
-  color: #666;
-}
 
 .right{
   float: right;
@@ -50,14 +49,11 @@ a{
   float: left;
 }
 
+.center{
+  text-align: center;
+}
 .clearfix{
   clear: both;
   content: "";
   display: table;
-}
-
-footer{
-  background: #333333;
-  color: #f1f1f1;
-  padding: 20px 0;
 }

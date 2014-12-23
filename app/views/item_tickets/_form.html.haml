@@ -1,7 +1,7 @@
 = form_for [ticket, ticket.item_tickets.new], html: { class: "form ui"} do |f|
   .ui.grid
     .three.wide.column
-      %input{type: "text", name: "code_number", placeholder: "Codigo", focus: true}
+      %input{type: "text", name: "code_number", placeholder: "Codigo", focus: true, autocomplete: "off"}
     .eight.wide.column
       .ui.fluid.search.selection.dropdown.combo
         = f.hidden_field :item_id
