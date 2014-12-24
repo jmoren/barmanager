@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
   # GET /items.json
   def index
     if params[:code]
-      @item = Item.where(code: params[:code]).first
+      @item = Item.where("code = ? AND stock > 0", params[:code]).first
       render json: { id: @item.try(:id) }
     else
       @items = Item.all

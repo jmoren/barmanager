@@ -1,10 +1,14 @@
-%h2
-  - if params[:table_id]
+- if params[:table_id]
+  %h2.ui.header.left.floated
     = "Tickets de la mesa #{params[:table_id]}"
-  - else
+  %h2.ui.header.right.floated
+    = link_to "Ver todos", tickets_path, class: "ui button blue"
+- else
+  %h2.ui.header.left.floated
     Todos los tickets
-  .right
-    = link_to "Ver todos", tickets_path, class: "ui button mini blue"
+.clearfix
+.ui.divider
+
 - if @tickets.empty?
   .ui.message
     %i.icon.info
@@ -12,12 +16,10 @@
 - else
   %table.ui.table
     %thead
-      %th Table
-      %th Date
+      %th Mesa
+      %th Fecha
       %th Total
-      %th Payment
-      %th
-      %th
+      %th Pago
       %th
     %tbody
       - @tickets.order("date").each do |ticket|
@@ -26,11 +28,4 @@
           %td= ticket.date.strftime("%d/%m/%Y %H:%M %p")
           %td= number_to_currency ticket.total
           %td= Ticket::PAYMENT_TYPE[ticket.payment-1][1] if ticket.payment
-          %td= link_to 'Apagar', ticket, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "ui button tiny red"
-
-.ui.divider
-= link_to statistics_index_path, class: "ui button green" do
-  %i.icon.signal
-  Estadisiticas
-
-
+          %td= link_to 'Borrar', ticket, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: "ui button tiny red"

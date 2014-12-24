@@ -10,13 +10,13 @@
     = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
       %i.icon.unlock
       Abrir mesa
+  = link_to tickets_path(table_id: @table.id), class: "ui button lebeled blue" do
+    %i.icon.file
+    Ver Tickets
 
 - if @current_ticket
   - if @current_ticket.open?
     .ui.segment
-      %h4
-        %i.icon.plus
-        Adicionar items
       = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
 
 

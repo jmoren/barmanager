@@ -1,17 +1,26 @@
 = form_for [@category,@item], html: { class: "ui form"} do |f|
   .field
-    = f.label :description, "Descricao"
+    = f.label :description, "Descripcion"
     = f.text_field :description
-  .field
-    = f.label :price, "Preco"
-    = f.text_field :price
-  .field
-    = f.label :stock
-    = f.number_field :stock
+  .two.fields
+    .field
+      = f.label :price, "Precio"
+      = f.text_field :price
+    .field
+      = f.label :stock
+      = f.number_field :stock
   .field
     = f.label :category_id, "Categoria"
-    = f.select :category_id, Category.all.map{|c| [c.name, c.id]}, {selected: @item.category_id}, class: "dropdown", style: "width: 100%"
-  .actions
+    .ui.fluid.search.selection.dropdown.combo
+      = f.hidden_field :category_id
+      %i.dropdown.icon
+      .default.text Seleccione Item
+      .menu
+        - Category.all.each do |category|
+          .item{ data: { value: category.id } }
+            = category.name
+  .ui.divider
+  .field
     %button.ui.button.small.green{type: "submit"}
       Salvar
     = link_to 'Voltar para Categoria', category_path(@item.category), class: "ui button small blue"
@@ -19,8 +28,6 @@
 
 :javascript
   $(document).ready(function(){
-    $('.dropdown').chosen()
-
     $('.ui.form').form({
       description: {
         identifier: 'item_description',

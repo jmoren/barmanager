@@ -2,9 +2,14 @@ class ItemTicket < ActiveRecord::Base
   belongs_to :item
   belongs_to :ticket
 
-  before_create :set_sub_total
+  before_create :set_sub_total, :validate_stock
   after_create :update_ticket_after_create, :update_stock_after_create
   before_destroy :update_ticket_before_delete, :update_stock_before_destroy
+
+  def validate_stock
+    puts self.quantity
+    return if self.item.stock >= self.quantity
+  end
 
   def set_sub_total
     price = self.item.price

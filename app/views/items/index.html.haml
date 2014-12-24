@@ -1,14 +1,16 @@
-.ui.header
-  %i.icon.reorder
+%h2.ui.header
+  %i.icon.cubes
   Items
+
+.ui.divider
 
 %table.ui.table
   %thead
     %th #
-    %th Descrcao
-    %th Preco
+    %th Descripcion
+    %th Precio
     %th Stock
-    %th Categoia
+    %th Categoria
     %th
   %tbody
     - @items.each_with_index do |item, n|

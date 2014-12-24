@@ -12,7 +12,10 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require_tree .
+//= require semantic
+//= require picker
+//= require picker.date
+//= require picker.time
 
 $(document).ready(function(){
   $('.combo.dropdown').dropdown();

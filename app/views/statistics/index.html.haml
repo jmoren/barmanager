@@ -2,65 +2,22 @@
   %h2
     %i.icon.signal
     Estadisticas
-.ui.input.icon.left
-  %input{name: "date", class: "datepicker", type: "search", autocomplete: "off", placeholder: "Selecione uma data", style: "width: 400px"}
-  %i.icon.calendar
-.ui.button.search-data.left{style: "margin-left: 10px"}
-  %i.icon.search
-%br
-%br
+
+
+= form_tag statistics_path, method: :get do 
+  .ui.icon.left.input
+    %input{name: "date", class: "datepicker", type: "text", autocomplete: "off", placeholder: "Seleccione una fecha"}
+    %i.icon.circular.calendar
+
+.ui.divider
 .ui.segment
-  .ui.vertically.divided.grid
-    .two.column.row
-      .column
-        %h3 Bilhetes
-        %p
-          Total:
-          %b= @tickets.size
-        %h3 Promedio por bilhete
-      .column
-        %h3
-          %i.icon.money
-          Pagamentos
-        - if @tickets.size > 0
-          %table.ui.table
-            %thead
-              %th Pagamento
-              %th %
-              %th Total
-            %tbody
-              %tr
-                - total_efetivo = @tickets.efetivo.size
-                %td Pagado em Efetivo
-                %td= total_efetivo*100/@tickets.size
-                %td= total_efetivo
-              %tr
-                - total_cartao = @tickets.cartao.size
-                %td Pagado com Cartao
-                %td= total_cartao*100/@tickets.size
-                %td= total_cartao
-              %tr
-                - total_combinado = @tickets.combinado.size
-                %td
-                  Pagamento Combinado
-                %td= total_combinado*100/@tickets.size
-                %td= total_combinado
-              %tr
-                - total_cheque = @tickets.cheque.size
-                %td Pagado em Cheque
-                %td= total_cheque*100/@tickets.size
-                %td= total_cheque
-    .two.column.row
-      .column
-        %h3 Items mais vendidos
+  .ui.statistic
+    .value
+      = @tickets.size
+    .label
+      Tickets
 
 :javascript
   $(document).ready(function(){
-    $(".search-data").click(function(e){
-      e.preventDefault();
-      data = $("input[name='date_submit']").val();
-      console.log(data);
-      return false;
-    })
     $('.datepicker').pickadate();
-  })
+  });

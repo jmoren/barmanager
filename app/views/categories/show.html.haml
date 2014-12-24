@@ -1,20 +1,21 @@
-.ui.header
+%h2.ui.header.left.floated
   Categoria
   = @category.name
-  .right
-    = link_to "Adicionar item", new_category_item_path(@category), class: "ui button small red"
-
+%h2.ui.header.right.floated
+  = link_to "Agregar item", new_category_item_path(@category), class: "ui button red"
+.clearfix
 %table.ui.table
   %thead
-    %th Descricaon
-    %th Preco
+    %th Descripcion
+    %th Precio
     %th Stock
     %th
   %tbody
     - @items.each do |item|
       %tr
         %td= item.description
-        %td= item.price
+        %td= number_to_currency item.price
         %td= item.stock
-        %td= link_to "Editar", edit_category_item_path(@category, item)
-
+        %td
+          = link_to edit_category_item_path(@category, item), class: "ui button tiny icon" do
+            %i.icon.edit

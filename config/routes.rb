@@ -1,7 +1,8 @@
 BarManager::Application.routes.draw do
 
 
-  get "statistics/index"
+  resources :statistics, only: [:index]
+
   resources :categories do
     resources :items
   end

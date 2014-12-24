@@ -12,12 +12,16 @@
     <div class="container">
       <%= link_to "Bar Manager", root_path, class: "item" %>
       <%= link_to items_path, class: "item" do %>
-        <i class="icon list"></i>
+        <i class="icon cubes"></i>
         Items
       <% end %>
       <%= link_to tickets_path, class: "item" do %>
-        <i class="icon tags"></i>
+        <i class="icon file"></i>
         Tickets
+      <% end %>
+      <%= link_to statistics_path, class: "item" do %>
+        <i class="icon feed"></i>
+        Estadisticas
       <% end %>
     </div>
   </div>
