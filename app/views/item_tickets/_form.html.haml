@@ -4,6 +4,8 @@
       .ui.icon.input.left.error
         %i.icon.search
         %input{type: "text", name: "code_number", placeholder: "Codigo", focus: true, autocomplete: "off"}
+    .three.wide.column.field
+      = f.number_field :quantity, placeholder: "Cant", min: "1"
     .nine.wide.column.field
       .ui.fluid.search.selection.dropdown.combo
         = f.hidden_field :item_id
@@ -13,9 +15,11 @@
           - Item.with_stock.each do |item|
             .item{ data: { value: item.id } }
               = item.description
-    .three.wide.column.field
-      = f.number_field :quantity, placeholder: "Cant", min: "1"
+
+  .error-msg.ui.red.message{style: "display:none"}
+    No se encontro ningun item
   .ui.divider
+
   .field
     %button.ui.icon.button.orange{ type:"submit"}
       %i.icon.plus

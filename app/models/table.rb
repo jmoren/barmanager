@@ -10,7 +10,6 @@ class Table < ActiveRecord::Base
   def open!
     self.update(status: "open")
     ticket = self.tickets.new
-    ticket.trend_id = 1
     ticket.date     = Time.now
     ticket.total    = 0
     ticket.status   = "open"

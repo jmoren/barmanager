@@ -1,34 +1,49 @@
 %i.close.icon
 .header
-  Cerrar Ticket
-  = "%0.6d" % @ticket.number
-  .right
+  %h2.ui.left.floated.header
+    Ticket
+    = "%0.6d" % @ticket.number
+  %h2.ui.right.floated.header
     = l @ticket.created_at, format: :long
+  .clearfix
+
 .content
   = form_for @ticket, html: {id: "update-ticket", class: "ui form" } do |f|
     = f.hidden_field :status, value: "closed"
     = f.hidden_field :payment, value: "efectivo"
-    .ui.button.green.icon.labeled
-      %i.icon.dollar
-      = number_to_currency @ticket.total, unit: ""
-    .ui.button.blue.icon.labeled{style: "float: right"}
-      %i.icon.payment
-      Efectivo
+    - if @ticket.item_tickets.empty?
+      .ui.message.yellow
+        No hay items.
+    - else
+      .ui.button.green.icon.labeled
+        %i.icon.dollar
+        = number_to_currency @ticket.total, unit: ""
+      .ui.button.blue.icon.labeled{style: "float: right"}
+        %i.icon.payment
+        Efectivo
 
-    %table.table.ui
-      %thead
-        %th Item
-        %th Cantidad
-        %th Precio
-        %th Sub Total
-      %tbody
-        - @ticket.item_tickets.each do |t|
-          %tr
-            %td= t.item.description
-            %td= t.quantity
-            %td= number_to_currency t.item.price
-            %td= number_to_currency t.sub_total
+      %table.table.ui
+        %thead
+          %th Item
+          %th Cantidad
+          %th Precio
+          %th Sub Total
+        %tbody
+          - @ticket.item_tickets.each do |t|
+            %tr
+              %td= t.item.description
+              %td= t.quantity
+              %td= number_to_currency t.item.price
+              %td= number_to_currency t.sub_total
+    .ui.divider
+    .two.fields
+      .field
+        - if @ticket.item_tickets.empty?
+          = link_to ticket_path(@ticket, table_id: @ticket.table_id), method: :delete, class: "ui button red" do
+            %i.icon.remove
+            Borrar
 
-    .field{style: "float: right"}
-      = f.submit 'Guardar', class: "ui button positive"
-      = link_to "Cancelar", "#", class: "ui button close"
+      .field{style: "text-align: right"}
+        - unless @ticket.item_tickets.empty?
+          = f.submit 'Guardar', class: "ui button positive"
+        = link_to "Cancelar", "#", class: "ui button close"

@@ -1,12 +1,11 @@
-.ui.header
-  %h2
-    %i.icon.signal
-    Estadisticas
+%h2.ui.header
+  %i.icon.signal
+  Estadisticas
 
 
 = form_tag statistics_path, method: :get, class: "ui form" do
   .ui.icon.left.input
-    %input{name: "date", class: "datepicker fluid", type: "text", autocomplete: "off", placeholder: "Seleccione una fecha"}
+    %input{name: "date", value: params[:date], class: "datepicker", type: "text", autocomplete: "off", placeholder: "Seleccione una fecha"}
     %i.icon.circular.calendar
 
 .ui.divider
@@ -34,17 +33,14 @@
           Total Facturado
 .ui.divider
 
-.ui.grid.statistics
-  %h2 Ventas por Item
-  - @by_items.each do |key, value|
-    .eight.wide.column
-      .ui.segment
-        .statistic
-          .value
-            = value
-          .label
-            = key
-:javascript
-  $(document).ready(function(){
-    $('.datepicker').pickadate();
-  });
+- unless @by_items.empty?
+  .ui.grid.statistics
+    %h2 Ventas por Item
+    - @by_items.each do |key, value|
+      .eight.wide.column
+        .ui.segment
+          .statistic
+            .value
+              = value
+            .label
+              = key

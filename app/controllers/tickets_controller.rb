@@ -60,9 +60,16 @@ class TicketsController < ApplicationController
   # DELETE /tickets/1
   # DELETE /tickets/1.json
   def destroy
+    if params[:table_id]
+      table = Table.find(params[:table_id])
+      table.close!
+      url = table_path(table)
+    else
+      url = tickets_path
+    end
     @ticket.destroy
     respond_to do |format|
-      format.html { redirect_to tickets_url }
+      format.html { redirect_to url }
       format.json { head :no_content }
     end
   end

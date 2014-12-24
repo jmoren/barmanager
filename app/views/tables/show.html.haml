@@ -1,6 +1,5 @@
-.ui.header.center
-  %h1= "Mesa Nro. #{@table.number}"
-.ui.divider
+%h1.ui.header.center
+  = "Mesa Nro. #{@table.number}"
 .center
   -if @table.open? && @current_ticket
     = link_to "#", class: "close-table ui labeled icon button teal", data: { id: @current_ticket.id } do

@@ -2,12 +2,14 @@ class ItemTicket < ActiveRecord::Base
   belongs_to :item
   belongs_to :ticket
 
-  before_create :set_sub_total, :validate_stock
+  validates :item_id, :quantity, presence: true
+  validates :quantity, numericality: { only_integer: true, greater_than: 0 }
+  
+  before_create :validate_stock, :set_sub_total
   after_create :update_ticket_after_create, :update_stock_after_create
   before_destroy :update_ticket_before_delete, :update_stock_before_destroy
 
   def validate_stock
-    puts self.quantity
     return if self.item.stock >= self.quantity
   end
 
