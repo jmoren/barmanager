@@ -2,13 +2,16 @@
   .field
     = f.label :description, "Descripcion"
     = f.text_field :description
-  .two.fields
+  .three.fields
     .field
       = f.label :price, "Precio"
       = f.text_field :price
     .field
       = f.label :stock
       = f.number_field :stock
+    .field
+      = f.label :code
+      = f.number_field :code
   .field
     = f.label :category_id, "Categoria"
     .ui.fluid.search.selection.dropdown.combo
@@ -22,9 +25,9 @@
   .ui.divider
   .field
     %button.ui.button.small.green{type: "submit"}
-      Salvar
-    = link_to 'Voltar para Categoria', category_path(@item.category), class: "ui button small blue"
-    = link_to 'Voltar', items_path, class: "ui button small"
+      Guardar
+    = link_to 'Ver Categoria', category_path(@item.category), class: "ui button small blue"
+    = link_to 'Cancelar', @item.new_record? ? items_path : category_item_path(@item.category, @item), class: "ui button small"
 
 :javascript
   $(document).ready(function(){

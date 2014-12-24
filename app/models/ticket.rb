@@ -1,10 +1,11 @@
 class Ticket < ActiveRecord::Base
+  paginates_per 5
+
   PAYMENT_TYPE= [
-    [1, "Cartao de credito"],
-    [2, "Efetivo"],
-    [3, "Combinado"],
-    [4, "Cheque"]
-  ]
+    [1, "Tarjeta de credito"],
+    [2, "Efectivo"]
+  ].freeze
+
   belongs_to :table
   has_many :item_tickets
 

@@ -1,18 +1,19 @@
-%p#notice= notice
-
-%p
-  %b Description:
+%h2.ui.header
   = @item.description
+.ui.divider
 %p
-  %b Price:
-  = @item.price
+  %b Precio:
+  = number_to_currency @item.price
 %p
   %b Stock:
   = @item.stock
 %p
-  %b Category:
-  = @item.category_id
+  %b Categoria:
+  = link_to @item.category.name, @item.category
 
-= link_to 'Edit', edit_item_path(@item)
-\|
-= link_to 'Back', items_path
+%p
+  %b Codigo:
+  = @item.code
+.ui.divider
+= link_to 'Edit', edit_category_item_path(@item.category, @item), class: "ui button orange"
+= link_to 'Back', items_path, class: "ui button"

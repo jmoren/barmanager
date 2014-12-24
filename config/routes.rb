@@ -7,8 +7,6 @@ BarManager::Application.routes.draw do
     resources :items
   end
 
-  resources :trends
-
   resources :items, only: [:index]
 
   resources :tables do

@@ -1,21 +1,24 @@
-%p#notice= notice
+%h2.ui.header
+  = "Number #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
+  .sub.header
+    Fecha
+    = @ticket.date.strftime('%d/%m/%Y')
+.ui.divider
 
-%p
-  %b Trend:
-  = @ticket.trend_id
-%p
-  %b Table:
-  = @ticket.table_id
-%p
-  %b Date:
-  = @ticket.date
-%p
-  %b Total:
-  = @ticket.total
-%p
-  %b Payment:
-  = @ticket.payment
+.ui.button.blue.fluid
+  Total
+  = number_to_currency @ticket.total
 
-= link_to 'Edit', edit_ticket_path(@ticket)
-\|
-= link_to 'Back', tickets_path
+%table.ui.table
+  %thead
+    %th Item
+    %th Cantidad
+  %tbody
+    - @ticket.item_tickets.each do |it|
+      %tr
+        %td= it.item.description
+        %td= it.quantity
+
+= link_to tickets_path, class: "ui button orange" do
+  %i.icon.arrow.left
+  Volver

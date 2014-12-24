@@ -1,20 +1,44 @@
 = form_for [ticket, ticket.item_tickets.new], html: { class: "form ui"} do |f|
   .ui.grid
-    .three.wide.column
-      %input{type: "text", name: "code_number", placeholder: "Codigo", focus: true, autocomplete: "off"}
-    .eight.wide.column
+    .four.wide.column
+      .ui.icon.input.left.error
+        %i.icon.search
+        %input{type: "text", name: "code_number", placeholder: "Codigo", focus: true, autocomplete: "off"}
+    .nine.wide.column.field
       .ui.fluid.search.selection.dropdown.combo
         = f.hidden_field :item_id
         %i.dropdown.icon
         .default.text Seleccione Item
         .menu
-          - Item.all.each do |item|
+          - Item.with_stock.each do |item|
             .item{ data: { value: item.id } }
               = item.description
-    .four.wide.column
-      = f.number_field :quantity, placeholder: "Cantidad", min: "1"
+    .three.wide.column.field
+      = f.number_field :quantity, placeholder: "Cant", min: "1"
   .ui.divider
   .field
     %button.ui.icon.button.orange{ type:"submit"}
       %i.icon.plus
       Agregar
+:javascript
+  $(document).ready(function(){
+    $('.ui.form').form({
+      item_id: {
+        identifier: 'item_ticket[item_id]',
+        rules: [{
+          type   : 'empty'
+        }]
+      },
+      quantity: {
+        identifier: 'item_ticket[quantity]',
+        rules: [
+          {
+            type   : 'empty'
+          },
+          {
+            type: 'not[0]'
+          }
+        ]
+      }
+    })
+  })

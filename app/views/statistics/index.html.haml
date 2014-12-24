@@ -4,19 +4,46 @@
     Estadisticas
 
 
-= form_tag statistics_path, method: :get do 
+= form_tag statistics_path, method: :get, class: "ui form" do
   .ui.icon.left.input
-    %input{name: "date", class: "datepicker", type: "text", autocomplete: "off", placeholder: "Seleccione una fecha"}
+    %input{name: "date", class: "datepicker fluid", type: "text", autocomplete: "off", placeholder: "Seleccione una fecha"}
     %i.icon.circular.calendar
 
 .ui.divider
-.ui.segment
-  .ui.statistic
-    .value
-      = @tickets.size
-    .label
-      Tickets
+- unless params[:date].nil?
+  .ui.label
+    Datos para el
+    = params[:date]
 
+.ui.grid.statistics
+  %h2 Tickets y Facturacion
+  .eight.wide.column
+    .ui.segment
+      .statistic
+        .value
+          %i.icon.cloud.download
+          = @tickets.size
+        .label
+          Tickets totales
+  .eight.wide.column
+    .ui.segment
+      .statistic
+        .value.center
+          = number_to_currency @total
+        .label.center
+          Total Facturado
+.ui.divider
+
+.ui.grid.statistics
+  %h2 Ventas por Item
+  - @by_items.each do |key, value|
+    .eight.wide.column
+      .ui.segment
+        .statistic
+          .value
+            = value
+          .label
+            = key
 :javascript
   $(document).ready(function(){
     $('.datepicker').pickadate();
