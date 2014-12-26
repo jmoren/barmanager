@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
-  before_action :set_category
+
   # GET /items
   # GET /items.json
   def index
@@ -19,7 +19,7 @@ class ItemsController < ApplicationController
 
   # GET /items/new
   def new
-    @item = @category.items.new
+    @item = Item.new(category_id: params[:category_id])
   end
 
   # GET /items/1/edit
@@ -29,11 +29,11 @@ class ItemsController < ApplicationController
   # POST /items
   # POST /items.json
   def create
-    @item = @category.items.new(item_params)
+    @item = Item.new(item_params)
 
     respond_to do |format|
       if @item.save
-        format.html { redirect_to category_path(@category) }
+        format.html { redirect_to category_path(@item.category) }
         format.json { render action: 'show', status: :created, location: @item }
       else
         format.html { render action: 'new' }
@@ -47,7 +47,7 @@ class ItemsController < ApplicationController
   def update
     respond_to do |format|
       if @item.update(item_params)
-        format.html { redirect_to category_path(@category) }
+        format.html { redirect_to category_path(@item.category) }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -67,9 +67,6 @@ class ItemsController < ApplicationController
   end
 
   private
-    def set_category
-      @category = Category.find(params[:category_id]) if params[:category_id]
-    end
 
     # Use callbacks to share common setup or constraints between actions.
     def set_item

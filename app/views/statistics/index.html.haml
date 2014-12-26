@@ -2,13 +2,13 @@
   %h2.ui.header
     %i.icon.signal
     Estadisticas
+
 .ui.divider
+
 = form_tag statistics_path, method: :get, class: "ui form" do
   .ui.left.icon.input
     %i.icon.calendar
     %input{name: "date", value: params[:date], class: "datepicker", type: "text", autocomplete: "off", placeholder: "Seleccione una fecha"}
-
-
 
 - unless params[:date].nil?
   .ui.message.center.blue

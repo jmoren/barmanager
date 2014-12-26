@@ -1,13 +1,13 @@
 - if params[:table_id]
   %h2.ui.header.left.floated
-    = "Tickets de la mesa #{params[:table_id]}"
+    = "Tickets de la Mesa ##{params[:table_id]}"
   %h2.ui.header.right.floated
-    = link_to "Ver todos", tickets_path, class: "ui button blue"
+    = link_to "Ver todos", tickets_path, class: "ui button small blue"
 - else
   %h2.ui.header.left.floated
     Todos los Tickets
-.clearfix
-.ui.divider
+
+.ui.divider.clearing
 
 - if @tickets.empty?
   .ui.message
@@ -32,5 +32,4 @@
           %td= number_to_currency ticket.total
           %td= Ticket::PAYMENT_TYPE[ticket.payment-1][1] if ticket.payment
   = paginate @tickets
-  .ui.button{style: "float:right"}
-    = page_entries_info @tickets
+  

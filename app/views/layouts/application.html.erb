@@ -11,10 +11,22 @@
   <div class="ui menu inverted fixed">
     <div class="container">
       <%= link_to "Bar Manager", root_path, class: "item" %>
-      <%= link_to items_path, class: "item" do %>
-        <i class="icon cubes"></i>
+      <div class="ui pointing dropdown item">
+        <i class="dropdown icon"></i>
         Items
-      <% end %>
+        <div class="menu">
+          <%= link_to "Nuevo Item", new_item_path, class: "item" %>
+          <%= link_to "Items", items_path, class: "item" %>
+        </div>
+      </div>
+      <div class="ui pointing dropdown item">
+        <i class="dropdown icon"></i>
+        Categorias
+        <div class="menu">
+          <%= link_to "Nueva Categoria", new_category_path, class: "item"%>
+          <%= link_to "Ver todas", categories_path, class: "item"%>
+        </div>
+      </div>
       <%= link_to tickets_path, class: "item" do %>
         <i class="icon file"></i>
         Tickets

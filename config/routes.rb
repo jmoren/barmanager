@@ -3,11 +3,9 @@ BarManager::Application.routes.draw do
 
   resources :statistics, only: [:index]
 
-  resources :categories do
-    resources :items
-  end
+  resources :categories
 
-  resources :items, only: [:index]
+  resources :items
 
   resources :tables do
     member do
