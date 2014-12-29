@@ -7,10 +7,7 @@
           %li= msg
 
   .field
-    = f.label :open
-    = f.datetime_select :open
-  .field
-    = f.label :close
-    = f.datetime_select :close
+    = f.label "Caja inicial"
+    = f.number_field :money
   .actions
-    = f.submit 'Save'
+    = f.submit 'Abrir'

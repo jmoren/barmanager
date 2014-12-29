@@ -22,15 +22,18 @@ class ShiftsController < ApplicationController
   end
 
   def close
+    open_tables = Table.where(status: :open).count
+
     @shift = Shift.find(params['id'])
     @shift.close = DateTime.now
+
     respond_to do |format|
-      if @shift.save
+      if (open_tables == 0) && (@shift.save)
         format.html { redirect_to @shift, notice: 'Turno cerrado con exito' }
         format.json { render action: 'show', status: :created, location: @shift }
       else
-        format.html { render action: 'new' }
-        format.json { render json: @shift.errors, status: :unprocessable_entity }
+        format.html { render action: 'index' }
+        format.json { render json: @shift.errors, status: "No se pudo cerrar el turno. Verifique que no haya mesas abiertas." }
       end
     end
   end
@@ -38,7 +41,8 @@ class ShiftsController < ApplicationController
   # POST /shifts
   # POST /shifts.json
   def create
-    @shift = Shift.new(open: DateTime.now)
+    @shift = Shift.new(shift_params)
+    @shift.open = DateTime.now
 
     respond_to do |format|
       if @shift.save
@@ -83,6 +87,6 @@ class ShiftsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def shift_params
-      params.require(:shift).permit(:open, :close)
+      params.require(:shift).permit(:open, :close, :money)
     end
 end

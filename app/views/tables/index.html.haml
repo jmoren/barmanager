@@ -3,16 +3,17 @@
     %i.icon.food
     .content
       .header
-        Para comenzar debes abrir un turno
+        Abra cualquier mesa del menu
       %p
-        Una vez que hayas abierto el turno podra comenzar a administrar las mesas.
-
-        = link_to "Abrir turno", "shifts", method: :post
+        Con la mesa abierta, podras administrar el ticket hasta cerrar la venta.
 - else
   .ui.message.icon.warning
     %i.icon.food
     .content
       .header
-        Abra cualquier mesa del menu
+        Para comenzar debes abrir un turno
       %p
-        Con la mesa abierta, podras administrar el ticket hasta cerrar la venta.
+        Una vez que hayas abierto el turno podra comenzar a administrar las mesas.
+
+        = link_to "Abrir turno", "shifts/new"
+

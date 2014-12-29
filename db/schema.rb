@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141228214128) do
+ActiveRecord::Schema.define(version: 20141229172007) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20141228214128) do
     t.datetime "close"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "money"
   end
 
   create_table "tables", force: true do |t|

@@ -4,7 +4,7 @@
   %tr
     %th Apertura
     %th Cierre
-    %th
+    %th Caja inicial
     %th
     %th
 
@@ -12,9 +12,12 @@
     %tr
       %td= shift.open
       %td= shift.close
+      %td= shift.money
       %td= link_to 'Ver', shift
-      %td= link_to 'Cerrar', "shifts/#{shift.id}/close", method: :post
-      %td= link_to 'eliminar', shift, :method => :delete, :data => { :confirm => 'Esta seguro?' }
+      - if shift.is_open?
+        %td= link_to 'Cerrar', "shifts/#{shift.id}/close", method: :post
+      - else
+        %td= ""
 
 %br
 

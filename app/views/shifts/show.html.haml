@@ -4,7 +4,10 @@
   %b Apertura:
   = @shift.open
 %p
+  %b Caja inicial:
+  = @shift.money
+%p
   %b Cierre:
   = @shift.close || "No dispobible"
 
-= link_to 'Mesas', "tables#index"
+= link_to 'Mesas', "/tables#index"
