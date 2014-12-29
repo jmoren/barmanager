@@ -7,10 +7,10 @@
           %li= msg
 
   .field
-    = f.label :number
+    = f.label "Numero"
     = f.number_field :number
   .field
-    = f.label :status
+    = f.label "Estado"
     = f.select :status, Table::STATUS
   .actions
-    = f.submit 'Save'
+    = f.submit 'Crear'

@@ -1,6 +1,12 @@
 BarManager::Application.routes.draw do
 
 
+  resources :shifts do
+    member do
+      post :close
+    end
+  end
+
   resources :statistics, only: [:index]
 
   resources :categories do

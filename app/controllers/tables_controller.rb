@@ -4,6 +4,7 @@ class TablesController < ApplicationController
   # GET /tables
   # GET /tables.json
   def index
+    @last_shift = Shift.last
     @tables = Table.all
   end
 

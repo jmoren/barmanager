@@ -1,0 +1,21 @@
+%h1 Listing shifts
+
+%table
+  %tr
+    %th Apertura
+    %th Cierre
+    %th
+    %th
+    %th
+
+  - @shifts.each do |shift|
+    %tr
+      %td= shift.open
+      %td= shift.close
+      %td= link_to 'Ver', shift
+      %td= link_to 'Cerrar', "shifts/#{shift.id}/close", method: :post
+      %td= link_to 'eliminar', shift, :method => :delete, :data => { :confirm => 'Esta seguro?' }
+
+%br
+
+= link_to 'New Shift', new_shift_path

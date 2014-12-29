@@ -1,0 +1,10 @@
+%p#notice= notice
+
+%p
+  %b Apertura:
+  = @shift.open
+%p
+  %b Cierre:
+  = @shift.close || "No dispobible"
+
+= link_to 'Mesas', "tables#index"

@@ -19,6 +19,14 @@
         <i class="icon file"></i>
         Tickets
       <% end %>
+      <%= link_to new_table_path, class: "item" do %>
+        <i class="icon feed"></i>
+        Agregar Mesa
+      <% end %>
+      <%= link_to shifts_path, class: "item" do %>
+        <i class="icon feed"></i>
+        Turnos
+      <% end %>
       <%= link_to statistics_path, class: "item" do %>
         <i class="icon feed"></i>
         Estadisticas

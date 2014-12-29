@@ -1,0 +1,16 @@
+= form_for @shift do |f|
+  - if @shift.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@shift.errors.count, "error")} prohibited this shift from being saved:"
+      %ul
+        - @shift.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :open
+    = f.datetime_select :open
+  .field
+    = f.label :close
+    = f.datetime_select :close
+  .actions
+    = f.submit 'Save'

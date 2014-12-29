@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141223220214) do
+ActiveRecord::Schema.define(version: 20141228214128) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -46,6 +46,13 @@ ActiveRecord::Schema.define(version: 20141223220214) do
     t.datetime "updated_at"
   end
 
+  create_table "shifts", force: true do |t|
+    t.datetime "open"
+    t.datetime "close"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "tables", force: true do |t|
     t.integer  "number"
     t.datetime "created_at"
@@ -63,18 +70,9 @@ ActiveRecord::Schema.define(version: 20141223220214) do
     t.datetime "updated_at"
     t.string   "status"
     t.integer  "number"
+    t.integer  "Shift_id"
   end
 
-  create_table "trends", force: true do |t|
-    t.string   "name"
-    t.text     "description"
-    t.string   "address"
-    t.string   "city"
-    t.string   "country"
-    t.string   "phone"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+  add_index "tickets", ["Shift_id"], name: "index_tickets_on_Shift_id"
 
 end
