@@ -19,13 +19,11 @@
       = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
 
 
-  .ui.label
+  .ui.label.orange
     %i.icon.tag
     = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
-  .ui.label
-    %i.icon.calendar.outline
-    = l @current_ticket.date, format: :short
 
+  .ui.divider
   %table.table.ui
     %thead
       %th

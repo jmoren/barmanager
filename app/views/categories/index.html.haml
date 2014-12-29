@@ -1,0 +1,25 @@
+%h2.ui.header.left.floated
+  Categorias
+.ui.header.right.floated
+  = link_to "Agregar Categoria", new_category_path, class: "ui button small teal"
+
+.ui.divider.clearing
+
+.ui.three.column.grid
+  - @categories.each do |category|
+    .column
+      .ui.card.fluid
+        .ui.content
+          = link_to category, class: "header" do
+            = category.name
+          .meta
+            .date
+              Creada el
+              = l category.created_at, format: :short
+        .extra.content
+          %span
+            %i.icon.cube
+            = category.items.size
+            Items
+          = link_to category, method: :delete, class: "right floated" do
+            %i.icon.trash

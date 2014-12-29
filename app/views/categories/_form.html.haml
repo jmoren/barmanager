@@ -1,0 +1,26 @@
+= form_for [@category], html: { class: "ui form"} do |f|
+  .field
+    = f.label :name, "Nombre"
+    = f.text_field :name, placeholder: "Agregar nombre", autocomplete: "off"
+
+  .ui.divider
+  .field
+    %button.ui.button.small.green{type: "submit"}
+      Guardar
+    = link_to 'Cancelar', @category.new_record? ? categories_path : @category, class: "ui button small"
+
+:javascript
+  $(document).ready(function(){
+    $('.ui.form').form({
+      name: {
+        identifier: 'category_name',
+        rules: [{
+          type   : 'empty',
+          prompt : 'Tenes que agregar un nombre',
+        }
+      ]}
+    },{
+      inline : true,
+      on     : 'blur'
+    })
+  })
