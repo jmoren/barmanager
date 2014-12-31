@@ -1,4 +1,9 @@
-= form_for [@category], html: { class: "ui form"} do |f|
+= form_for @category, html: { class: "ui form"} do |f|
+  - if @category.errors.any?
+    .ui.message.negative
+      %ul.list
+        - @category.errors.full_messages.each do |msg|
+          %li= msg
   .field
     = f.label :name, "Nombre"
     = f.text_field :name, placeholder: "Agregar nombre", autocomplete: "off"

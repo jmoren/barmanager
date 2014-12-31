@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141231141511) do
+ActiveRecord::Schema.define(version: 20141231162532) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -64,7 +64,6 @@ ActiveRecord::Schema.define(version: 20141231141511) do
   end
 
   create_table "tickets", force: true do |t|
-    t.integer  "trend_id"
     t.integer  "table_id"
     t.datetime "date"
     t.float    "total"
@@ -77,17 +76,5 @@ ActiveRecord::Schema.define(version: 20141231141511) do
   end
 
   add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id"
-
-  create_table "trends", force: true do |t|
-    t.string   "name"
-    t.text     "description"
-    t.string   "address"
-    t.string   "city"
-    t.string   "country"
-    t.string   "phone"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
 end

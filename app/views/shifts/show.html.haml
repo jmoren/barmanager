@@ -1,19 +1,53 @@
-%p#notice= notice
+%h2.ui.header.left.floated
+  = @shift.open.strftime('%d/%m/%Y - %H:%M %p')
+.ui.header.right.floated
+  - if @current_shift.id == @shift.id
+    .ui.button.green
+      Abrierto
 
-%p
-  %b Apertura:
-  = @shift.open
-%p
-  %b Caja inicial:
-  = @shift.opening_cash
-%p
-  %b Total vendido:
-  = @shift.closing_cash
-%p
-  %b Caja final:
-  = @shift.opening_cash + @shift.closing_cash
-%p
-  %b Cierre:
-  = @shift.close || "No dispobible"
+.ui.divider.clearing
 
-= link_to 'Mesas', "/tables#index"
+%table.ui.table
+  %tbody
+    %tr
+      %td Caja inicial:
+      %td= number_to_currency @shift.opening_cash.to_f
+    %tr
+      %td Total vendido:
+      %td= number_to_currency @shift.closing_cash.to_f
+    %tr
+      %td Caja final:
+      %td= number_to_currency (@shift.opening_cash.to_f + @shift.closing_cash.to_f)
+    %tr
+      %td Cierre:
+      %td= @shift.close.nil? ? "No dispobible" : @shift.close.strftime('%d/%m/%Y - %H:%M %p')
+
+%h2.ui.divider.header.horizontal
+  Tickets
+- if @shift.tickets.empty?
+  .ui.message.center
+    No hay tickets
+- else
+  %table.ui.table
+    %thead
+      %th Num
+      %th Mesa
+      %th Total
+      %th Estado
+    %tbody
+      - @shift.tickets.each do |ticket|
+        %tr
+          %td= ticket.formatted_number
+          %td= "Mesa ##{ticket.table.number}"
+          %td= number_to_currency ticket.total
+          %td= ticket.status == 'closed' ? '<i class="icon lock"></i> Cerrado'.html_safe : '<i class="icon unlock"></i> Abierto'.html_safe
+
+.center
+  .ui.divider
+  = link_to shifts_path, class: "ui button" do
+    %i.icon.arrow.left
+    Volver
+
+  = link_to tables_path, class: "ui button orange" do
+    Mesas
+    %i.icon.arrow.right

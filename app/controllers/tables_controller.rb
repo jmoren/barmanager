@@ -69,7 +69,7 @@ class TablesController < ApplicationController
   end
 
   def open
-    if (Shift.last.is_open?)
+    if @current_shift
       @table.open! unless @table.status == "open"
       redirect_to @table
     else

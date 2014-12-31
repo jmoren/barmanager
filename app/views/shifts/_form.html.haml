@@ -1,13 +1,25 @@
-= form_for @shift do |f|
+.ui.label
+  %i.icon.calendar
+  %b
+    = Time.now.strftime('%d/%m/%Y')
+.ui.label
+  %i.icon.time
+  %b
+    = Time.now.strftime('%H:%M %p')
+
+.ui.divider
+
+= form_for @shift, html: { class: "ui form" } do |f|
   - if @shift.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@shift.errors.count, "error")} prohibited this shift from being saved:"
-      %ul
+    .ui.message.negative
+      %ul.list
         - @shift.errors.full_messages.each do |msg|
           %li= msg
-
-  .field
-    = f.label "Caja inicial"
-    = f.number_field :opening_cash
-  .actions
-    = f.submit 'Abrir'
+  .inline.fields
+    .field
+      = f.number_field :opening_cash, placeholder: "Monto inicial $"
+    .field
+      %button.ui.button.blue{ type: "submit"}
+        Abrir
+    .field
+      = link_to "Cancelar", shifts_path, class: "ui button warning"

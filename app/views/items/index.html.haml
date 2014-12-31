@@ -11,7 +11,8 @@
   %thead
     %th Code
     %th Descripcion
-    %th Precio
+    %th Precio (dia)
+    %th Precio (noche)
     %th Stock
     %th Categoria
     %th
@@ -20,6 +21,10 @@
       %tr
         %td= item.code
         %td= item.description.titleize
-        %td= number_to_currency item.price
+        %td= number_to_currency item.day_price
+        %td= number_to_currency item.night_price
         %td= item.stock
         %td= link_to item.category.name, item.category
+        %td
+          = link_to edit_item_path(item) do
+            %i.icon.edit

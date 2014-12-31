@@ -1,9 +1,10 @@
 %h2.ui.header.left.floated
   Turnos
 .ui.header.right.floated
-  = link_to new_shift_path, class: "ui button small teal" do
-    %i.icon.plus
-    Nuevo Turno
+  - unless @current_shift
+    = link_to new_shift_path, class: "ui button small teal" do
+      %i.icon.plus
+      Nuevo Turno
 
 .ui.clearing.divider
 
@@ -13,19 +14,17 @@
     %th Cierre
     %th Caja inicial
     %th Caja final
-    %th Tickets
     %th
   %tbody
     - @shifts.each do |shift|
       %tr
         %td= shift.open.strftime('%d/%m/%Y %H:%M %p')
-        %td= shift.close || '-----'
-        %td= number_to_currency shift.opening_cash
-        %td= number_to_currency shift.closing_cash
         %td= shift.close.nil? ? '-----' : shift.close.strftime('%d/%m/%Y %H:%M %p')
+        %td= number_to_currency shift.opening_cash.to_f
+        %td= number_to_currency (shift.closing_cash.to_f + shift.opening_cash.to_f)
         %td
-          .ui.label.blue= shift.tickets.size
-        %td
-          = link_to 'Detalles', shift, class: "ui button small"
+          = link_to shift, class: "ui button mini icon tooltip", data: { content: "Ver detalles", variation: "inverted"} do
+            %i.icon.search
           - if shift.is_open?
-            = link_to 'Cerrar', "shifts/#{shift.id}/close", method: :post, class: "ui button small red"
+            = link_to "shifts/#{shift.id}/close", method: :post, class: "tooltip ui button mini red icon", data: { content: "Cerrar", variation: "inverted"} do
+              %i.icon.lock

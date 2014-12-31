@@ -1,8 +1,15 @@
 = form_for @table, html: { class: "ui form" } do |f|
-  .field
-    = f.label "Numero"
-    = f.number_field :number
-
-  .actions
-    = f.submit 'Crear', class: "ui button blue"
-    = link_to "Cancelar", @table.new_record? ? tables_path : @table, class: "ui button"
+  - if @table.errors.any?
+    .ui.message.negative
+      %ul.list
+        - @table.errors.full_messages.each do |msg|
+          %li= msg
+    .ui.divider
+  .inline.fields
+    .field
+      = f.number_field :number, placeholder: "Numero de mesa"
+    .field
+      %button.ui.button.blue{type: "submit"}
+        Crear
+    .field
+      = link_to "Cancelar", @table.new_record? ? tables_path : @table, class: "ui button"

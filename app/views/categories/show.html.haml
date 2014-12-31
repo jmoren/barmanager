@@ -5,18 +5,26 @@
   = link_to "Agregar Item", new_item_path(category_id: @category), class: "ui button red small"
 .ui.divider.clearing
 
-%table.ui.table
-  %thead
-    %th Descripcion
-    %th Precio
-    %th Stock
-    %th Editar
-  %tbody
-    - @items.each do |item|
-      %tr
-        %td= item.description
-        %td= number_to_currency item.price
-        %td= item.stock
-        %td
-          = link_to edit_item_path(item) do
-            %i.icon.pencil
+- if @category.items.empty?
+  .ui.message
+    No hay items
+- else
+  %table.ui.table
+    %thead
+      %th Cod
+      %th Descripcion
+      %th Precio (dia)
+      %th Precio (noche)
+      %th Stock
+      %th
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td= item.code
+          %td= item.description
+          %td= number_to_currency item.day_price
+          %td= number_to_currency item.night_price
+          %td= item.stock
+          %td
+            = link_to edit_item_path(item) do
+              %i.icon.edit

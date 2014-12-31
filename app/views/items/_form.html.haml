@@ -1,11 +1,16 @@
-= form_for [@category,@item], html: { class: "ui form"} do |f|
+= form_for @item, html: { class: "ui form"} do |f|
+  - if @item.errors.any?
+    .ui.message.negative
+      %ul.list
+        - @item.errors.full_messages.each do |msg|
+          %li= msg
   .field
     = f.label :description, "Descripcion"
     = f.text_field :description, placeholder: "Nombre o descripcion"
   .four.fields
     .field
       = f.label :price, "Precio (dia)"
-      = f.text_field :price, placeholder: "Precio de dia"
+      = f.text_field :day_price, placeholder: "Precio de dia"
     .field
       = f.label :night_price, "Precio (noche)"
       = f.text_field :night_price, placeholder: "Precio de noche"

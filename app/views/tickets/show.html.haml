@@ -1,24 +1,33 @@
-%h2.ui.header
-  = "Number #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
+%h2.ui.header.left.floated
+  = "Ticket # #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
   .sub.header
-    Fecha
-    = @ticket.date.strftime('%d/%m/%Y')
-.ui.divider
+    = @ticket.created_at.strftime('%d/%m/%Y - %H:%M %p')
+.ui.header.right.floated
+  .ui.button{class: "#{@ticket.status == 'open' ? 'orange' : 'green'}"}
+    = @ticket.status == 'closed' ? 'Cerrado' : 'Abierto'
 
-.ui.button.blue.fluid
-  Total
-  = number_to_currency @ticket.total
+.ui.divider.clearing
 
 %table.ui.table
   %thead
+    %th Categoria
     %th Item
     %th Cantidad
+    %th SubTotal
   %tbody
     - @ticket.item_tickets.each do |it|
       %tr
+        %td= it.item.category.name
         %td= it.item.description
         %td= it.quantity
+        %td= number_to_currency it.sub_total
 
-= link_to tickets_path, class: "ui button orange" do
+.center
+  .ui.button.blue.fluid
+    TOTAL
+    %b= number_to_currency @ticket.total
+
+.ui.divider
+= link_to tickets_path, class: "ui button" do
   %i.icon.arrow.left
   Volver

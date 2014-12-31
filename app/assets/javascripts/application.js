@@ -20,6 +20,9 @@
 $(document).ready(function(){
   $('.dropdown').dropdown();
   $('.checkbox').checkbox();
+  $('.tooltip').popup({
+    position: "top center"
+  });
 
   $("input[name=code_number]").focus();
   $("input[name=code_number]").on("keyup", function(){

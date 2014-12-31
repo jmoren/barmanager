@@ -67,7 +67,7 @@ class TicketsController < ApplicationController
     else
       url = tickets_path
     end
-    
+
     @ticket.destroy
     respond_to do |format|
       format.html { redirect_to url }
@@ -83,6 +83,6 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:trend_id, :table_id, :date, :total, :payment, :number, :status)
+      params.require(:ticket).permit(:table_id, :date, :total, :payment, :number, :status)
     end
 end

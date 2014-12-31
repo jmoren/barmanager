@@ -14,10 +14,6 @@
         .ui.content
           = link_to category, class: "header" do
             = category.name
-          .meta
-            .date
-              Creada el
-              = l category.created_at, format: :short
         .extra.content
           %span
             %i.icon.cube

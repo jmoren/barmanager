@@ -1,11 +1,11 @@
 = form_for [ticket, ticket.item_tickets.new], html: { class: "form ui"} do |f|
   %h3.ui.header Agregar items
   .ui.grid
-    .three.wide.column
+    .four.wide.column
       .ui.left.icon.input
         %i.icon.search
         %input{type: "text", name: "code_number", placeholder: "Cod", focus: true, autocomplete: "off"}
-    .three.wide.column.field
+    .four.wide.column.field
       = f.number_field :quantity, placeholder: "Cant", min: "1"
     .eight.wide.column.field
       .ui.fluid.search.selection.dropdown.combo
@@ -16,9 +16,6 @@
           - Item.with_stock.each do |item|
             .item{ data: { value: item.id } }
               = item.description
-    .two.wide.column.field
-      %button.ui.icon.button
-        %i.icon.plus
 
   .error-msg.ui.red.message{style: "display:none"}
     No se encontro ningun item
