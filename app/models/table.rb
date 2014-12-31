@@ -1,8 +1,6 @@
 class Table < ActiveRecord::Base
   has_many :tickets
 
-  STATUS = ["open", "closed"]
-
   def open?
     self.status == "open"
   end

@@ -1,5 +1,11 @@
-%h1.ui.header Turnos
-.ui.divider
+%h2.ui.header.left.floated
+  Turnos
+.ui.header.right.floated
+  = link_to new_shift_path, class: "ui button small teal" do
+    %i.icon.plus
+    Nuevo Turno
+
+.ui.clearing.divider
 
 %table.table.ui
   %thead
@@ -7,19 +13,19 @@
     %th Cierre
     %th Caja inicial
     %th Caja final
+    %th Tickets
     %th
   %tbody
     - @shifts.each do |shift|
       %tr
-        %td= shift.open.strftime('%d/%m/%Y')
+        %td= shift.open.strftime('%d/%m/%Y %H:%M %p')
         %td= shift.close || '-----'
         %td= number_to_currency shift.opening_cash
         %td= number_to_currency shift.closing_cash
+        %td= shift.close.nil? ? '-----' : shift.close.strftime('%d/%m/%Y %H:%M %p')
+        %td
+          .ui.label.blue= shift.tickets.size
         %td
           = link_to 'Detalles', shift, class: "ui button small"
           - if shift.is_open?
             = link_to 'Cerrar', "shifts/#{shift.id}/close", method: :post, class: "ui button small red"
-
-%br
-
-= link_to 'New Shift', new_shift_path, class: "ui button blue"

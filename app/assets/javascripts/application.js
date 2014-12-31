@@ -19,6 +19,7 @@
 
 $(document).ready(function(){
   $('.dropdown').dropdown();
+  $('.checkbox').checkbox();
 
   $("input[name=code_number]").focus();
   $("input[name=code_number]").on("keyup", function(){

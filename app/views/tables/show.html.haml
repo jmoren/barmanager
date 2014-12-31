@@ -2,13 +2,18 @@
   = "Mesa Nro. #{@table.number}"
 .center
   -if @table.open? && @current_ticket
-    = link_to "#", class: "close-table ui labeled icon button teal", data: { id: @current_ticket.id } do
-      %i.icon.lock
-      Cerrar mesa
+    - if @current_ticket.item_tickets.empty?
+      = link_to ticket_path(@current_ticket, table_id: @table.id), method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button red" do
+        %i.icon.trash
+        Borrar Ticket
+    - else
+      = link_to "#", class: "close-table ui labeled icon button teal", data: { id: @current_ticket.id } do
+        %i.icon.lock
+        Cerrar Mesa
   - else
     = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
       %i.icon.unlock
-      Abrir mesa
+      Abrir Mesa
   = link_to tickets_path(table_id: @table.id), class: "ui button lebeled blue" do
     %i.icon.file
     Ver Tickets
