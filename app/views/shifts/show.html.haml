@@ -5,7 +5,13 @@
   = @shift.open
 %p
   %b Caja inicial:
-  = @shift.money
+  = @shift.opening_cash
+%p
+  %b Total vendido:
+  = @shift.closing_cash
+%p
+  %b Caja final:
+  = @shift.opening_cash + @shift.closing_cash
 %p
   %b Cierre:
   = @shift.close || "No dispobible"

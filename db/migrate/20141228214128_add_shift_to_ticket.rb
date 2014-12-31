@@ -1,5 +1,5 @@
 class AddShiftToTicket < ActiveRecord::Migration
   def change
-    add_reference :tickets, :Shift, index: true
+    add_reference :tickets, :shift, index: true
   end
 end

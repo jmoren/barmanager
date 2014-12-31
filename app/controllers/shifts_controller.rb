@@ -23,8 +23,9 @@ class ShiftsController < ApplicationController
 
   def close
     open_tables = Table.where(status: :open).count
-
     @shift = Shift.find(params['id'])
+    @total_shift = Ticket.where(shift_id: @shift.id).sum(:total)
+    @shift.closing_cash = @total_shift
     @shift.close = DateTime.now
 
     respond_to do |format|
@@ -87,6 +88,6 @@ class ShiftsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def shift_params
-      params.require(:shift).permit(:open, :close, :money)
+      params.require(:shift).permit(:open, :close, :opening_cash, :closing_cash)
     end
 end

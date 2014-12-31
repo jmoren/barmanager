@@ -69,8 +69,15 @@ class TablesController < ApplicationController
   end
 
   def open
-    @table.open! unless @table.status == "open"
-    redirect_to @table
+    if (Shift.last.is_open?)
+      @table.open! unless @table.status == "open"
+      redirect_to @table
+    else
+      respond_to do |format|
+        format.html { redirect_to tables_path }
+        format.json { head :no_content }
+      end
+    end
   end
 
   private

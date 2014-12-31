@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141229172007) do
+ActiveRecord::Schema.define(version: 20141231143449) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -51,7 +51,8 @@ ActiveRecord::Schema.define(version: 20141229172007) do
     t.datetime "close"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "money"
+    t.float    "closing_cash"
+    t.float    "opening_cash"
   end
 
   create_table "tables", force: true do |t|
@@ -71,9 +72,9 @@ ActiveRecord::Schema.define(version: 20141229172007) do
     t.datetime "updated_at"
     t.string   "status"
     t.integer  "number"
-    t.integer  "Shift_id"
+    t.integer  "shift_id"
   end
 
-  add_index "tickets", ["Shift_id"], name: "index_tickets_on_Shift_id"
+  add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id"
 
 end
