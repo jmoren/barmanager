@@ -1,4 +1,5 @@
 class Ticket < ActiveRecord::Base
+  
   belongs_to :shift
   paginates_per 5
 

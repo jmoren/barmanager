@@ -1,16 +1,8 @@
-= form_for @table do |f|
-  - if @table.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@table.errors.count, "error")} prohibited this table from being saved:"
-      %ul
-        - @table.errors.full_messages.each do |msg|
-          %li= msg
-
+= form_for @table, html: { class: "ui form" } do |f|
   .field
     = f.label "Numero"
     = f.number_field :number
-  .field
-    = f.label "Estado"
-    = f.select :status, Table::STATUS
+
   .actions
-    = f.submit 'Crear'
+    = f.submit 'Crear', class: "ui button blue"
+    = link_to "Cancelar", @table.new_record? ? tables_path : @table, class: "ui button"

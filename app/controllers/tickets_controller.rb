@@ -67,6 +67,7 @@ class TicketsController < ApplicationController
     else
       url = tickets_path
     end
+    
     @ticket.destroy
     respond_to do |format|
       format.html { redirect_to url }

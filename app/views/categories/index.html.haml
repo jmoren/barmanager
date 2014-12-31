@@ -1,7 +1,9 @@
 %h2.ui.header.left.floated
   Categorias
 .ui.header.right.floated
-  = link_to "Agregar Categoria", new_category_path, class: "ui button small teal"
+  = link_to new_category_path, class: "ui button small teal" do
+    %i.icon.plus
+    Agregar Categoria
 
 .ui.divider.clearing
 

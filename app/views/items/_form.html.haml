@@ -1,17 +1,20 @@
 = form_for [@category,@item], html: { class: "ui form"} do |f|
   .field
     = f.label :description, "Descripcion"
-    = f.text_field :description
-  .three.fields
+    = f.text_field :description, placeholder: "Nombre o descripcion"
+  .four.fields
     .field
-      = f.label :price, "Precio"
-      = f.text_field :price
+      = f.label :price, "Precio (dia)"
+      = f.text_field :price, placeholder: "Precio de dia"
+    .field
+      = f.label :night_price, "Precio (noche)"
+      = f.text_field :night_price, placeholder: "Precio de noche"
     .field
       = f.label :stock
-      = f.number_field :stock
+      = f.number_field :stock, placeholder: "Cantidad"
     .field
-      = f.label :code
-      = f.number_field :code
+      = f.label :code, "Codigo"
+      = f.number_field :code, placeholder: "Codigo acceso"
   .field
     = f.label :category_id, "Categoria"
     .ui.fluid.search.selection.dropdown.combo
@@ -39,6 +42,28 @@
       },
       price: {
         identifier: 'item_price',
+        rules: [
+          {
+            type   : 'empty'
+          },
+          {
+            type: 'not[0]'
+          }
+        ]
+      },
+      night_price: {
+        identifier: 'item_night_price',
+        rules: [
+          {
+            type   : 'empty'
+          },
+          {
+            type: 'not[0]'
+          }
+        ]
+      },
+      code: {
+        identifier: 'item_code',
         rules: [
           {
             type   : 'empty'
