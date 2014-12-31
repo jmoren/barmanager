@@ -3,7 +3,7 @@ BarManager::Application.routes.draw do
 
   resources :shifts do
     member do
-      post :close
+      put :close
     end
   end
 

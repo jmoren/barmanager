@@ -10,6 +10,15 @@ class ShiftsController < ApplicationController
   # GET /shifts/1
   # GET /shifts/1.json
   def show
+    @partial = @shift.tickets.sum(:total) if @shift.is_open?
+    item_tickets = ItemTicket.where(ticket_id: @shift.tickets.map(&:id))
+    @by_items = {}
+    item_tickets.each do |it|
+      item = it.item
+      @by_items[item.description] = { total: 0, subtotal: 0 } if @by_items[item.description].nil?
+      @by_items[item.description][:total]    += it.quantity
+      @by_items[item.description][:subtotal] += it.sub_total
+    end
   end
 
   # GET /shifts/new
@@ -22,18 +31,17 @@ class ShiftsController < ApplicationController
   end
 
   def close
-    open_tables = Table.where(status: :open).count
     @shift = Shift.find(params['id'])
     @total_shift = Ticket.where(shift_id: @shift.id).sum(:total)
     @shift.closing_cash = @total_shift
     @shift.close = DateTime.now
 
     respond_to do |format|
-      if (open_tables == 0) && (@shift.save)
+      if !@shift.has_open_tables? && @shift.save
         format.html { redirect_to @shift, notice: 'Turno cerrado con exito' }
         format.json { render action: 'show', status: :created, location: @shift }
       else
-        format.html { render action: 'index' }
+        format.html { render action: 'show' }
         format.json { render json: @shift.errors, status: "No se pudo cerrar el turno. Verifique que no haya mesas abiertas." }
       end
     end

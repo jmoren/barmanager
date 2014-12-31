@@ -1,4 +1,4 @@
-- if !@last_shift.nil? && @last_shift.is_open?
+- if @current_shift
   .ui.message.icon.warning
     %i.icon.food
     .content
@@ -16,4 +16,3 @@
         Una vez que hayas abierto el turno podra comenzar a administrar las mesas.
 
         = link_to "Abrir turno", "shifts/new"
-

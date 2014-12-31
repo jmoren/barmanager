@@ -10,6 +10,6 @@ class ApplicationController < ActionController::Base
   end
 
   def current_shift
-    @current_shift ||= Shift.last_open
+    @current_shift = Shift.last_open
   end
 end

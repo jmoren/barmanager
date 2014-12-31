@@ -9,7 +9,14 @@ class Shift < ActiveRecord::Base
     self.close.nil?
   end
 
+  def has_open_tables?
+    Table.where(status: :open).count > 0
+  end
   def self.last_open
-    return Shift.last if Shift.last && Shift.last.is_open?
+    if Shift.last && Shift.last.is_open?
+      Shift.last
+    else
+      nil
+    end
   end
 end

@@ -25,6 +25,6 @@
         %td
           = link_to shift, class: "ui button mini icon tooltip", data: { content: "Ver detalles", variation: "inverted"} do
             %i.icon.search
-          - if shift.is_open?
-            = link_to "shifts/#{shift.id}/close", method: :post, class: "tooltip ui button mini red icon", data: { content: "Cerrar", variation: "inverted"} do
+          - if shift.is_open? && !shift.has_open_tables?
+            = link_to close_shift_path(shift), method: :put, class: "tooltip ui button mini red icon", data: { content: "Cerrar", variation: "inverted"} do
               %i.icon.lock

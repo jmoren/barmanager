@@ -5,6 +5,7 @@ class TicketsController < ApplicationController
   # GET /tickets.json
   def index
     if params[:table_id]
+      @table   = Table.find(params[:table_id])
       @tickets = Ticket.where(table_id: params[:table_id]).page params[:page]
     else
       @tickets = Ticket.all.page params[:page]
