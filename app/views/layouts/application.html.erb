@@ -43,6 +43,15 @@
         <i class="icon feed"></i>
         Estadisticas
       <% end %>
+      <% if @current_shift %>
+        <div class="right menu">
+          <div class="item">
+            <%= link_to @current_shift, class: "ui button green" do %>
+              <i class="icon idea"></i> Turno Actual
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="main container">

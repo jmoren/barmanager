@@ -1,15 +1,20 @@
 %h2.ui.header.left.floated
+  %i.icon.remove.bookmark{style: "font-size:25px"}
   = @shift.open.strftime('%d/%m/%Y - %H:%M %p')
 .ui.header.right.floated
   - if @current_shift && @current_shift.id == @shift.id
-    .ui.button.green
+    .ui.button.blue
       Abrierto
     - unless @shift.has_open_tables?
-      = link_to close_shift_path(@shift), method: :put, class: "ui button red" do
+      = link_to close_shift_path(@shift), method: :put, class: "ui button orange" do
         %i.icon.lock
         Cerrar
 
 .ui.divider.clearing
+
+.ui.message.center{class: @partial.nil? ? 'positive' : 'negative'}
+  %b= number_to_currency (@shift.closing_cash || @partial).to_f
+  = "#{@partial.nil? ? '- TOTAL VENDIDO' : '- PARCIAL'}"
 
 %table.ui.table
   %tbody
@@ -22,11 +27,6 @@
     %tr
       %td Caja final:
       %td= number_to_currency (@shift.opening_cash.to_f + @shift.closing_cash.to_f)
-%table.ui.table
-  %tbody
-    %tr{class: @partial.nil? ? 'positive' : 'negative'}
-      %td= "Total vendido #{@partial.nil? ? '' : '(parcial)'}:"
-      %td= number_to_currency (@shift.closing_cash || @partial).to_f
 
 %h2.ui.divider.header.horizontal
   Tickets
@@ -58,7 +58,7 @@
             .value
               = value[:total]
             .label.center
-              .ui.label
+              .ui.label.blue
                 = "#{key} - #{number_to_currency value[:subtotal]}"
 .center
   .ui.divider

@@ -17,7 +17,7 @@
     %th
   %tbody
     - @shifts.each do |shift|
-      %tr
+      %tr{class: shift.id == @current_shift.try(:id) ? 'positive' : ''}
         %td= shift.open.strftime('%d/%m/%Y %H:%M %p')
         %td= shift.close.nil? ? '-----' : shift.close.strftime('%d/%m/%Y %H:%M %p')
         %td= number_to_currency shift.opening_cash.to_f
