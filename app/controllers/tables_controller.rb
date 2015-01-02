@@ -14,7 +14,6 @@ class TablesController < ApplicationController
     @current_table_id = @table.id
     if !params[:ticket] && !@table.tickets.empty? && @table.tickets.last.try(:status) == 'open'
       @current_ticket = @table.tickets.last
-      @item_ticket = @current_ticket.item_tickets.new
     else
       @current_ticket = nil
     end

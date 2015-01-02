@@ -9,7 +9,10 @@
   = @item.stock
 %p
   %b Categoria:
-  = link_to @item.category.name, @item.category
+  - if @item.category
+    = link_to @item.category.name, @item.category
+  - else
+    Sin categoria
 
 %p
   %b Codigo:

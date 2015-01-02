@@ -1,9 +1,11 @@
-= link_to statistics_path do
-  %h2.ui.header
-    %i.icon.signal
-    Estadisticas
+%h2.ui.header.left.floated
+  %i.icon.signal
+  Estadisticas
+- if params[:date]
+  .ui.header.right.floated
+    = link_to "Ver todas", statistics_path, class: "ui button teal"
 
-.ui.divider
+.ui.divider.clearing
 
 = form_tag statistics_path, method: :get, class: "ui form" do
   .ui.left.icon.input

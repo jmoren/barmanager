@@ -9,7 +9,7 @@
     .field
       = f.number_field :number, placeholder: "Numero de mesa"
     .field
-      %button.ui.button.blue{type: "submit"}
+      %button.ui.button.green{type: "submit"}
         Crear
     .field
       = link_to "Cancelar", @table.new_record? ? tables_path : @table, class: "ui button"

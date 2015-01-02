@@ -1,7 +1,7 @@
 %h2.ui.header.left.floated
   Categorias
 .ui.header.right.floated
-  = link_to new_category_path, class: "ui button small teal" do
+  = link_to new_category_path, class: "ui button teal" do
     %i.icon.plus
     Agregar Categoria
 
@@ -13,11 +13,15 @@
       .ui.card.fluid
         .ui.content
           = link_to category, class: "header" do
+            %i.icon.angle.right
             = category.name
         .extra.content
-          %span
+          .ui.label
             %i.icon.cube
             = category.items.size
             Items
-          = link_to category, method: :delete, class: "right floated" do
-            %i.icon.trash
+          .right.floated{style: "margin-top: 5px"}
+            = link_to category, method: :delete do
+              %i.icon.trash
+            = link_to edit_category_path(category) do
+              %i.icon.edit

@@ -32,9 +32,9 @@
             = category.name
   .ui.divider
   .field
-    %button.ui.button.small.green{type: "submit"}
+    %button.ui.button.green{type: "submit"}
       Guardar
-    = link_to 'Cancelar', @item.new_record? ? items_path : @item, class: "ui button small"
+    = link_to 'Cancelar', @item.new_record? ? items_path : @item, class: "ui button"
 
 :javascript
   $(document).ready(function(){
