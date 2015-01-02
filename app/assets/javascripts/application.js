@@ -25,25 +25,6 @@ $(document).ready(function(){
   });
 
   $("input[name=code_number]").focus();
-  $("input[name=code_number]").on("keyup", function(){
-    val = $(this).val();
-    if(val.length > 1){
-      $.ajax({
-        url: "/items?code=" + val,
-        method: "GET",
-        success: function(res){
-          if(res.id){
-            $(".combo.dropdown").dropdown("set selected", res.id);
-            $("#item_ticket_item_id").val(res.id);
-            $(".error-msg").hide();
-            $(".ui.form").form("validate form");
-          }else
-            $(".error-msg").show();
-            $(".ui.form").form("validate form");
-        }
-      })
-    }
-  });
 
   $('.datepicker').pickadate();
 

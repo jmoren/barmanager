@@ -1,4 +1,4 @@
-= form_for [ticket, ticket.item_tickets.new], html: { class: "form ui"} do |f|
+= form_for [ticket, @item_ticket], html: { class: "form ui"} do |f|
   %h3.ui.header Agregar items
   .ui.grid
     .four.wide.column
@@ -17,28 +17,66 @@
             .item{ data: { value: item.id } }
               = item.description
 
-  .error-msg.ui.red.message{style: "display:none"}
+  .ui.red.message.item-code{style: "display:none"}
     No se encontro ningun item
+  .ui.red.message.stock{style: "display:none"}
+    El stock no es suficiente
 
 :javascript
   $(document).ready(function(){
+    function getFieldValue(fieldId) {
+      return $('.ui.form').form('get field', fieldId).val();
+    }
+
+    function submitForm(e){
+      e.preventDefault();
+      url  = $(".ui.form").attr("action");
+      qty  = getFieldValue('item_ticket_quantity');
+      max = parseInt($("#item_ticket_quantity").attr("max"));
+      if(qty <= max){
+        formData = { item_ticket: { quantity: qty,item_id: getFieldValue('item_ticket_item_id') } };
+        $.ajax({ type: 'POST', dataType: "HTML", url: url, data: formData, success: function(){
+            location.reload();
+          }
+        });
+      } else{
+        $(".stock").show();
+      }
+    };
+
+    $("input[name=code_number]").on("keyup", function(){
+      val = $(this).val();
+      $(".stock").hide();
+      if(val.length > 1){
+        $.ajax({
+          url: "/items?code=" + val,
+          dataType: "JSON",
+          method: "GET",
+          success: function(res){
+            if(res.id !== null){
+              $(".combo.dropdown").dropdown("set selected", res.id);
+              $("#item_ticket_item_id").val(res.id);
+              $("#item_ticket_quantity").attr("max", res.stock);
+              $(".item-code").hide();
+            }else{
+              $(".item-code").show();
+              $("#item_ticket_quantity").removeAttr("max");
+            }
+          }
+        })
+      }
+    });
+
     $('.ui.form').form({
       item_id: {
-        identifier: 'item_ticket[item_id]',
-        rules: [{
-          type   : 'empty'
-        }]
+        identifier: 'item_ticket_item_id',
+        rules: [{ type   : 'empty' }]
       },
       quantity: {
-        identifier: 'item_ticket[quantity]',
-        rules: [
-          {
-            type   : 'empty'
-          },
-          {
-            type: 'not[0]'
-          }
-        ]
+        identifier: 'item_ticket_quantity',
+        rules: [{ type   : 'empty' }, { type: 'not[0]' }]
       }
+    },{
+      onSuccess: submitForm
     })
   })

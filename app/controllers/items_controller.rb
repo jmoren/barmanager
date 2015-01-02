@@ -6,7 +6,7 @@ class ItemsController < ApplicationController
   def index
     if params[:code]
       @item = Item.where("code = ? AND stock > 0", params[:code]).first
-      render json: { id: @item.try(:id) }
+      render json: { id: @item.try(:id), stock: @item.try(:stock) }
     else
       @items = Item.all
     end
