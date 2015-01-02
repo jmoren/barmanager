@@ -22,7 +22,7 @@ class TablesController < ApplicationController
 
   # GET /tables/new
   def new
-    @table = Table.new
+    @table = Table.new(number: Table.maximum(:number) + 1)
   end
 
   # GET /tables/1/edit
