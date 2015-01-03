@@ -6,11 +6,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-5.times do |i|
-  Table.create( number: i, status: 'closed')
+15.times do |i|
+  Table.create( number: i + 1, status: 'closed')
 end
 
-Category.create(name: "Categoria 1")
+Category.create([
+  {name: "Wiskys"}, {name: "Licores Cusenier"}, {name: "Cafeteria"},
+  {name: "Sandwichs"}, {name: "Cervezas"}, {name: "Pizzas"}, {name: "Postres"},
+  {name: "Gaseosas"}, {name: "Vinos"}, {name: "Minutas"}, {name: "Picadas"},
+  {name: "Aperitivos"}])
+
 
 5.times do |i|
   Item.create(description: "Coca#{i}", day_price: 10 * i + 1, night_price: 10 * i + 10, stock: i + 10, category_id: 1, code: i + 10)
