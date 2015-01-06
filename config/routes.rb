@@ -21,8 +21,9 @@ BarManager::Application.routes.draw do
   end
 
   resources :tickets do
+    patch :move_to, on: :member, as: :change
     resources :item_tickets
   end
 
-  root to: "tables#index"
+  root to: "home#index"
 end

@@ -6,6 +6,13 @@ class TablesController < ApplicationController
   def index
     @last_shift = Shift.last
     @tables = Table.all
+    if request.xhr?
+      if params[:ticket_id]
+        @ticket = Ticket.find(params[:ticket_id])
+        @tables = Table.where(status: "closed")
+        render 'index', layout: false
+      end
+    end
   end
 
   # GET /tables/1
@@ -63,7 +70,7 @@ class TablesController < ApplicationController
   def destroy
     @table.destroy
     respond_to do |format|
-      format.html { redirect_to tables_url }
+      format.html { redirect_to root_path }
       format.json { head :no_content }
     end
   end
@@ -74,7 +81,7 @@ class TablesController < ApplicationController
       redirect_to @table
     else
       respond_to do |format|
-        format.html { redirect_to tables_path }
+        format.html { redirect_to root_path }
         format.json { head :no_content }
       end
     end
@@ -88,6 +95,6 @@ class TablesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def table_params
-      params.require(:table).permit(:number)
+      params.require(:table).permit(:number, :description)
     end
 end

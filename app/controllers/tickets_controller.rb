@@ -76,6 +76,26 @@ class TicketsController < ApplicationController
     end
   end
 
+  def move_to
+    @ticket = Ticket.find(params[:id])
+    new_table = params[:new_table]
+    @table = Table.find(params[:ticket][:table_id])
+
+    if @table.open?
+      msg = "La mesa ya esta abierta con un ticket"
+    else
+      old_table = @ticket.table
+      @ticket.update(table_id: @table.id)
+      @table.open!(@ticket)
+      old_table.close!
+
+      msg = "Se movio el ticket a la mesa #{@table.number}"
+    end
+
+    flash[:notice] = msg
+    redirect_to @ticket.table
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket

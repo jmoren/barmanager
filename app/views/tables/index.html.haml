@@ -1,18 +1,27 @@
-- if @current_shift
-  .ui.message.icon.warning
-    %i.icon.food
-    .content
-      .header
-        Abra cualquier mesa del menu
-      %p
-        Con la mesa abierta, podras administrar el ticket hasta cerrar la venta.
-- else
-  .ui.message.icon.warning
-    %i.icon.food
-    .content
-      .header
-        Para comenzar debes abrir un turno
-      %p
-        Una vez que hayas abierto el turno podra comenzar a administrar las mesas.
+%i.close.icon
+.header
+  %h2.ui.header
+    = "Ticket Numero ##{@ticket.number} - Cambiar Mesa"
 
-        = link_to "Abrir turno", "shifts/new"
+
+.content
+  = form_for @ticket, url: change_ticket_path(@ticket), method: :patch, html: { class: "ui form"} do |f|
+    .ui.grid
+      .six.wide.column.field
+        .ui.message.small
+          = "Mover Mesa a la"
+      .ten.wide.column.field
+        .ui.search.selection.dropdown.large
+          = f.hidden_field :table_id
+          %i.dropdown.icon
+          .default.text Seleccionar
+          .menu
+            - @tables.each do |table|
+              .item{ data: {value: table.id}}
+                = "mesa ##{table.number}"
+        .ui.divider
+        .field
+          = f.submit "Mover", class: "ui button blue"
+          .ui.button.close Cancelar
+  %script
+    $('.dropdown').dropdown({transition: 'drop'});

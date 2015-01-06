@@ -7,6 +7,8 @@
     .ui.divider
   .inline.fields
     .field
+      = f.text_field :description, placeholder: "Agrega una descripcion"
+    .field
       = f.number_field :number, placeholder: "Numero de mesa"
     .field
       %button.ui.button.green{type: "submit"}

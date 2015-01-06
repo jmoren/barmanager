@@ -20,13 +20,13 @@
 $(document).ready(function(){
   $('.dropdown').dropdown();
   $('.checkbox').checkbox();
+  $('.datepicker').pickadate();
+
   $('.tooltip').popup({
     position: "top center"
   });
 
   $("input[name=code_number]").focus();
-
-  $('.datepicker').pickadate();
 
   $(".close-table").on("click", function(e){
     e.preventDefault();
@@ -46,5 +46,19 @@ $(document).ready(function(){
         }).modal('show')
       }
     })
-  })
+  });
+
+  $(".change-table").on("click", function(e){
+    e.preventDefault();
+    id = $(this).data("id");
+    $.ajax({
+      url: "/tables?ticket_id="+ id,
+      type: "GET",
+      dataType: "html",
+      success: function(data){
+        $("#modal-table").html(data).modal().modal('show');
+      }
+    })
+  });
+
 });

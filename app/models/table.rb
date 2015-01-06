@@ -9,15 +9,16 @@ class Table < ActiveRecord::Base
     self.status == "open"
   end
 
-  def open!
+  def open!(old_ticket=nil)
     self.update(status: "open")
-    ticket = self.tickets.new
-    ticket.date     = Time.now
-    ticket.total    = 0
-    ticket.status   = "open"
-    ticket.shift    = Shift.last
-
-    ticket.save
+    ticket          = old_ticket || self.tickets.new
+    if old_ticket.nil?
+      ticket.date     = Time.now
+      ticket.total    = 0
+      ticket.status   = "open"
+      ticket.shift    = Shift.last
+      ticket.save
+    end
   end
 
   def close!

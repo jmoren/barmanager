@@ -1,65 +1,89 @@
-%h1.ui.header.center
-  = "Mesa Nro. #{@table.number}"
-.center
-  -if @table.open? && @current_ticket
-    - if @current_ticket.item_tickets.empty?
-      = link_to ticket_path(@current_ticket, table_id: @table.id), method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button red" do
-        %i.icon.trash
-        Borrar Ticket
-    - else
-      = link_to "#", class: "close-table ui labeled icon button teal", data: { id: @current_ticket.id } do
-        %i.icon.lock
-        Cerrar Mesa
+- if @current_shift
+  - if @table.nil?
+    .ui.message.icon.warning
+      %i.icon.food
+      .content
+        .header
+          Abra cualquier mesa del menu
+        %p
+          Con la mesa abierta, podras administrar el ticket hasta cerrar la venta.
   - else
-    = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
-      %i.icon.unlock
-      Abrir Mesa
-  = link_to tickets_path(table_id: @table.id), class: "ui button lebeled blue" do
-    %i.icon.file
-    Ver Tickets
+    %h1.ui.header.center
+      = "Mesa Nro. #{@table.number}"
+    .center
+      -if @table.open? && @current_ticket
+        - if @current_ticket.item_tickets.empty?
+          = link_to ticket_path(@current_ticket, table_id: @table.id), method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button red" do
+            %i.icon.trash
+            Borrar Ticket
+        - else
+          = link_to "#", class: "close-table ui labeled icon button teal", data: { id: @current_ticket.id } do
+            %i.icon.lock
+            Cerrar Mesa
+        = link_to "#", class: "change-table ui labeled icon button", data: { id: @current_ticket.id } do
+          %i.icon.refresh
+          Cambiar Mesa
+      - else
+        = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
+          %i.icon.unlock
+          Abrir Mesa
+      = link_to tickets_path(table_id: @table.id), class: "ui button lebeled blue" do
+        %i.icon.file
+        Ver Tickets
 
-- if @current_ticket
-  - if @current_ticket.open?
-    .ui.segment
-      = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
+    - if @current_ticket
+      - if @current_ticket.open?
+        .ui.segment
+          = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
 
 
-  .ui.label.orange
-    %i.icon.tag
-    = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
+      .ui.label.orange
+        %i.icon.tag
+        = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
 
-  .ui.divider
-  %table.table.ui
-    %thead
-      %th
-      %th Item
-      %th Cantidad
-      %th Precio
-      %th Sub Total
-    %tbody
-      - @current_ticket.item_tickets.each do |entry|
-        - unless entry.new_record?
+      .ui.divider
+      %table.table.ui
+        %thead
+          %th
+          %th Item
+          %th Cantidad
+          %th Precio
+          %th Sub Total
+        %tbody
+          - @current_ticket.item_tickets.each do |entry|
+            - unless entry.new_record?
+              %tr
+                %td
+                  - if @table.open?
+                    = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete do
+                      %i.icon.remove.red
+                %td= entry.item.description
+                %td= entry.quantity
+                %td= number_to_currency entry.item.price
+                %td= number_to_currency entry.sub_total
+        %tfoot
           %tr
+            %td{colspan: 4}
             %td
-              - if @table.open?
-                = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete do
-                  %i.icon.remove.red
-            %td= entry.item.description
-            %td= entry.quantity
-            %td= number_to_currency entry.item.price
-            %td.center= number_to_currency entry.sub_total
-    %tfoot
-      %tr
-        %td{colspan: 4}
-        %td
-          .ui.label.blue{style: "font-size: 16px"}
-            = number_to_currency @current_ticket.total
+              .ui.label.blue.fluid.center{style: "font-size: 16px"}
+                = number_to_currency @current_ticket.total
 
-    -unless @current_ticket.open?
-      .left{style: "margin-top: 10px"}
-        %i.icon.payment
-        Pagamento:
-        %b= Ticket::PAYMENT_TYPE[@current_ticket.payment-1][1]
+        -unless @current_ticket.open?
+          .left{style: "margin-top: 10px"}
+            %i.icon.payment
+            Pagamento:
+            %b= Ticket::PAYMENT_TYPE[@current_ticket.payment-1][1]
 
 
-#modal-ticket.ui.modal
+    #modal-ticket.ui.modal
+    #modal-table.ui.modal.small
+- else
+  .ui.message.icon.warning
+    %i.icon.food
+    .content
+      .header
+        Para comenzar debes abrir un turno
+      %p
+        Una vez que hayas abierto el turno podra comenzar a administrar las mesas.
+
+        = link_to "Abrir turno", "shifts/new"
