@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106001006) do
+ActiveRecord::Schema.define(version: 20150106001007) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -47,6 +47,31 @@ ActiveRecord::Schema.define(version: 20150106001006) do
     t.string   "phone"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "promotion_items", force: true do |t|
+    t.integer  "item_id"
+    t.integer  "promotion_id"
+    t.integer  "quantity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "promotion_tickets", force: true do |t|
+    t.integer  "ticket_id"
+    t.integer  "promotion_id"
+    t.integer  "quantity"
+    t.float    "subtotal"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "promotions", force: true do |t|
+    t.string   "description"
+    t.float    "day_price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "night_price"
   end
 
   create_table "shifts", force: true do |t|

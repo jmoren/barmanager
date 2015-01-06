@@ -1,5 +1,8 @@
 BarManager::Application.routes.draw do
 
+  resources :promotions do
+    resources :promotion_items
+  end
 
   resources :shifts do
     member do

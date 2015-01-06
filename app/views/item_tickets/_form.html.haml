@@ -16,6 +16,9 @@
           - Item.with_stock.each do |item|
             .item{ data: { value: item.id, code: item.code, stock: item.stock } }
               = item.description
+          - Promotion.all.each do |promo|
+            .item{ data: { value: promo.id, code: promo.id, stock: promo.id } }
+              = promo.description
 
   .ui.red.message.item-code{style: "display:none"}
     No se encontro ningun item

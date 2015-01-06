@@ -21,6 +21,14 @@
       </div>
       <div class="ui pointing dropdown item">
         <i class="dropdown icon"></i>
+        Promos
+        <div class="menu">
+          <%= link_to "Nueva Promo", new_promotion_path, class: "item" %>
+          <%= link_to "Promociones", promotions_path, class: "item" %>
+        </div>
+      </div>
+      <div class="ui pointing dropdown item">
+        <i class="dropdown icon"></i>
         Categorias
         <div class="menu">
           <%= link_to "Nueva Categoria", new_category_path, class: "item"%>

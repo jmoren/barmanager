@@ -1,0 +1,36 @@
+%p#notice= notice
+
+= form_for [@promotion, @promotion.promotion_items.new], html: { class: "form ui"}  do |f|
+
+  .four.fields
+    .field
+      = f.hidden_field :prmotion_id, value: @promotion.id
+      = f.label :items
+      .ui.fluid.search.selection.dropdown.combo
+        = f.hidden_field :item_id
+        %i.dropdown.icon
+        .default.text Seleccione Item
+        .menu
+          - Item.with_stock.each do |item|
+            .item{ data: { value: item.id, code: item.code, stock: item.stock } }
+              = item.description
+    .field
+      = f.label :quantity
+      = f.text_field :quantity
+    .field
+      = f.label "-"
+      %button.ui.button.green{type: "submit"}
+        Agregar item
+
+%table.ui.table
+  %thead
+    %th item
+    %th Cantidad
+  %tbody
+    - @promotion.promotion_items.each do |pri|
+      - unless pri.new_record?
+        %tr
+          %td= pri.item.description
+          %td= pri.quantity
+
+= link_to 'Volver', promotions_path

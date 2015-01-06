@@ -9,11 +9,12 @@ class Ticket < ActiveRecord::Base
   belongs_to :table
   belongs_to :shift
   has_many :item_tickets
+  has_many :promotion_tickets
 
   validates :table_id, :shift_id, :date, :status, :total, presence: true
   validates :total, numericality: true
   validates :status, inclusion: ['open', 'closed']
-  
+
   before_create :set_serial_number
 
   def formatted_number

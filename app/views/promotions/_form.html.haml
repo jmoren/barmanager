@@ -1,0 +1,23 @@
+= form_for @promotion, html: { class: "ui form"} do |f|
+  - if @promotion.errors.any?
+    #error_explanation
+      %ul
+        - @promotion.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :description, "Descripcion"
+    = f.text_field :description, placeholder: "Nombre o descripcion"
+
+  .field
+    = f.label :day_price, "Precio Dia"
+    = f.text_field :day_price, placeholder: "Precio de la promo (dia)"
+
+  .field
+    = f.label :night_price, "Precio Noche"
+    = f.text_field :night_price, placeholder: "Precio de la promo (noche)"
+
+  .field
+    %button.ui.button.green{type: "submit"}
+      Guardar
+    = link_to 'Cancelar', @promotion.new_record? ? promotions_path : @promotion, class: "ui button"
