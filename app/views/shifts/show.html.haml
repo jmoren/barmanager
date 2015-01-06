@@ -12,21 +12,50 @@
 
 .ui.divider.clearing
 
-.ui.message.center{class: @partial.nil? ? 'positive' : 'negative'}
-  %b= number_to_currency (@shift.closing_cash || @partial).to_f
-  = "#{@partial.nil? ? '- TOTAL VENDIDO' : '- PARCIAL'}"
+.ui.message.center{class: @shift.is_open? ? 'negative' : 'positive'}
+  %div
+    %b= number_to_currency @total_tickets
+  %small
+    - if @shift.is_open?
+      PARCIAL VENTAS
+    - else
+      TOTAL VENDIDO
 
 %table.ui.table
   %tbody
     %tr
       %td Cierre:
-      %td= @shift.close.nil? ? "No dispobible" : @shift.close.strftime('%d/%m/%Y - %H:%M %p')
+      %td= @shift.close.nil? ? "No dispobible" : "#{l @shift.close, format: '%d/%m/%Y - %H:%M %p'}"
     %tr
       %td Caja inicial:
       %td= number_to_currency @shift.opening_cash.to_f
     %tr
+      %td Gastos
+      %td= number_to_currency @total_expenses
+    %tr
       %td Caja final:
-      %td= number_to_currency (@shift.opening_cash.to_f + @shift.closing_cash.to_f)
+      %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses)
+
+%h2.ui.divider.header.horizontal
+  Gastos
+- if @shift.is_open?
+  = render partial: '/expenses/form'
+
+%table.ui.table
+  %thead
+    %th{style: "width:65%"} Descripcion
+    %th.center.aligned Monto
+  %tbody
+    - @shift.expenses.each do |expense|
+      - unless expense.new_record?
+        %tr
+          %td= expense.description
+          %td.center.aligned= number_to_currency expense.amount
+    %tr
+      %td
+      %td.center.aligned
+        .ui.button
+          = "-#{number_to_currency @total_expenses}"
 
 %h2.ui.divider.header.horizontal
   Tickets
@@ -36,17 +65,22 @@
 - else
   %table.ui.table
     %thead
-      %th Num
-      %th Mesa
-      %th Total
-      %th Estado
+      %th{style: "width:15%"} Num
+      %th{style: "width:30%"} Mesa
+      %th{style: "width:20%"} Estado
+      %th.center.aligned Total
     %tbody
       - @shift.tickets.each do |ticket|
         %tr
           %td= ticket.formatted_number
           %td= "Mesa ##{ticket.table.number}"
-          %td= number_to_currency ticket.total
           %td= ticket.status == 'closed' ? '<i class="icon lock"></i> Cerrado'.html_safe : '<i class="icon unlock"></i> Abierto'.html_safe
+          %td.center.aligned= number_to_currency ticket.total
+      %tr
+        %td{colspan: 3}
+        %td.center.aligned
+          .ui.button
+            = number_to_currency @total_tickets
 
 - unless @by_items.empty?
   .ui.grid.statistics
@@ -58,8 +92,7 @@
             .value
               = value[:total]
             .label.center
-              .ui.label.blue
-                = "#{key} - #{number_to_currency value[:subtotal]}"
+              = "Total #{key} - #{number_to_currency value[:subtotal]}"
 .center
   .ui.divider
   = link_to shifts_path, class: "ui button" do

@@ -21,5 +21,6 @@ module BarManager
     config.action_view.field_error_proc = Proc.new { |html_tag, instance|
       html_tag
     }
+    config.time_zone = "America/Argentina/Buenos_Aires"
   end
 end
