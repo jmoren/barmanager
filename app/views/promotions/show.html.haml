@@ -1,11 +1,20 @@
-%p#notice= notice
+%h2.ui.header
+  = link_to @promotion, :method => :delete, :data => { :confirm => 'Seguro desea eliminar?' }, class: "ui button red right floated" do
+    %i.icon.remove
+    Borrar
+
+  Promocion
+  = @promotion.description
+
+  .ui.sub.header
+    Agregar items
+
+.ui.divider
 
 = form_for [@promotion, @promotion.promotion_items.new], html: { class: "form ui"}  do |f|
-
-  .four.fields
-    .field
+  .ui.grid
+    .eight.wide.column.field
       = f.hidden_field :prmotion_id, value: @promotion.id
-      = f.label :items
       .ui.fluid.search.selection.dropdown.combo
         = f.hidden_field :item_id
         %i.dropdown.icon
@@ -14,12 +23,10 @@
           - Item.with_stock.each do |item|
             .item{ data: { value: item.id, code: item.code, stock: item.stock } }
               = item.description
-    .field
-      = f.label :quantity
-      = f.text_field :quantity
-    .field
-      = f.label "-"
-      %button.ui.button.green{type: "submit"}
+    .four.wide.column.field
+      = f.text_field :quantity, placeholder: "Cantidad"
+    .four.wide.column.field
+      %button.ui.button.green{type: "submit", style: "width: 100%"}
         Agregar item
 
 %table.ui.table
@@ -33,4 +40,6 @@
           %td= pri.item.description
           %td= pri.quantity
 
-= link_to 'Volver', promotions_path
+= link_to promotions_path, class: "ui button" do
+  %i.icon.arrow.left
+  Volver
