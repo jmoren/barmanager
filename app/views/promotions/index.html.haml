@@ -10,13 +10,15 @@
 %table.ui.table
   %thead
     %th Descripcion
+    %th Codigo
     %th Precio (dia)
     %th Precio (noche)
     %th
   %tbody
     - @promotions.each do |promo|
       %tr
-        %td= promo.description
+        %td= promo.description.titleize
+        %td= promo.code
         %td= number_to_currency promo.day_price
         %td= number_to_currency promo.night_price
         %td

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106223104) do
+ActiveRecord::Schema.define(version: 20150106001008) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -80,7 +80,10 @@ ActiveRecord::Schema.define(version: 20150106223104) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "night_price"
+    t.integer  "code"
   end
+
+  add_index "promotions", ["code"], name: "index_promotions_on_code", unique: true
 
   create_table "shifts", force: true do |t|
     t.datetime "open"
