@@ -10,15 +10,9 @@ class ShiftsController < ApplicationController
   # GET /shifts/1
   # GET /shifts/1.json
   def show
-    @partial = @shift.tickets.sum(:total) if @shift.is_open?
-    item_tickets = ItemTicket.where(ticket_id: @shift.tickets.map(&:id))
-    @by_items = {}
-    item_tickets.each do |it|
-      item = it.item
-      @by_items[item.description] = { total: 0, subtotal: 0 } if @by_items[item.description].nil?
-      @by_items[item.description][:total]    += it.quantity
-      @by_items[item.description][:subtotal] += it.sub_total
-    end
+    @total_tickets  = @shift.total_tickets
+    @total_expenses = @shift.total_expenses
+    @by_items = @shift.count_items
   end
 
   # GET /shifts/new
@@ -32,9 +26,7 @@ class ShiftsController < ApplicationController
 
   def close
     @shift = Shift.find(params['id'])
-    @total_shift = Ticket.where(shift_id: @shift.id).sum(:total)
-    @shift.closing_cash = @total_shift
-    @shift.close = DateTime.now
+    @shift.add_closed_data
 
     respond_to do |format|
       if !@shift.has_open_tables? && @shift.save

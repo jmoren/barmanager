@@ -1,0 +1,8 @@
+= form_for [@shift, @shift.expenses.new], html: { class: "ui form"} do |f|
+  .ui.grid
+    .ten.wide.column.field
+      = f.text_field :description, placeholder: "Agregar un gasto"
+    .three.wide.column.field
+      = f.number_field :amount, placeholder: "Costo $"
+    .two.wide.column.field
+      = f.submit "Agregar", class: "ui button blue"

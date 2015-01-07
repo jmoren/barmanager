@@ -8,6 +8,7 @@ BarManager::Application.routes.draw do
     member do
       put :close
     end
+    resources :expenses, only: [:create, :destroy]
   end
 
   resources :statistics, only: [:index]
