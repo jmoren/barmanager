@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150106223104) do
+ActiveRecord::Schema.define(version: 20150107165828) do
+
+  create_table "additionals", force: true do |t|
+    t.string  "description"
+    t.float   "amount"
+    t.integer "ticket_id"
+  end
+
+  add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id"
 
   create_table "categories", force: true do |t|
     t.string   "name"

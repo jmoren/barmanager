@@ -8,8 +8,9 @@ class Ticket < ActiveRecord::Base
 
   belongs_to :table
   belongs_to :shift
-  has_many :item_tickets
-  has_many :promotion_tickets
+  has_many :item_tickets, dependent: :destroy
+  has_many :promotion_tickets, dependent: :destroy
+  has_many :additionals, dependent: :destroy
 
   validates :table_id, :shift_id, :date, :status, :total, presence: true
   validates :total, numericality: true

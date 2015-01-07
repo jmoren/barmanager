@@ -36,7 +36,8 @@
         .ui.segment
           = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
 
-
+        .ui.segment
+          = render partial: 'additionals/form', locals: { ticket: @current_ticket }
       .ui.label.orange
         %i.icon.tag
         = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
@@ -53,7 +54,7 @@
           - @current_ticket.item_tickets.each do |entry|
             - unless entry.new_record?
               %tr
-                %td
+                %td.left.aligned
                   - if @table.open?
                     = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete do
                       %i.icon.remove.red
@@ -61,6 +62,17 @@
                 %td= entry.quantity
                 %td= number_to_currency entry.item.price
                 %td= number_to_currency entry.sub_total
+          - @current_ticket.additionals.each do |entry|
+            - unless entry.new_record?
+              %tr
+                %td.left.aligned
+                  - if @table.open?
+                    = link_to ticket_additional_path(@current_ticket, entry), method: :delete do
+                      %i.icon.remove.red
+                %td= entry.description
+                %td
+                %td= number_to_currency entry.amount
+                %td
         %tfoot
           %tr
             %td{colspan: 4}

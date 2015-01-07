@@ -1,5 +1,5 @@
-= form_for [ticket, ticket.item_tickets.new], html: { class: "form ui"} do |f|
-  %h3.ui.header Agregar items
+%h4.ui.header Agregar Items
+= form_for [ticket, ticket.item_tickets.new], html: { class: "form ui item-form"} do |f|
   .ui.grid
     .four.wide.column
       .ui.left.icon.input
@@ -29,12 +29,13 @@
 :javascript
   $(document).ready(function(){
     function getFieldValue(fieldId) {
-      return $('.ui.form').form('get field', fieldId).val();
+      return $('.item-form').form('get field', fieldId).val();
     }
 
     function submitForm(e){
       e.preventDefault();
-      url  = $(".ui.form").attr("action");
+      url  = $(".item-form").attr("action");
+      console.log(url);
       qty  = getFieldValue('item_ticket_quantity');
       max = parseInt($("#item_ticket_quantity").attr("max"));
       if(qty <= max){
@@ -82,7 +83,7 @@
       }
     });
 
-    $('.ui.form').form({
+    $('.item-form').form({
       item_id: {
         identifier: 'item_ticket_item_id',
         rules: [{ type   : 'empty' }]
