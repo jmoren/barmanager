@@ -1,4 +1,5 @@
 = link_to table, class: "item #{@current_table_id == table.id ? 'active green' : ''}", style: "padding: 20px 10px" do
-  = "Mesa Nro. #{table.number}"
+  Mesa
+  = table.description || "Nro. #{table.number}"
   .ui.label{class: table.status == 'open' ? 'green' : ''}
     = table.status == 'open' ? 'Abierta' : 'Cerrada'
