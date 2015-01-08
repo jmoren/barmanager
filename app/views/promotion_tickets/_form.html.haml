@@ -41,7 +41,7 @@
           method: "GET",
           success: function(res){
             if(res.id !== null){
-              $(".promotion-form .combo.dropdown").dropdown("set selected", res.id);
+              $(".promotion-form .dropdown").dropdown("set selected", res.id);
               $("#promotion_ticket_promotion_id").val(res.id);
               $(".promo-code").hide();
             }else{

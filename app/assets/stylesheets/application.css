@@ -50,3 +50,25 @@ body{
   content: "";
   display: table;
 }
+
+.item.table{
+  background: #fff !important;
+  padding: 8px !important;
+  border: solid 1px #ddd !important;
+}
+.item.table a{
+  color: #666 !important;
+}
+
+.item.table.open{
+  border-left-color: #5bbd72 !important;
+  border-left-width: 3px !important;
+}
+.item.table.open a.header{
+  color: #3b83c0 !important;
+}
+
+.item.table small{
+  float: right;
+  margin: -2px -4px !important;
+}

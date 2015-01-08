@@ -5,6 +5,13 @@ class Table < ActiveRecord::Base
   validates :number, uniqueness: true
   validates :number, numericality: { only_integer: true }
 
+  def name
+    if self.description
+      "#{self.description} - #{self.number}"
+    else
+      "Nro. #{self.number}"
+    end
+  end
   def open?
     self.status == "open"
   end

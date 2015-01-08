@@ -1,5 +1,12 @@
-= link_to table, class: "item #{@current_table_id == table.id ? 'active green' : ''}", style: "padding: 20px 10px" do
-  Mesa
-  = table.description || "Nro. #{table.number}"
-  .ui.label{class: table.status == 'open' ? 'green' : ''}
-    = table.status == 'open' ? 'Abierta' : 'Cerrada'
+.item.table{class: "#{@table.try(:id) == table.id ? 'open' : ''}"}
+  .content
+    %small
+      = link_to table, method: :delete, data: {confirm: "Estas seguro?"}, class: "action" do
+        %i.icon.trash.circular
+      = link_to edit_table_path(table), class: "action" do
+        %i.icon.pencil.circular
+    = link_to table, class: "header" do
+      = table.name
+    .extra{ class: table.status == 'open' ? 'green' : '' }
+      .ui.label.tiny.status{class:table.status == 'open' ? 'green' : ''}
+        = table.status == 'open' ? 'Abierta' : 'Cerrada'

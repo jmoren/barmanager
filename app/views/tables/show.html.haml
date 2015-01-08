@@ -70,11 +70,13 @@
           - @current_ticket.item_tickets.each do |entry|
             - unless entry.new_record?
               %tr
-                %td.left.aligned
-                  - if @table.open?
-                    = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete do
-                      %i.icon.remove.circle
-                    IT
+                %td.left.aligned{style: "position: relative"}
+                  %div{style: "border-left: solid #3b83c0 4px; margin-left:2px;padding-left: 5px;"}
+                    - if @table.open?
+                      = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete do
+                        %i.icon.remove.circle
+                    - else
+                      ""
                 %td= entry.item.description
                 %td= entry.quantity
                 %td= number_to_currency entry.item.price
@@ -84,10 +86,12 @@
             - unless entry.new_record?
               %tr
                 %td.left.aligned
-                  - if @table.open?
-                    = link_to ticket_promotion_ticket_path(@current_ticket, entry), method: :delete do
-                      %i.icon.remove.circle
-                    PR
+                  %div{style: "border-left: solid #5bbd72 4px; margin-left:2px;padding-left: 5px;"}
+                    - if @table.open?
+                      = link_to ticket_promotion_ticket_path(@current_ticket, entry), method: :delete do
+                        %i.icon.remove.circle
+                    - else
+                      ""
                 %td= entry.promotion.description
                 %td= entry.quantity
                 %td= number_to_currency entry.promotion.price
