@@ -24,6 +24,7 @@
 
       %table.table.ui
         %thead
+          %th Tipo
           %th Item
           %th Cantidad
           %th Precio
@@ -31,10 +32,25 @@
         %tbody
           - @ticket.item_tickets.each do |t|
             %tr
+              %td= "IT"
               %td= t.item.description
               %td= t.quantity
               %td= number_to_currency t.item.price
               %td= number_to_currency t.sub_total
+          - @ticket.promotion_tickets.each do |p|
+            %tr
+              %td= "PR"
+              %td= p.promotion.description
+              %td= p.quantity
+              %td= number_to_currency p.promotion.price
+              %td= number_to_currency p.promotion.price
+          - @ticket.additionals.each do |a|
+            %tr
+              %td= "AD"
+              %td= a.description
+              %td= "---"
+              %td= number_to_currency a.amount
+              %td= number_to_currency a.amount
     .ui.divider
     .two.fields
       .field{style: "text-align: right"}
