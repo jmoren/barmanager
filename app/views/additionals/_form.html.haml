@@ -1,9 +1,9 @@
 %h4.ui.header Adicionales
 = form_for [ticket, ticket.additionals.new], html: { class: "form ui additional-form"} do |f|
   .ui.grid
-    .twelve.wide.column
+    .twelve.wide.column.field
       = f.text_field :description, placeholder: "Agregar adicional"
-    .four.wide.column
+    .four.wide.column.field
       = f.text_field :amount, placeholder: "$999.99"
 
 :javascript

@@ -28,6 +28,7 @@ BarManager::Application.routes.draw do
     patch :move_to, on: :member, as: :change
     resources :item_tickets
     resources :additionals
+    resources :promotion_tickets
   end
 
   root to: "home#index"

@@ -32,24 +32,40 @@
         Ver Tickets
 
     - if @current_ticket
-      - if @current_ticket.open?
-        .ui.segment
-          = render partial: 'item_tickets/form', locals: { ticket: @current_ticket}
-
-        .ui.segment
-          = render partial: 'additionals/form', locals: { ticket: @current_ticket }
-      .ui.label.orange
+      .ui.divider
+      .ui.label.orange{style: "float:right"}
         %i.icon.tag
         = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
+      - if @current_ticket.open?
 
-      .ui.divider
+        .ui.secondary.menu.teal#ticket-entry
+          = link_to "#", data: { tab: "items" }, class: "item active"  do
+            %i.icon.plus
+            Items
+          = link_to "#", data: { tab: "promos" }, class: "item"  do
+            %i.icon.plus
+            Promos
+          = link_to "#", data: { tab: "adicional" }, class: "item" do
+            %i.icon.plus
+            Adicionales
+
+        .ui.segment.tab.active{ "data-tab" => 'items' }
+          = render partial: 'item_tickets/form', locals: { ticket: @current_ticket }
+
+        .ui.segment.tab{"data-tab" => 'promos'}
+          = render partial: 'promotion_tickets/form', locals: { ticket: @current_ticket }
+
+        .ui.segment.tab{"data-tab" => 'adicional'}
+          = render partial: 'additionals/form', locals: { ticket: @current_ticket }
+
       %table.table.ui
         %thead
           %th
           %th Item
           %th Cantidad
           %th Precio
-          %th Sub Total
+          %th.center.aligned Sub Total
+
         %tbody
           - @current_ticket.item_tickets.each do |entry|
             - unless entry.new_record?
@@ -57,28 +73,47 @@
                 %td.left.aligned
                   - if @table.open?
                     = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete do
-                      %i.icon.remove.red
+                      %i.icon.remove.circle
+                    IT
                 %td= entry.item.description
                 %td= entry.quantity
                 %td= number_to_currency entry.item.price
-                %td= number_to_currency entry.sub_total
-          - @current_ticket.additionals.each do |entry|
+                %td.center.aligned= number_to_currency entry.sub_total
+
+          - @current_ticket.promotion_tickets.each do |entry|
             - unless entry.new_record?
               %tr
                 %td.left.aligned
                   - if @table.open?
-                    = link_to ticket_additional_path(@current_ticket, entry), method: :delete do
-                      %i.icon.remove.red
-                %td= entry.description
-                %td
-                %td= number_to_currency entry.amount
-                %td
+                    = link_to ticket_promotion_ticket_path(@current_ticket, entry), method: :delete do
+                      %i.icon.remove.circle
+                    PR
+                %td= entry.promotion.description
+                %td= entry.quantity
+                %td= number_to_currency entry.promotion.price
+                %td.center.aligned= number_to_currency entry.subtotal
+
         %tfoot
           %tr
             %td{colspan: 4}
-            %td
-              .ui.label.blue.fluid.center{style: "font-size: 16px"}
+            %td.center.aligned
+              .ui.label.blue.fluid{style: "font-size: 16px"}
                 = number_to_currency @current_ticket.total
+
+      %h3.ui.header
+        Adicionales
+      .ui.divider
+      .ui.list.horizontal
+        - @current_ticket.additionals.each do |entry|
+          - unless entry.new_record?
+            .item
+              %i.icon.chevron.right.blue
+              .content
+                %h3.header= entry.description
+                = number_to_currency entry.amount
+                - if @table.open?
+                  = link_to ticket_additional_path(@current_ticket, entry), method: :delete, style: "float: right;margin:0" do
+                    %i.icon.remove.circle.outline.red
 
         -unless @current_ticket.open?
           .left{style: "margin-top: 10px"}

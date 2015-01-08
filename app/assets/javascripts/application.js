@@ -21,7 +21,8 @@ $(document).ready(function(){
   $('.dropdown').dropdown();
   $('.checkbox').checkbox();
   $('.datepicker').pickadate();
-
+  $("#ticket-entry .item").tab();
+  
   $('.tooltip').popup({
     position: "top center"
   });

@@ -1,0 +1,65 @@
+%h4.ui.header Agregar Promo
+= form_for [ticket, ticket.promotion_tickets.new], html: { class: "form ui promotion-form"} do |f|
+  .ui.grid
+    .four.wide.column.field
+      .ui.left.icon.input
+        %i.icon.search
+        %input{type: "text", name: "code_number", placeholder: "Cod", focus: true, autocomplete: "off"}
+    .four.wide.column.field
+      = f.number_field :quantity, placeholder: "Cant", min: "1"
+    .eight.wide.column.field
+      .ui.fluid.search.selection.dropdown.combo
+        = f.hidden_field :promotion_id
+        %i.dropdown.icon
+        .default.text Seleccione Item
+        .menu
+          - Promotion.all.each do |promo|
+            .item{ data: { value: promo.id, code: promo.code, stock: 0 } }
+              = promo.description
+
+  .ui.red.message.promo-code{style: "display:none"}
+    No se encontro ninguna promocion
+
+
+:javascript
+  $(document).ready(function(){
+
+    $('.promotion-form .dropdown').dropdown({
+      onChange: function (val,text,elm) {
+        $('.promotion-form input[name=code_number]').val(elm.attr('data-code'));
+        $("#promotion_ticket_promotion_id").val(val);
+        $('#promotion_ticket_quantity').focus();
+      }
+    });
+
+    $(".promotion-form input[name=code_number]").on("keyup", function(){
+      val = $(this).val();
+      if(val.length > 1){
+        $.ajax({
+          url: "/promotions?code=" + val,
+          dataType: "JSON",
+          method: "GET",
+          success: function(res){
+            if(res.id !== null){
+              $(".promotion-form .combo.dropdown").dropdown("set selected", res.id);
+              $("#promotion_ticket_promotion_id").val(res.id);
+              $(".promo-code").hide();
+            }else{
+              $(".promo-code").show();
+            }
+          }
+        })
+      }
+    });
+
+    $('.promotion-form').form({
+      item_id: {
+        identifier: 'promotion_ticket_promotion_id',
+        rules: [{ type   : 'empty' }]
+      },
+      quantity: {
+        identifier: 'promotion_ticket_quantity',
+        rules: [{ type   : 'empty' }, { type: 'not[0]' }]
+      }
+    });
+  })

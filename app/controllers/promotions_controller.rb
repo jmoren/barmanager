@@ -4,7 +4,12 @@ class PromotionsController < ApplicationController
   # GET /promotions
   # GET /promotions.json
   def index
-    @promotions = Promotion.all
+    if params[:code]
+      @promotion = Promotion.where(code: params[:code]).first
+      render json: { id: @promotion.try(:id), stock: @promotion.try(:stock) }
+    else
+      @promotions = Promotion.all
+    end
   end
 
   # GET /promotions/1

@@ -1,7 +1,7 @@
 %h4.ui.header Agregar Items
 = form_for [ticket, ticket.item_tickets.new], html: { class: "form ui item-form"} do |f|
   .ui.grid
-    .four.wide.column
+    .four.wide.column.field
       .ui.left.icon.input
         %i.icon.search
         %input{type: "text", name: "code_number", placeholder: "Cod", focus: true, autocomplete: "off"}
