@@ -31,5 +31,5 @@ BarManager::Application.routes.draw do
     resources :promotion_tickets
   end
 
-  root to: "home#index"
+  root to: "statistics#index"
 end

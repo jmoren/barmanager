@@ -5,13 +5,13 @@
         - @table.errors.full_messages.each do |msg|
           %li= msg
     .ui.divider
-  .inline.fields
-    .field
+  .ui.grid
+    .ui.wide.column.eight.field
       = f.text_field :description, placeholder: "Agrega una descripcion"
-    .field
-      = f.number_field :number, placeholder: "Numero de mesa"
-    .field
-      %button.ui.button.green{type: "submit"}
+    .ui.wide.column.two.field
+      = f.number_field :number, placeholder: "Nro"
+    .ui.wide.column.three.field
+      %button.ui.button.green.fluid{type: "submit"}
         Crear
-    .field
-      = link_to "Cancelar", @table.new_record? ? tables_path : @table, class: "ui button"
+    .ui.wide.column.three.field
+      = link_to "Cancelar", @table.new_record? ? tables_path : @table, class: "ui button fluid"
