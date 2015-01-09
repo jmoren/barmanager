@@ -5,6 +5,9 @@
 .ui.header.right.floated
   .ui.button{class: "#{@ticket.status == 'open' ? 'orange' : 'green'}"}
     = @ticket.status == 'closed' ? 'Cerrado' : 'Abierto'
+  .ui.button{onclick: "window.print();" }
+    %i.icon.print
+    Imprimir
 
 .ui.divider.clearing
 
@@ -35,11 +38,11 @@
           = number_to_currency @ticket.total
 
 
-%h2.ui.header Adicionales
+%h3.ui.header Adicionales
 .ui.divider
 .ui.grid
   .four.wide.column
-    .ui.small.statistic
+    .ui.mini.statistic
       .value= number_to_currency @ticket.additionals.sum(:amount)
       .label Total
   .twelve.wide.column
@@ -50,8 +53,6 @@
           .content
             %h3.header= entry.description
             = number_to_currency entry.amount
-
-.ui.divider
 .center
 
 

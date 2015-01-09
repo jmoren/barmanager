@@ -22,7 +22,7 @@ $(document).ready(function(){
   $('.checkbox').checkbox();
   $('.datepicker').pickadate();
   $("#ticket-entry .item").tab();
-  
+
   $('.tooltip').popup({
     position: "top center"
   });
@@ -44,9 +44,9 @@ $(document).ready(function(){
           onApprove: function() {
             return true;
           }
-        }).modal('show')
+        }).modal('show');
       }
-    })
+    });
   });
 
   $(".change-table").on("click", function(e){
@@ -59,7 +59,7 @@ $(document).ready(function(){
       success: function(data){
         $("#modal-table").html(data).modal().modal('show');
       }
-    })
+    });
   });
 
 });

@@ -1,0 +1,14 @@
+@media print {
+  div#side, div.menu.fixed, a.ui.button {
+    display: none;
+  }
+
+  div.segment.ui {
+    float: none;
+    display: block;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
