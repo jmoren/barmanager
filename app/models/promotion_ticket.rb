@@ -30,4 +30,8 @@ class PromotionTicket < ActiveRecord::Base
       self.promotion_ticket_items.create(promotion_item_id: i.id)
     end
   end
+
+  def full_delivered?
+    self.promotion_ticket_items.map(&:delivered?).select { |a| !a }.empty?
+  end
 end
