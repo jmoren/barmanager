@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150107165828) do
+ActiveRecord::Schema.define(version: 20150108192948) do
 
   create_table "additionals", force: true do |t|
     t.string  "description"
@@ -47,7 +47,6 @@ ActiveRecord::Schema.define(version: 20150107165828) do
   create_table "items", force: true do |t|
     t.string   "description"
     t.float    "day_price"
-    t.integer  "stock"
     t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -72,6 +71,14 @@ ActiveRecord::Schema.define(version: 20150107165828) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "promotion_ticket_items", force: true do |t|
+    t.integer "promotion_ticket_id"
+    t.integer "promotion_item_id"
+    t.integer "delivered",           default: 0
+  end
+
+  add_index "promotion_ticket_items", ["promotion_item_id"], name: "index_promotion_ticket_items_on_promotion_item_id"
 
   create_table "promotion_tickets", force: true do |t|
     t.integer  "ticket_id"

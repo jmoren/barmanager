@@ -5,8 +5,8 @@ class ItemsController < ApplicationController
   # GET /items.json
   def index
     if params[:code]
-      @item = Item.where("code = ? AND stock > 0", params[:code]).first
-      render json: { id: @item.try(:id), stock: @item.try(:stock) }
+      @item = Item.where("code = ?", params[:code]).first
+      render json: { id: @item.try(:id) }
     else
       @items = Item.all
     end
@@ -75,6 +75,6 @@ class ItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:description, :day_price, :night_price, :stock, :category_id, :code)
+      params.require(:item).permit(:description, :day_price, :night_price, :category_id, :code)
     end
 end

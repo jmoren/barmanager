@@ -13,66 +13,38 @@
         %i.dropdown.icon
         .default.text Seleccione Item
         .menu
-          - Item.with_stock.each do |item|
-            .item{ data: { value: item.id, code: item.code, stock: item.stock } }
+          - Item.all.each do |item|
+            .item{ data: { value: item.id, code: item.code } }
               = item.description
 
   .ui.red.message.item-code{style: "display:none"}
     No se encontro ningun item
-  .ui.red.message.stock{style: "display:none"}
-    El stock no es suficiente
-    %span#total
 
 :javascript
   $(document).ready(function(){
-    function getFieldValue(fieldId) {
-      return $('.item-form').form('get field', fieldId).val();
-    }
-
-    function submitForm(e){
-      e.preventDefault();
-      url  = $(".item-form").attr("action");
-      qty  = getFieldValue('item_ticket_quantity');
-      max = parseInt($("#item_ticket_quantity").attr("max"));
-      if(qty <= max){
-        formData = { item_ticket: { quantity: qty,item_id: getFieldValue('item_ticket_item_id') } };
-        $.ajax({ type: 'POST', dataType: "HTML", url: url, data: formData, success: function(){
-            location.reload();
-          }
-        });
-      } else{
-        if(max)
-          $(".stock #total").append("(actualmente es de <b>"+max+"</b>)");
-        $(".stock").show();
-      }
-    };
 
     $('.item-form .dropdown').dropdown({
       onChange: function (val,text,elm) {
         $('.item-form input[name=code_number]').val(elm.attr('data-code'));
         $("#item_ticket_item_id").val(val);
-        $("#item_ticket_quantity").attr("max", elm.attr('data-stock'));
-        $('#item_ticket_quantity').focus();
       }
     });
 
     $(".item-form input[name=code_number]").on("keyup", function(){
       val = $(this).val();
-      $(".stock").hide().find("#total").text("");
-      if(val.length > 1){
+      if(val.length >= 1){
         $.ajax({
           url: "/items?code=" + val,
           dataType: "JSON",
           method: "GET",
           success: function(res){
             if(res.id !== null){
+              debugger;
               $(".item-form .dropdown").dropdown("set selected", res.id);
               $("#item_ticket_item_id").val(res.id);
-              $("#item_ticket_quantity").attr("max", res.stock);
               $(".item-code").hide();
             }else{
               $(".item-code").show();
-              $("#item_ticket_quantity").removeAttr("max");
             }
           }
         })
@@ -89,7 +61,6 @@
         rules: [{ type   : 'empty' }, { type: 'not[0]' }]
       }
     },{
-      onSuccess: submitForm,
       onError: function() {
         $('#item_ticket_quantity').focus();
       }

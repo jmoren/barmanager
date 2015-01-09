@@ -14,7 +14,7 @@
         .default.text Seleccione Item
         .menu
           - Promotion.all.each do |promo|
-            .item{ data: { value: promo.id, code: promo.code, stock: 0 } }
+            .item{ data: { value: promo.id, code: promo.code } }
               = promo.description
 
   .ui.red.message.promo-code{style: "display:none"}
@@ -28,13 +28,12 @@
       onChange: function (val,text,elm) {
         $('.promotion-form input[name=code_number]').val(elm.attr('data-code'));
         $("#promotion_ticket_promotion_id").val(val);
-        $('#promotion_ticket_quantity').focus();
       }
     });
 
     $(".promotion-form input[name=code_number]").on("keyup", function(){
       val = $(this).val();
-      if(val.length > 1){
+      if(val.length >= 1){
         $.ajax({
           url: "/promotions?code=" + val,
           dataType: "JSON",

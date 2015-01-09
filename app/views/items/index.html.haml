@@ -13,7 +13,6 @@
     %th Descripcion
     %th Precio (dia)
     %th Precio (noche)
-    %th Stock
     %th Categoria
     %th
   %tbody
@@ -23,7 +22,6 @@
         %td= item.description.titleize
         %td= number_to_currency item.day_price
         %td= number_to_currency item.night_price
-        %td= item.stock
         %td
           - if item.category
             = link_to item.category.name, item.category

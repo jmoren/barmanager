@@ -6,7 +6,7 @@ class PromotionsController < ApplicationController
   def index
     if params[:code]
       @promotion = Promotion.where(code: params[:code]).first
-      render json: { id: @promotion.try(:id), stock: @promotion.try(:stock) }
+      render json: { id: @promotion.try(:id) }
     else
       @promotions = Promotion.all
     end

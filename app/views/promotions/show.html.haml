@@ -20,8 +20,8 @@
         %i.dropdown.icon
         .default.text Seleccione Item
         .menu
-          - Item.with_stock.each do |item|
-            .item{ data: { value: item.id, code: item.code, stock: item.stock } }
+          - Item.all.each do |item|
+            .item{ data: { value: item.id, code: item.code} }
               = item.description
     .four.wide.column.field
       = f.text_field :quantity, placeholder: "Cantidad"

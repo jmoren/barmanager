@@ -2,7 +2,6 @@ class Table < ActiveRecord::Base
   has_many :tickets
 
   validates :number, presence: true
-  validates :number, uniqueness: true
   validates :number, numericality: { only_integer: true }
 
   def name

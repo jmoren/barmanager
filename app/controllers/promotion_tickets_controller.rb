@@ -1,6 +1,6 @@
 class PromotionTicketsController < ApplicationController
   before_action :set_ticket
-  before_action :set_promotion_ticket, only: [:destroy]
+  before_action :set_promotion_ticket, only: [:destroy, :increase]
 
   def create
     @promotion_ticket = @ticket.promotion_tickets.new(promotion_ticket_params)
@@ -12,6 +12,15 @@ class PromotionTicketsController < ApplicationController
     table = @promotion_ticket.ticket.table
     @promotion_ticket.destroy
     redirect_to table
+  end
+
+  def increase
+    prom_tick_item = @promotion_ticket.promotion_ticket_items.find(params[:prod_id])
+    if prom_tick_item.delivered < prom_tick_item.promotion_item.quantity * @promotion_ticket.quantity
+      prom_tick_item.delivered += 1
+      prom_tick_item.save
+    end
+    redirect_to @promotion_ticket.ticket.table
   end
 
   private

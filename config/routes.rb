@@ -28,7 +28,9 @@ BarManager::Application.routes.draw do
     patch :move_to, on: :member, as: :change
     resources :item_tickets
     resources :additionals
-    resources :promotion_tickets
+    resources :promotion_tickets do
+      put :increase, on: :member
+    end
   end
 
   root to: "statistics#index"

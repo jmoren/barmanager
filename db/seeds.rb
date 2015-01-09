@@ -18,5 +18,5 @@ Category.create([
 
 
 5.times do |i|
-  Item.create(description: "Coca#{i}", day_price: 10 * i + 1, night_price: 10 * i + 10, stock: i + 10, category_id: 1, code: i + 10)
+  Item.create(description: "Coca#{i}", day_price: 10 * i + 1, night_price: 10 * i + 10, category_id: 1, code: i + 10)
 end

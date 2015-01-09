@@ -10,7 +10,7 @@ class CategoriesController < ApplicationController
   end
 
   def show
-    @items = @category.items
+    @items = @category.items.order(description: :asc)
   end
 
   def new

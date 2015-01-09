@@ -5,9 +5,6 @@
   %b Precio:
   = number_to_currency @item.price
 %p
-  %b Stock:
-  = @item.stock
-%p
   %b Categoria:
   - if @item.category
     = link_to @item.category.name, @item.category

@@ -15,11 +15,8 @@
       = f.label :night_price, "Precio (noche)"
       = f.text_field :night_price, placeholder: "Precio de noche"
     .field
-      = f.label :stock
-      = f.number_field :stock, placeholder: "Cantidad"
-    .field
       = f.label :code, "Codigo"
-      = f.number_field :code, placeholder: "Codigo acceso"
+      = f.number_field :code, placeholder: "Codigo sugerido #{@item.id.nil? ? Item.last.id + 1 : @item.code}"
   .field
     = f.label :category_id, "Categoria"
     .ui.fluid.search.selection.dropdown.combo
@@ -75,17 +72,6 @@
           },
           {
             type: 'not[0]'
-          }
-        ]
-      },
-      stock: {
-        identifier: 'item_stock',
-        rules: [
-          {
-            type   : 'empty'
-          },
-          {
-            type   : 'not[0]'
           }
         ]
       },
