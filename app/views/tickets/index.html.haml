@@ -27,7 +27,7 @@
           %td
             = link_to ticket, class: "ui button icon mini orange" do
               %i.icon.external.link
-          %td= "Mesa Nro. #{ticket.table.number}"
+          %td= ticket.table.try(:name) || 'Mesa eliminada'
           %td= ticket.date.strftime("%d/%m/%Y")
           %td= number_to_currency ticket.total
           %td= Ticket::PAYMENT_TYPE[ticket.payment-1][1] if ticket.payment

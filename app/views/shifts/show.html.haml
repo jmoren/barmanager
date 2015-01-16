@@ -73,7 +73,7 @@
       - @shift.tickets.each do |ticket|
         %tr
           %td= ticket.formatted_number
-          %td= "Mesa ##{ticket.table.number}"
+          %td= ticket.table.try(:name) || 'Mesa eliminada'
           %td= ticket.status == 'closed' ? '<i class="icon lock"></i> Cerrado'.html_safe : '<i class="icon unlock"></i> Abierto'.html_safe
           %td.center.aligned= number_to_currency ticket.total
       %tr
