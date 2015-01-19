@@ -53,7 +53,7 @@ $(document).ready(function(){
     window.location = '/tables/' + $(a.currentTarget).attr('data-code');
   });
 
-  $(".dropdown .table-option").on("change", function(){
+  $(".table-search").on("change", function(){
     val = $(this).val();
     debugger;
   });
