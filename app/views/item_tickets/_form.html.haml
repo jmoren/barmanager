@@ -39,7 +39,6 @@
           method: "GET",
           success: function(res){
             if(res.id !== null){
-              debugger;
               $(".item-form .dropdown").dropdown("set selected", res.id);
               $("#item_ticket_item_id").val(res.id);
               $(".item-code").hide();

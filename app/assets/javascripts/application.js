@@ -49,6 +49,15 @@ $(document).ready(function(){
     });
   });
 
+  $(".dropdown .table-option").click(function(a,b,c){
+    window.location = '/tables/' + $(a.currentTarget).attr('data-code');
+  });
+
+  $(".dropdown .table-option").on("change", function(){
+    val = $(this).val();
+    debugger;
+  });
+
   $(".change-table").on("click", function(e){
     e.preventDefault();
     id = $(this).data("id");

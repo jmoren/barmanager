@@ -65,6 +65,18 @@
   <div class="main container">
     <div id="side">
       <div class="ui items">
+        <div class="ui fluid search selection dropdown combo">
+          <input id="table_id" name="table[table_id]" type="hidden">
+          <i class="dropdown icon" tabindex="-1"></i>
+          <input class="search" tabindex="0"><div class="default text">Seleccione Mesa</div>
+          <div class="menu" tabindex="-1">
+             <% @tables.each do |table| %>
+              <div class="item table-option" data-code="<%=table.id%>" data-value="<%=table.id%>">
+                <%= table.name %>
+              </div>
+            <% end %>
+          </div>
+        </div>
         <% @tables.each do |table| %>
           <%= render table %>
         <% end %>

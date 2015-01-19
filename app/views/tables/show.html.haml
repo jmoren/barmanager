@@ -9,7 +9,7 @@
           Con la mesa abierta, podras administrar el ticket hasta cerrar la venta.
   - else
     %h1.ui.header.center
-      = "Mesa Nro. #{@table.number}"
+      = @table.name
     .center
       -if @table.open? && @current_ticket
         - if @current_ticket.item_tickets.empty?

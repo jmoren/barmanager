@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 20150108192948) do
     t.integer "ticket_id"
   end
 
-  add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id"
+  add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id", using: :btree
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 20150108192948) do
     t.integer "shift_id"
   end
 
-  add_index "expenses", ["shift_id"], name: "index_expenses_on_shift_id"
+  add_index "expenses", ["shift_id"], name: "index_expenses_on_shift_id", using: :btree
 
   create_table "item_tickets", force: true do |t|
     t.integer  "ticket_id"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20150108192948) do
     t.float    "night_price"
   end
 
-  add_index "items", ["code"], name: "index_items_on_code", unique: true
+  add_index "items", ["code"], name: "index_items_on_code", unique: true, using: :btree
 
   create_table "organizations", force: true do |t|
     t.string   "name"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20150108192948) do
     t.integer "delivered",           default: 0
   end
 
-  add_index "promotion_ticket_items", ["promotion_item_id"], name: "index_promotion_ticket_items_on_promotion_item_id"
+  add_index "promotion_ticket_items", ["promotion_item_id"], name: "index_promotion_ticket_items_on_promotion_item_id", using: :btree
 
   create_table "promotion_tickets", force: true do |t|
     t.integer  "ticket_id"
@@ -98,7 +98,7 @@ ActiveRecord::Schema.define(version: 20150108192948) do
     t.integer  "code"
   end
 
-  add_index "promotions", ["code"], name: "index_promotions_on_code", unique: true
+  add_index "promotions", ["code"], name: "index_promotions_on_code", unique: true, using: :btree
 
   create_table "shifts", force: true do |t|
     t.datetime "open"
@@ -129,6 +129,6 @@ ActiveRecord::Schema.define(version: 20150108192948) do
     t.integer  "shift_id"
   end
 
-  add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id"
+  add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id", using: :btree
 
 end

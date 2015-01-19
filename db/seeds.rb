@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-15.times do |i|
+45.times do |i|
   Table.create( number: i + 1, status: 'closed')
 end
 
