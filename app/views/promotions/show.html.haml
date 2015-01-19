@@ -37,7 +37,7 @@
     - @promotion.promotion_items.each do |pri|
       - unless pri.new_record?
         %tr
-          %td= pri.item.description
+          %td= pri.item.try(:description)
           %td= pri.quantity
 
 = link_to promotions_path, class: "ui button" do
