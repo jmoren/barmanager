@@ -6,7 +6,7 @@ class Table < ActiveRecord::Base
 
   def name
     if self.description
-      "#{self.description}"
+      "#{self.description} - #{self.number}"
     else
       "Nro. #{self.number}"
     end

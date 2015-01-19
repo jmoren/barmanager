@@ -20,8 +20,8 @@
       %tr{class: shift.id == @current_shift.try(:id) ? 'positive' : ''}
         %td= shift.open.strftime('%d/%m/%Y - %H:%M %p')
         %td= shift.close.nil? ? '-----' : shift.close.strftime('%d/%m/%Y - %H:%M %p')
-        %td= number_to_currency shift.opening_cash.to_f
-        %td= number_to_currency (shift.closing_cash.to_f + shift.opening_cash.to_f)
+        %td= number_to_currency shift.opening_cash
+        %td= number_to_currency shift.closing_cash
         %td
           = link_to shift, class: "ui button mini icon tooltip", data: { content: "Ver detalles", variation: "inverted"} do
             %i.icon.search

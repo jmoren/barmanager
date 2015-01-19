@@ -16,6 +16,12 @@ body{
   font-family: 'Lato'
 }
 
+.signin{
+  width: 50% !important;
+  margin: auto !important;
+  float: none !important;
+}
+
 .ui.menu.fixed{
   z-index: 100 !important;
 }

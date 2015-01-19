@@ -4,7 +4,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_filter :get_tables, :current_shift
 
-
+  before_filter :authenticate_user!
+  
   def get_tables
     @tables = Table.all
   end

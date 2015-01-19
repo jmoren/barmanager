@@ -1,5 +1,7 @@
 BarManager::Application.routes.draw do
 
+  devise_for :users
+  
   resources :promotions do
     resources :promotion_items
   end
