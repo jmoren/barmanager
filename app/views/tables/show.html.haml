@@ -58,7 +58,7 @@
         .ui.segment.tab{"data-tab" => 'adicional'}
           = render partial: 'additionals/form', locals: { ticket: @current_ticket }
 
-      %table.table.ui
+      %table.table.ui#tickets
         %thead
           %th
           %th Descripcion

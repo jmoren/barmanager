@@ -44,7 +44,7 @@ class ShiftsController < ApplicationController
   def create
     @shift = Shift.new(shift_params)
     @shift.open = DateTime.now
-
+    @shift.user = current_user
     respond_to do |format|
       if @shift.save
         format.html { redirect_to @shift, notice: 'Turno abierto con exito' }

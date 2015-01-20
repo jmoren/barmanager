@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150119192354) do
+ActiveRecord::Schema.define(version: 20150120184757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,7 +110,10 @@ ActiveRecord::Schema.define(version: 20150119192354) do
     t.datetime "updated_at"
     t.float    "closing_cash"
     t.float    "opening_cash"
+    t.integer  "user_id"
   end
+
+  add_index "shifts", ["user_id"], name: "index_shifts_on_user_id", using: :btree
 
   create_table "tables", force: true do |t|
     t.integer  "number"

@@ -93,8 +93,10 @@
               = value[:total]
             .label.center
               = "Total #{key} - #{number_to_currency value[:subtotal]}"
+
+.ui.divider
+
 .center
-  .ui.divider
   = link_to shifts_path, class: "ui button" do
     %i.icon.arrow.left
     Volver
@@ -102,3 +104,9 @@
   = link_to tables_path, class: "ui button orange" do
     Mesas
     %i.icon.arrow.right
+
+.center
+  .ui.label.blue{style: "margin: 10px 0"}
+    %i.icon.user
+    Abierto por
+    = @shift.user.try(:email)
