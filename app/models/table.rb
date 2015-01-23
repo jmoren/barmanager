@@ -4,6 +4,9 @@ class Table < ActiveRecord::Base
   validates :number, presence: true
   validates :number, numericality: { only_integer: true }
 
+  scope :open, -> { where(status: "open") }
+  scope :close, -> { where(status: "closed") }
+
   def name
     if self.description
       "#{self.description}"

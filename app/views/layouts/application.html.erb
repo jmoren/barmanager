@@ -105,6 +105,13 @@
       </div>
     </div>
     <div class="main container">
+      <div id="open-tables">
+        <% Table.open.each do |table| %>
+          <%= link_to table, class: "ui basic button green" do %>
+            <i class="icon table"></i> <%=table.name%>
+          <% end %>
+        <% end %>
+      </div>
       <div id="side">
         <div class="ui items">
           <div class="ui fluid search selection dropdown combo">
@@ -119,7 +126,7 @@
               <% end %>
             </div>
           </div>
-          <% @tables.each do |table| %>
+          <% Table.close.each do |table| %>
             <%= render table %>
           <% end %>
         </div>

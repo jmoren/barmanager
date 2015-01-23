@@ -81,6 +81,13 @@ body{
   z-index: 100;
 }
 
+#open-tables {
+  padding: 10px;
+}
+#open-tables a {
+  margin-bottom: 10px;
+}
+
 .fixed.launch.button {
   position: fixed;
   top: 63px;
