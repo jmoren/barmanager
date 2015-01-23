@@ -5,6 +5,9 @@
         %i.icon.trash.circular
       = link_to edit_table_path(table), class: "action" do
         %i.icon.pencil.circular
+      - if @current_shift
+        = link_to open_table_path(table), method: :put, class: "action" do
+          %i.icon.unlock.circular
     = link_to table, class: "header" do
       = table.name
     .extra{ class: table.status == 'open' ? 'green' : '' }

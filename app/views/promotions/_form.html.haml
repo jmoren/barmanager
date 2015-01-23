@@ -9,7 +9,7 @@
     = f.label :description, "Descripcion"
     = f.text_field :description, placeholder: "Nombre o descripcion"
 
-  .three.fields
+  .four.fields
     .field
       = f.label :code, "Codigo de acceso"
       = f.text_field :code, placeholder: "Codigo de acceso"
@@ -21,6 +21,10 @@
     .field
       = f.label :night_price, "Precio Noche"
       = f.text_field :night_price, placeholder: "Precio de la promo (noche)"
+    .field
+      .ui.toggle.checkbox
+        = f.label :favourite, "Favorito"
+        = f.check_box :favourite
 
   .ui.divider
   .field

@@ -21574,8 +21574,8 @@ select.ui.dropdown {
 /* Menu Item Hover */
 
 .ui.dropdown .menu > .item:hover {
-  background: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.8);
+  background: #3b83c0;
+  color: white;
   z-index: 12;
 }
 
@@ -21623,9 +21623,10 @@ select.ui.dropdown {
 /* Selected Item */
 
 .ui.dropdown.selected,
-.ui.dropdown .menu .selected.item {
-  background: rgba(0, 0, 0, 0.03);
-  color: rgba(0, 0, 0, 0.8);
+.ui.dropdown .menu .selected.item, .ui.dropdown.selected,
+.ui.dropdown .menu .selected.item:hover  {
+  background: #3b83c0;
+  color: white;
 }
 
 /*--------------------
