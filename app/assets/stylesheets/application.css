@@ -68,13 +68,14 @@ body{
   border-left-color: #5bbd72 !important;
   border-left-width: 3px !important;
 }
+
 .item.table.open a.header{
   color: #3b83c0 !important;
 }
 
 .item.table small{
   float: right;
-  margin: -2px -4px !important;
+  margin: 0.25rem 0rem 0.25rem 0em !important;
 }
 
 #toc {

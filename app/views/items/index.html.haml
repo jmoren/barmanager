@@ -28,3 +28,5 @@
         %td
           = link_to edit_item_path(item) do
             %i.icon.edit
+          = link_to item_path(item), method: :delete do
+            %i.icon.trash

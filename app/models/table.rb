@@ -5,11 +5,11 @@ class Table < ActiveRecord::Base
   validates :number, numericality: { only_integer: true }
 
   scope :open, -> { where(status: "open") }
-  scope :close, -> { where(status: "closed") }
+  scope :closed, -> { where(status: "closed") }
 
   def name
     if self.description
-      "#{self.description}"
+      "#{self.description} - ##{self.number}"
     else
       "Nro. #{self.number}"
     end

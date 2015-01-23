@@ -12,6 +12,9 @@ class Ticket < ActiveRecord::Base
   has_many :promotion_tickets, dependent: :destroy
   has_many :additionals, dependent: :destroy
 
+  has_many :items, through: :item_tickets
+  has_many :promotions, through: :promotion_tickets
+
   validates :table_id, :shift_id, :date, :status, :total, presence: true
   validates :total, numericality: true
   validates :status, inclusion: ['open', 'closed']
@@ -33,5 +36,9 @@ class Ticket < ActiveRecord::Base
 
   def open?
     self.status == "open"
+  end
+
+  def has_items?
+    items.size > 0 || promotions.size > 0
   end
 end

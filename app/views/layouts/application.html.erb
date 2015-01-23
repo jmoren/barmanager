@@ -13,7 +13,7 @@
       <a href="/"><b>Productos</b></a>
     </div>
     <div class="item">
-      <% Category.all.each do |cat| %>
+      <% @categories.each do |cat| %>
         <% Item.by_category(cat.id).favourites.each_with_index do |item, index| %>
           <% if index == 0 %>
             <div class="ui small header"><%= cat.name %></div>
@@ -49,28 +49,34 @@
     <div class="ui menu inverted fixed">
       <div class="container">
         <%= link_to "Bar Manager", root_path, class: "item" %>
-        <div class="ui pointing dropdown item">
+        <div class="ui dropdown item">
           <i class="dropdown icon"></i>
-          Items
+          Configuracion
           <div class="menu">
-            <%= link_to "Nuevo Item", new_item_path, class: "item" %>
-            <%= link_to "Items", items_path, class: "item" %>
-          </div>
-        </div>
-        <div class="ui pointing dropdown item">
-          <i class="dropdown icon"></i>
-          Promos
-          <div class="menu">
-            <%= link_to "Nueva Promo", new_promotion_path, class: "item" %>
-            <%= link_to "Promociones", promotions_path, class: "item" %>
-          </div>
-        </div>
-        <div class="ui pointing dropdown item">
-          <i class="dropdown icon"></i>
-          Categorias
-          <div class="menu">
-            <%= link_to "Nueva Categoria", new_category_path, class: "item"%>
-            <%= link_to "Ver todas", categories_path, class: "item"%>
+            <div class="ui dropdown item">
+              <i class="dropdown icon"></i>
+              Items
+              <div class="menu">
+                <%= link_to "Nuevo Item", new_item_path, class: "item" %>
+                <%= link_to "Items", items_path, class: "item" %>
+              </div>
+            </div>
+            <div class="ui dropdown item">
+              <i class="dropdown icon"></i>
+              Promos
+              <div class="menu">
+                <%= link_to "Nueva Promo", new_promotion_path, class: "item" %>
+                <%= link_to "Promociones", promotions_path, class: "item" %>
+              </div>
+            </div>
+            <div class="ui dropdown item">
+              <i class="dropdown icon"></i>
+              Categorias
+              <div class="menu">
+                <%= link_to "Nueva Categoria", new_category_path, class: "item"%>
+                <%= link_to "Ver todas", categories_path, class: "item"%>
+              </div>
+            </div>
           </div>
         </div>
         <%= link_to tickets_path, class: "item" do %>
@@ -85,14 +91,6 @@
           <i class="icon time"></i>
           Turnos
         <% end %>
-        <%= link_to statistics_path, class: "item" do %>
-          <i class="icon feed"></i>
-          Estadisticas
-        <% end %>
-        <%= link_to "#", class: "launch item" do %>
-          <i class="icon help"></i>
-          Ayuda
-        <% end %>
         <% if @current_shift %>
           <div class="right menu">
             <div class="item">
@@ -102,13 +100,17 @@
             </div>
           </div>
         <% end %>
+        <%= link_to "#", class: "launch item" do %>
+          <i class="icon star"></i> Favoritos
+        <% end %>
+
       </div>
     </div>
     <div class="main container">
       <div id="open-tables">
-        <% Table.open.each do |table| %>
+        <% @open_tables.each do |table| %>
           <%= link_to table, class: "ui basic button green" do %>
-            <i class="icon table"></i> <%=table.name%>
+            <i class="icon food"></i> <%= table.name %>
           <% end %>
         <% end %>
       </div>
@@ -119,14 +121,14 @@
             <i class="dropdown icon" tabindex="-1"></i>
             <input class="search table-search" tabindex="0"><div class="default text">Seleccione Mesa</div>
             <div class="menu" tabindex="-1">
-              <% @tables.each do |table| %>
+              <% @closed_tables.each do |table| %>
                 <div class="item table-option" data-code="<%=table.id%>" data-value="<%=table.id%>">
                   <%= table.name %>
                 </div>
               <% end %>
             </div>
           </div>
-          <% Table.close.each do |table| %>
+          <% @closed_tables.each do |table| %>
             <%= render table %>
           <% end %>
         </div>

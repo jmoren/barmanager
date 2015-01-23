@@ -12,7 +12,7 @@
       = @table.name
     .center
       -if @table.open? && @current_ticket
-        - if @current_ticket.item_tickets.empty?
+        - if !@current_ticket.has_items?
           = link_to ticket_path(@current_ticket, table_id: @table.id), method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button red" do
             %i.icon.trash
             Borrar Ticket
@@ -117,17 +117,17 @@
       %h3.ui.header
         Adicionales
       .ui.divider
-      .ui.list.horizontal
+      .ui.three.cards
         - @current_ticket.additionals.each do |entry|
           - unless entry.new_record?
-            .item
-              %i.icon.chevron.right.blue
+            .card
               .content
-                %h3.header= entry.description
-                = number_to_currency entry.amount
                 - if @table.open?
                   = link_to ticket_additional_path(@current_ticket, entry), method: :delete, style: "float: right;margin:0" do
                     %i.icon.remove.circle.outline.red
+                %h3.header= entry.description
+                = number_to_currency entry.amount
+
 
         -unless @current_ticket.open?
           .left{style: "margin-top: 10px"}

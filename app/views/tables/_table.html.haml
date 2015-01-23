@@ -1,15 +1,16 @@
 .item.table{class: "#{@table.try(:id) == table.id ? 'open' : ''}"}
   .content
-    %small
-      = link_to table, method: :delete, data: {confirm: "Estas seguro?"}, class: "action" do
-        %i.icon.trash.circular
-      = link_to edit_table_path(table), class: "action" do
-        %i.icon.pencil.circular
-      - if @current_shift
-        = link_to open_table_path(table), method: :put, class: "action" do
-          %i.icon.unlock.circular
+
     = link_to table, class: "header" do
       = table.name
     .extra{ class: table.status == 'open' ? 'green' : '' }
       .ui.label.tiny.status{class:table.status == 'open' ? 'green' : ''}
         = table.status == 'open' ? 'Abierta' : 'Cerrada'
+      %small.actions
+        = link_to table, method: :delete, data: {confirm: "Estas seguro?"}, class: "action" do
+          %i.icon.trash.circular
+        = link_to edit_table_path(table), class: "action" do
+          %i.icon.pencil.circular
+        - if @current_shift
+          = link_to open_table_path(table), method: :put, class: "action" do
+            %i.icon.unlock.circular.blue
