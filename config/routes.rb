@@ -1,7 +1,7 @@
 BarManager::Application.routes.draw do
 
   devise_for :users
-  
+
   resources :promotions do
     resources :promotion_items
   end
@@ -35,5 +35,6 @@ BarManager::Application.routes.draw do
     end
   end
 
+  resources :users
   root to: "statistics#index"
 end

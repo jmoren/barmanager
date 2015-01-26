@@ -9,8 +9,10 @@ class StatisticsController < ApplicationController
       @by_items = {}
       item_tickets.each do |it|
         item = it.item
-        @by_items[item.description] = 0 if @by_items[item.description].nil?
-        @by_items[item.description] += it.quantity
+        if item
+          @by_items[item.description] = 0 if @by_items[item.description].nil?
+          @by_items[item.description] += it.quantity
+        end
       end
     else
       @tickets = Ticket.all
@@ -18,8 +20,10 @@ class StatisticsController < ApplicationController
       @by_items = {}
       ItemTicket.all.each do |it|
         item = it.item
-        @by_items[item.description] = 0 if @by_items[item.description].nil?
-        @by_items[item.description] += it.quantity
+        if item
+          @by_items[item.description] = 0 if @by_items[item.description].nil?
+          @by_items[item.description] += it.quantity
+        end
       end
     end
   end

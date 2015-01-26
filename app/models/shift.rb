@@ -24,13 +24,15 @@ class Shift < ActiveRecord::Base
   end
 
   def count_items
-    items = ItemTicket.where(ticket_id: self.tickets.map(&:id))
+    it_tickets = ItemTicket.where(ticket_id: self.tickets.map(&:id))
     by_items = {}
-    items.each do |it|
-      item = it.item
-      by_items[item.description] = { total: 0, subtotal: 0 } if by_items[item.description].nil?
-      by_items[item.description][:total]    += it.quantity
-      by_items[item.description][:subtotal] += it.sub_total
+    it_tickets.each do |it|
+      if it.item
+        item = it.item
+        by_items[item.description] = { total: 0, subtotal: 0 } if by_items[item.description].nil?
+        by_items[item.description][:total]    += it.quantity
+        by_items[item.description][:subtotal] += it.sub_total
+      end
     end
 
     by_items

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150120184757) do
+ActiveRecord::Schema.define(version: 20150123172928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20150120184757) do
     t.datetime "updated_at"
     t.integer  "code"
     t.float    "night_price"
+    t.boolean  "favourite",   default: false
   end
 
   add_index "items", ["code"], name: "index_items_on_code", unique: true, using: :btree
@@ -99,6 +100,7 @@ ActiveRecord::Schema.define(version: 20150120184757) do
     t.datetime "updated_at"
     t.float    "night_price"
     t.integer  "code"
+    t.boolean  "favourite",   default: false
   end
 
   add_index "promotions", ["code"], name: "index_promotions_on_code", unique: true, using: :btree

@@ -7,7 +7,7 @@
   .field
     = f.label :description, "Descripcion"
     = f.text_field :description, placeholder: "Nombre o descripcion"
-  .four.fields
+  .five.fields
     .field
       = f.label :price, "Precio (dia)"
       = f.text_field :day_price, placeholder: "Precio de dia"
@@ -17,6 +17,10 @@
     .field
       = f.label :code, "Codigo"
       = f.number_field :code, placeholder: "Codigo sugerido #{@item.id.nil? ? Item.last.id + 1 : @item.code}"
+    .field
+      = f.label :favourite, "Favorito"
+      .ui.toggle.checkbox
+        = f.check_box :favourite
   .field
     = f.label :category_id, "Categoria"
     .ui.fluid.search.selection.dropdown.combo
@@ -31,7 +35,7 @@
   .field
     %button.ui.button.green{type: "submit"}
       Guardar
-    = link_to 'Cancelar', @item.new_record? ? items_path : @item, class: "ui button"
+    = link_to 'Cancelar', items_path, class: "ui button"
 
 :javascript
   $(document).ready(function(){

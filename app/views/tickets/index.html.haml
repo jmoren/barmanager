@@ -16,19 +16,21 @@
 - else
   %table.ui.table
     %thead
-      %th
       %th Mesa
       %th Fecha
       %th Total
-      %th Pago
+      %th Estado
+      %th
+      
     %tbody
       - @tickets.order("date").each do |ticket|
         %tr
-          %td
-            = link_to ticket, class: "ui button icon mini orange" do
-              %i.icon.external.link
           %td= ticket.table.try(:name) || 'Mesa eliminada'
           %td= ticket.date.strftime("%d/%m/%Y")
           %td= number_to_currency ticket.total
-          %td= Ticket::PAYMENT_TYPE[ticket.payment-1][1] if ticket.payment
+          %td= ticket.status == 'closed' ? "Cerrado" : "Abierto"
+          %td
+            = link_to ticket, class: "ui button icon mini circular basic orange" do
+              %i.icon.external.arrow.right
+
   = paginate @tickets

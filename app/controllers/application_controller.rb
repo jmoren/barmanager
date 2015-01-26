@@ -7,7 +7,9 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   
   def get_tables
-    @tables = Table.all
+    @categories = Category.order(:name)
+    @open_tables = Table.open.order(:number)
+    @closed_tables = Table.closed.order(:number)
   end
 
   def current_shift
