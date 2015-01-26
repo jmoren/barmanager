@@ -1,0 +1,14 @@
+%h2.ui.header
+  Usuarios
+.ui.divider
+.ui.cards
+  - @users.each do |user|
+    .card
+      .content
+        .header= user.email
+        .meta
+          = user.admin? ? 'Es admin' : 'No es admin'
+      .extra.content
+        %a.friends
+          %i.file.icon
+          = "#{user.shifts.size} Turnos administrados"
