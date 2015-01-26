@@ -11,6 +11,10 @@
  *= require_self
  *= require_tree .
  */
+
+html {
+  background: #f7f7f7;
+}
 body{
   margin: 0;
   font-family: 'Lato'
@@ -27,22 +31,22 @@ body{
 }
 
 .main{
-  padding-top: 70px;
+  padding-top: 60px;
 }
 
 .container{
   width: auto;
-  margin-right: 150px;
-  margin-left: 150px;
+  margin-right: 200px;
+  margin-left: 100px;
 }
 
-#side{
+.side{
   padding: 20px 10px;
   width:25%;
   float: left;
 }
 
-#panel{
+.panel{
   padding: 20px 10px;
   width: 75%;
   float: left;
@@ -70,11 +74,56 @@ body{
   border-left-color: #5bbd72 !important;
   border-left-width: 3px !important;
 }
+
 .item.table.open a.header{
   color: #3b83c0 !important;
 }
 
 .item.table small{
   float: right;
-  margin: -2px -4px !important;
+  margin: 0.25rem 0rem 0.25rem 0em !important;
+}
+
+#toc {
+  z-index: 100;
+}
+
+#open-tables {
+  padding: 10px 0 0;
+}
+
+#open-tables a {
+  margin-bottom: 10px;
+}
+
+#open-tables .panel,
+#open-tables .side {
+  padding-bottom: 0;
+  padding-top: 0
+}
+
+#open-tables:after{
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.ui.left.sidebar,
+.ui.right.sidebar {
+  width: 200px !important;
+}
+
+.fixed.launch.button {
+  position: fixed;
+  top: 63px;
+  left: -1px;
+  width: 55px;
+  height: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  -webkit-transition: 0.3s width ease, 0.5s transform ease;
+  -moz-transition: 0.3s width ease, 0.5s transform ease;
+  -o-transition: 0.3s width ease, 0.5s transform ease;
+  -ms-transition: 0.3s width ease, 0.5s transform ease;
+  transition: 0.3s width ease, 0.5s transform ease;
 }

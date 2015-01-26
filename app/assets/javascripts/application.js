@@ -50,12 +50,7 @@ $(document).ready(function(){
   });
 
   $(".dropdown .table-option").click(function(a,b,c){
-    window.location = '/tables/' + $(a.currentTarget).attr('data-code');
-  });
-
-  $(".table-search").on("change", function(){
-    val = $(this).val();
-    debugger;
+    window.location = '/tables/' + $(a.currentTarget).attr('data-code') + '?status=open';
   });
 
   $(".change-table").on("click", function(e){
@@ -69,6 +64,18 @@ $(document).ready(function(){
         $("#modal-table").html(data).modal().modal('show');
       }
     });
+  });
+
+  $menu = $('#toc');
+  $menu.sidebar({
+    transition       : 'overlay',
+    mobileTransition : 'overlay',
+    dimPage          : false,
+    closable         : false
+  });
+  $('.launch').on('click', function(event) {
+    $menu.sidebar('toggle');
+    event.preventDefault();
   });
 
 });

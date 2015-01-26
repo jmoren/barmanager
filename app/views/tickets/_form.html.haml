@@ -4,23 +4,20 @@
     Ticket
     = "%0.6d" % @ticket.number
   %h2.ui.right.floated.header
-    = l @ticket.created_at, format: :long
+    = l @ticket.created_at, format: "%d/%m/%Y - %H:%M %p"
   .clearfix
 
 .content
   = form_for @ticket, html: {id: "update-ticket", class: "ui form" } do |f|
     = f.hidden_field :status, value: "closed"
     = f.hidden_field :payment, value: "efectivo"
-    - if @ticket.item_tickets.empty?
+    - if !@ticket.has_items?
       .ui.message.yellow
         No hay items.
     - else
       .ui.button.green.icon.labeled
         %i.icon.dollar
         = number_to_currency @ticket.total, unit: ""
-      .ui.button.blue.icon.labeled{style: "float: right"}
-        %i.icon.payment
-        Efectivo
 
       %table.table.ui
         %thead
@@ -54,12 +51,16 @@
     .ui.divider
     .two.fields
       .field{style: "text-align: right"}
-        - if @ticket.item_tickets.empty?
+        - unless @ticket.has_items?
           = link_to ticket_path(@ticket, table_id: @ticket.table_id), method: :delete, class: "ui button red" do
             %i.icon.remove
             Borrar
 
       .field
-        - unless @ticket.item_tickets.empty?
-          = f.submit 'Guardar', class: "ui button green"
-        = link_to "Cancelar", "#", class: "ui button close"
+        - if @ticket.has_items?
+          %button.ui.button.green.icon.labeled{ type: "submit"}
+            %i.icon.check
+            Guardar
+        = link_to "#", class: "ui button labeled icon close" do
+          %i.icon.remove
+          Cancelar

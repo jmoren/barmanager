@@ -18,6 +18,9 @@ class TablesController < ApplicationController
   # GET /tables/1
   # GET /tables/1.json
   def show
+    if @current_shift && params['status'] == "open"
+      @table.open! unless @table.status == "open"
+    end
     @current_table_id = @table.id
     if !params[:ticket] && !@table.tickets.empty? && @table.tickets.last.try(:status) == 'open'
       @current_ticket = @table.tickets.last

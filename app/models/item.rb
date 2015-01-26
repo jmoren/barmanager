@@ -5,6 +5,10 @@ class Item < ActiveRecord::Base
   validates :day_price, :night_price, numericality: { greater_than: 0 }
   validates :code, uniqueness: true
 
+  scope :favourites, -> { where(favourite: true) }
+
+  scope :by_category, -> (id) { where(category_id: id)}
+
   def price
     time = Time.now
     if time > "18:00" && time < "06:00"
