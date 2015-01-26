@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   before_filter :get_tables, :current_shift
 
   before_filter :authenticate_user!
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_url, :alert => exception.message
+  end
   
   def get_tables
     @tables = Table.all
