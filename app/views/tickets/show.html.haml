@@ -48,7 +48,7 @@
       %td{colspan:3}
       %td.center.aligned
         .ui.button.fluid.blue
-          = number_to_currency @ticket.total
+          = number_to_currency @ticket.get_total
 
 
 %h3.ui.header Adicionales

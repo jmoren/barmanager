@@ -17,7 +17,7 @@
     - else
       .ui.button.green.icon.labeled
         %i.icon.dollar
-        = number_to_currency @ticket.total, unit: ""
+        = number_to_currency @ticket.get_total, unit: ""
 
       %table.table.ui
         %thead
@@ -40,7 +40,7 @@
               %td= p.promotion.description
               %td= p.quantity
               %td= number_to_currency p.promotion.price
-              %td= number_to_currency p.promotion.price
+              %td= number_to_currency p.subtotal
           - @ticket.additionals.each do |a|
             %tr
               %td= "AD"

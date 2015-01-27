@@ -61,10 +61,12 @@
       %table.table.ui
         %thead
           %th
+          %th Codigo
           %th Descripcion
           %th Cantidad
           %th Precio
           %th.center.aligned Sub Total
+          %th
 
         %tbody
           - @current_ticket.item_tickets.each do |entry|
@@ -74,11 +76,17 @@
                   - if @table.open?
                     = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete do
                       %i.icon.remove.circle.outline.red
-
+                %td{style: "vertical-align: top"}= entry.item.code
                 %td= entry.item.description
                 %td= entry.quantity
                 %td= number_to_currency entry.item.price
                 %td.center.aligned= number_to_currency entry.sub_total
+                %td.left.aligned{style: "vertical-align: top"}
+                  - if @table.open?
+                    = link_to increase_ticket_item_ticket_path(@current_ticket, entry), method: :put do
+                      %i.icon.circular.small.plus.green
+                    = link_to decrease_ticket_item_ticket_path(@current_ticket, entry), method: :put do
+                      %i.icon.circular.small.minus.red
 
           - @current_ticket.promotion_tickets.each do |entry|
             - unless entry.new_record?
@@ -87,7 +95,7 @@
                   - if @table.open?
                     = link_to ticket_promotion_ticket_path(@current_ticket, entry), method: :delete do
                       %i.icon.remove.circle.outline.red
-
+                %td{style: "vertical-align: top"}= entry.promotion.code
                 %td{style: "vertical-align: top"}
                   = "Promo #{entry.promotion.description}"
                   - unless entry.full_delivered?
@@ -100,19 +108,25 @@
                               %span.price
                                 = "Total #{(prod.promotion_item.quantity * entry.quantity)} - Entregado: #{prod.delivered}"
                                 - unless prod.delivered?
-                                  = link_to increase_ticket_promotion_ticket_path(@current_ticket, entry, prod_id: prod.id),
+                                  = link_to increase_delivered_ticket_promotion_ticket_path(@current_ticket, entry, prod_id: prod.id),
                                     method: :put, style: "float: right" do
                                     %i.icon.plus.circle
                 %td{style: "vertical-align: top"}= entry.quantity
                 %td{style: "vertical-align: top"}= number_to_currency entry.promotion.price
                 %td.center.aligned{style: "vertical-align: top"}= number_to_currency entry.subtotal
+                %td
+                  - if @table.open?
+                    = link_to increase_ticket_promotion_ticket_path(@current_ticket, entry), method: :put do
+                      %i.icon.circular.small.plus.green
+                    = link_to decrease_ticket_promotion_ticket_path(@current_ticket, entry), method: :put do
+                      %i.icon.circular.small.minus.red
 
         %tfoot
           %tr
             %td{colspan: 4}
             %td.center.aligned
               .ui.label.blue.fluid{style: "font-size: 16px"}
-                = number_to_currency @current_ticket.total
+                = number_to_currency @current_ticket.get_total
 
       %h3.ui.header
         Adicionales
