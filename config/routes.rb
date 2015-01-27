@@ -28,10 +28,15 @@ BarManager::Application.routes.draw do
 
   resources :tickets do
     patch :move_to, on: :member, as: :change
-    resources :item_tickets
+    resources :item_tickets do
+      put :increase, on: :member
+      put :decrease, on: :member
+    end
     resources :additionals
     resources :promotion_tickets do
+      put :increase_delivered, on: :member
       put :increase, on: :member
+      put :decrease, on: :member
     end
   end
 

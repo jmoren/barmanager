@@ -6,12 +6,32 @@
           %li= msg
     .ui.divider
   .ui.grid
-    .ui.wide.column.eight.field
+    .ui.wide.column.seven.field
       = f.text_field :description, placeholder: "Agrega una descripcion"
-    .ui.wide.column.two.field
-      = f.number_field :number, placeholder: "Nro"
-    .ui.wide.column.three.field
-      %button.ui.button.green.fluid{type: "submit"}
-        Crear
-    .ui.wide.column.three.field
-      = link_to "Cancelar", @table.new_record? ? tables_path : @table, class: "ui button fluid"
+    .ui.wide.column.four.field
+      .ui.selection.dropdown.item
+        = f.hidden_field :color
+        .text Color
+        .menu
+          .item{ data: {value: "yellow"}}
+            .ui.yellow.empty.circular.label
+            Amarillo
+          .item{ data: {value: "green"}}
+            .ui.green.empty.circular.label
+            Verde
+          .item{ data: {value: "blue"}}
+            .ui.blue.empty.circular.label
+            Azul
+          .item{ data: {value: "orange"}}
+            .ui.orange.empty.circular.label
+            Naranja
+          .item{ data: {value: "red"}}
+            .ui.red.empty.circular.label
+            Rojo
+          .item{ data: {value: "pink"}}
+            .ui.pink.empty.circular.label
+            Rosa
+    .ui.wide.column.five.field
+      %button.ui.button.green{type: "submit"}
+        Guardar
+      = link_to "Cancelar", @table.new_record? ? tables_path : @table, class: "ui button"

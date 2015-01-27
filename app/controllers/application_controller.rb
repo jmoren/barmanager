@@ -14,8 +14,8 @@ class ApplicationController < ActionController::Base
 
   def get_tables
     @categories = Category.order(:name)
-    @open_tables = Table.open.order(:number)
-    @closed_tables = Table.closed.order(:number)
+    @open_tables = Table.open.order(:description)
+    @closed_tables = Table.closed.order(:description)
   end
 
   def current_shift
