@@ -89,7 +89,7 @@ class TicketsController < ApplicationController
       @table.open!(@ticket)
       old_table.close!
 
-      msg = "Se movio el ticket a la mesa #{@table.number}"
+      msg = "Se movio el ticket a la mesa #{@table.name}"
     end
 
     flash[:notice] = msg

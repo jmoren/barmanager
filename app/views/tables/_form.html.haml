@@ -6,10 +6,8 @@
           %li= msg
     .ui.divider
   .ui.grid
-    .ui.wide.column.five.field
+    .ui.wide.column.seven.field
       = f.text_field :description, placeholder: "Agrega una descripcion"
-    .ui.wide.column.two.field
-      = f.number_field :number, placeholder: "Nro"
     .ui.wide.column.four.field
       .ui.selection.dropdown.item
         = f.hidden_field :color

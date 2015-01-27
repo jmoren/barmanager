@@ -1,17 +1,14 @@
 class Table < ActiveRecord::Base
   has_many :tickets
 
-  validates :number, presence: true
-  validates :number, numericality: { only_integer: true }
-
   scope :open, -> { where(status: "open") }
   scope :closed, -> { where(status: "closed") }
 
   def name
-    if self.description
-      "#{self.description} - ##{self.number}"
+    if self.description.present?
+      self.description
     else
-      "Nro. #{self.number}"
+      "Nro. #{self.id}"
     end
   end
   def open?
