@@ -109,7 +109,7 @@
     <div class="main container">
       <div id="open-tables">
         <% @open_tables.each do |table| %>
-          <%= link_to table, class: "ui basic button green" do %>
+          <%= link_to table, class: "ui #{'basic active' unless @table.id == table.id } button #{table.color}" do %>
             <i class="icon food"></i> <%= table.name %>
           <% end %>
         <% end %>

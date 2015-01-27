@@ -98,6 +98,6 @@ class TablesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def table_params
-      params.require(:table).permit(:number, :description)
+      params.require(:table).permit(:number, :description, :color)
     end
 end
