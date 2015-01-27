@@ -1,0 +1,27 @@
+%h2.ui.header
+  = "#{@user.new_record? ? 'Crear' : 'Editar' }"
+  usuario
+
+.ui.divider
+= form_for @user, html: { class: "ui form" } do |f|
+  .field
+    = f.label "Usuario"
+    = f.text_field :username, placeholder: "Ingresar el user"
+  .field
+    = f.label "Email"
+    = f.text_field :email, placeholder: "Ingresar el email"
+  - if current_user.admin? || @user.new_record?
+    .field
+      = f.label "Password"
+      = f.password_field :password, placeholder: "Ingresar el password"
+    .field
+      = f.label "Confirmacion"
+      = f.password_field :password_confirmation, placeholder: "Reingresar el password"
+
+  .field
+    .ui.toggle.checkbox
+      = f.check_box :admin
+      = f.label "El usuario es Admin?"
+  .field
+    %button.ui.button.blue{type: "submit"}
+      Guardar

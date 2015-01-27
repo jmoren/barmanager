@@ -1,6 +1,6 @@
 class PromotionsController < ApplicationController
   before_action :set_promotion, only: [:show, :edit, :update, :destroy, :add_item]
-
+  layout "admin"
   # GET /promotions
   # GET /promotions.json
   def index

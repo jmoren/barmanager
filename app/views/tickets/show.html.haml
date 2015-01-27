@@ -24,13 +24,13 @@
           .ui.message.error.center
             No hay items
     - else
-      - @ticket.items.each do |item|
-        - if item
+      - @ticket.item_tickets.each do |it|
+        - if it.item
           %tr
-            %td= item.category.name
-            %td= item.description
-            %td= it.item_ticket.quantity
-            %td.center.aligned= number_to_currency item.item_ticket.sub_total
+            %td= it.item.category.name
+            %td= it.item.description
+            %td= it.quantity
+            %td.center.aligned= number_to_currency it.sub_total
     - if @ticket.promotions.empty?
       %tr
         %td{colspan: 4}

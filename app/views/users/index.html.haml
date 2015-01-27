@@ -1,0 +1,23 @@
+%h2.ui.header.left.floated
+  Usuarios
+.ui.header.right.floated
+  = link_to new_user_path, class: "ui button teal" do
+    %i.icon.plus
+    Agregar usuario
+.ui.divider.clearing
+%table.ui.table
+  %thead
+    %th Usuario
+    %th Email
+    %th Rol
+    %th
+  %tbody
+    - @users.each do |user|
+      - unless user.new_record?
+        %tr
+          %td= user.username
+          %td= user.email
+          %td= user.admin? ? 'Es admin' : 'No es admin'
+          %td
+            = link_to edit_user_path(user) do
+              %i.icon.pencil.circular

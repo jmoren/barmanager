@@ -1,5 +1,6 @@
 class CategoriesController < ApplicationController
   before_action :set_category, except: [:new, :create, :index]
+  layout "admin"
   def index
     if params[:q]
       @categories = Category.where(name: params[:q])

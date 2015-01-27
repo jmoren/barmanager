@@ -100,7 +100,7 @@
           <% end %>
           <% if current_user %>
             <div class="menu right">
-              <div class="item"><%= current_user.email %></div>
+              <div class="item"><%= current_user.login %></div>
               <div class="item icon">
                 <%= link_to destroy_user_session_path, method: :delete, class: "ui button red" do %>
                   Salir
@@ -152,6 +152,11 @@
         <% end %>
       </div>
       <div class="panel <%= current_user.nil? ? 'signin' : nil %>">
+        <% if alert %>
+          <div class="ui message error">
+            <%= alert %>
+          </div>
+        <% end %>
         <div class="segment ui">
           <%= yield %>
         </div>
