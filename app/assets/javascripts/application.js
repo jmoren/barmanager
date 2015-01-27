@@ -18,7 +18,11 @@
 //= require picker.time
 
 $(document).ready(function(){
-  $('.dropdown').dropdown();
+  $('.dropdown').dropdown({
+    onChange: function (val) {
+      window.location = '/tables/' + val + '?status=open';
+    }
+  });
   $('.checkbox').checkbox();
   $('.datepicker').pickadate();
   $("#ticket-entry .item").tab();
@@ -52,6 +56,7 @@ $(document).ready(function(){
   $(".dropdown .table-option").click(function(a,b,c){
     window.location = '/tables/' + $(a.currentTarget).attr('data-code') + '?status=open';
   });
+
 
   $(".change-table").on("click", function(e){
     e.preventDefault();
