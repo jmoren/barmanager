@@ -1,8 +1,0 @@
-development:
-  adapter: postgresql
-  encoding: unicode
-  database: barmanager_development
-  host: localhost
-  pool: 5
-  username: jmoren
-  password:
