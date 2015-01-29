@@ -18,7 +18,8 @@
 //= require picker.time
 
 $(document).ready(function(){
-  $('.dropdown').dropdown({
+  $('.dropdown').dropdown();
+  $('.dropdown.tables').dropdown({
     onChange: function (val) {
       window.location = '/tables/' + val + '?status=open';
     }

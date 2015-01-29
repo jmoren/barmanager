@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150127190317) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+ActiveRecord::Schema.define(version: 20150127213111) do
 
   create_table "additionals", force: true do |t|
     t.string  "description"
@@ -28,6 +25,7 @@ ActiveRecord::Schema.define(version: 20150127190317) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "kitchen",    default: false
   end
 
   create_table "expenses", force: true do |t|
@@ -45,6 +43,7 @@ ActiveRecord::Schema.define(version: 20150127190317) do
     t.float    "sub_total"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "delivered",  default: false
   end
 
   create_table "items", force: true do |t|
@@ -119,7 +118,7 @@ ActiveRecord::Schema.define(version: 20150127190317) do
     t.datetime "updated_at"
     t.string   "status"
     t.string   "description"
-    t.string   "color",       default: "#27292B"
+    t.string   "color",       default: ""
   end
 
   create_table "tickets", force: true do |t|

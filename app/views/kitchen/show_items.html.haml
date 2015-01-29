@@ -1,0 +1,34 @@
+%i.close.icon
+.header
+  %h2.ui.left.floated.header
+    Mesa
+    = @table
+  %h2.ui.right.floated.header
+    Ticket Nro
+    = @current_ticket.formatted_number
+  .clearfix
+
+.content
+  %table.ui.celled.structured.table
+    %thead
+      %tr
+        %th.center.aligned Hora
+        %th.center.aligned pedido
+        %th.center.aligned Cantidad
+        %th.center.aligned estado
+        %th.center.aligned
+    %tbody
+      - @items_tickets.each do |it|
+        %tr
+          %td.center.aligned= it.created_at.strftime('%H:%M %p')
+          %td.center.aligned= it.item.description
+          %td.center.aligned= it.quantity
+          %td.center.aligned
+            - if it.delivered
+              %i.icon.checkmark.box.big-icon
+            - else
+              %i.icon.wait.orange.big-icon
+          %td.center.aligned
+            -unless it.delivered
+              = link_to ticket_item_ticket_path(@current_ticket, it), method: :delete, class: "ui button red icon" do
+                %i.trash.icon

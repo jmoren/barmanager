@@ -1,19 +1,11 @@
 class ItemTicketsController < ApplicationController
   before_action :set_ticket
-  before_action :set_item_ticket, only: [:destroy, :increase, :decrease]
+  before_action :set_item_ticket, only: [:destroy, :deliver]
 
   def create
-
     @item_ticket = @ticket.item_tickets.new(item_ticket_params)
-
-    existent_item_ticket = @ticket.item_tickets.where(item_id: @item_ticket.item_id).first
-    if existent_item_ticket
-      existent_item_ticket.quantity += @item_ticket.quantity
-      existent_item_ticket.save
-    else
-      @item_ticket.save
-    end
-    redirect_to @ticket.table
+    @item_ticket.save
+    redirect_to @item_ticket.ticket.table
   end
 
   def destroy
@@ -22,21 +14,24 @@ class ItemTicketsController < ApplicationController
     redirect_to table
   end
 
-  def increase
-    table = @item_ticket.ticket.table
-    @item_ticket.quantity += 1
-    @item_ticket.save
-    redirect_to table
+  def deliver
+    @item_ticket.update(delivered: true)
+    redirect_to :back
   end
 
-  def decrease
-    table = @item_ticket.ticket.table
-    if (@item_ticket.quantity == 1)
-      @item_ticket.destroy
-    else
-      @item_ticket.quantity -= 1
-      @item_ticket.save
-    end
+  def destroy_all
+    @table = @ticket.table
+
+    @ticket.item_tickets.where(item_id: params[:item_id]).destroy_all
+
+    redirect_to @table
+  end
+
+  def increase
+    new_item_ticket = @ticket.item_tickets.where(item_id: params[:id]).last.dup
+    table = @ticket.table
+    new_item_ticket.quantity = 1
+    new_item_ticket.save
     redirect_to table
   end
 

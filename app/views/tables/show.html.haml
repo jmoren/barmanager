@@ -69,12 +69,12 @@
           %th
 
         %tbody
-          - @current_ticket.item_tickets.each do |entry|
+          - @current_ticket.grouped_item_tickets.each do |entry|
             - unless entry.new_record?
               %tr
                 %td.left.aligned{style: "vertical-align: top"}
                   - if @table.open?
-                    = link_to ticket_item_ticket_path(@current_ticket, entry), method: :delete do
+                    = link_to destroy_all_ticket_item_tickets_path(@current_ticket, item_id: entry.item_id), method: :delete do
                       %i.icon.remove.circle.outline.red
                 %td{style: "vertical-align: top"}= entry.item.code
                 %td= entry.item.description
@@ -85,32 +85,18 @@
                   - if @table.open?
                     = link_to increase_ticket_item_ticket_path(@current_ticket, entry), method: :put do
                       %i.icon.circular.small.plus.green
-                    = link_to decrease_ticket_item_ticket_path(@current_ticket, entry), method: :put do
-                      %i.icon.circular.small.minus.red
+                    = link_to "#", data: {ticket_id: @current_ticket.id, item_id: entry.item.id, type: 'item' }, class: "expand-item-row" do
+                      %i.icon.circular.small.expand.red
 
-          - @current_ticket.promotion_tickets.each do |entry|
+          - @current_ticket.grouped_promotion_tickets.each do |entry|
             - unless entry.new_record?
               %tr
                 %td.left.aligned{style: "vertical-align: top"}
                   - if @table.open?
-                    = link_to ticket_promotion_ticket_path(@current_ticket, entry), method: :delete do
+                    = link_to destroy_all_ticket_promotion_tickets_path(@current_ticket, promotion_id: entry.promotion_id), method: :delete do
                       %i.icon.remove.circle.outline.red
                 %td{style: "vertical-align: top"}= entry.promotion.code
-                %td{style: "vertical-align: top"}
-                  = "Promo #{entry.promotion.description}"
-                  - unless entry.full_delivered?
-                    .ui.list{style: "font-size: 12px; margin-top: 10px"}
-                      - entry.promotion_ticket_items.each do |prod|
-                        .item{style: "background: #f1f1f1; padding: 5px;border-bottom: solid 1px #ccc"}
-                          .content
-                            .header= prod.promotion_item.item.description
-                            .meta
-                              %span.price
-                                = "Total #{(prod.promotion_item.quantity * entry.quantity)} - Entregado: #{prod.delivered}"
-                                - unless prod.delivered?
-                                  = link_to increase_delivered_ticket_promotion_ticket_path(@current_ticket, entry, prod_id: prod.id),
-                                    method: :put, style: "float: right" do
-                                    %i.icon.plus.circle
+                %td{style: "vertical-align: top"}= "Promo #{entry.promotion.description}"
                 %td{style: "vertical-align: top"}= entry.quantity
                 %td{style: "vertical-align: top"}= number_to_currency entry.promotion.price
                 %td.center.aligned{style: "vertical-align: top"}= number_to_currency entry.subtotal
@@ -118,8 +104,8 @@
                   - if @table.open?
                     = link_to increase_ticket_promotion_ticket_path(@current_ticket, entry), method: :put do
                       %i.icon.circular.small.plus.green
-                    = link_to decrease_ticket_promotion_ticket_path(@current_ticket, entry), method: :put do
-                      %i.icon.circular.small.minus.red
+                    = link_to "#", data: {ticket_id: @current_ticket.id, promo_id: entry.promotion.id, type: 'promotion' }, class: "expand-item-row" do
+                      %i.icon.circular.small.expand.red
 
         %tfoot
           %tr
@@ -149,7 +135,7 @@
             Pagamento:
             %b= Ticket::PAYMENT_TYPE[@current_ticket.payment-1][1]
 
-
+    #modal-expand_item.ui.modal
     #modal-ticket.ui.modal
     #modal-table.ui.modal.small
 - else
@@ -162,3 +148,24 @@
         Una vez que hayas abierto el turno podra comenzar a administrar las mesas.
 
         = link_to "Abrir turno", new_shift_path
+
+:javascript
+
+  $(".expand-item-row").on("click", function(e){
+    e.preventDefault();
+    ticket_id = $(this).data("ticket-id");
+    type = $(this).data("type");
+    item_id = type === "promotion" ? $(this).data("promo-id") : $(this).data("item-id");
+    $.ajax({
+      url: "/kitchen/"+ticket_id+"/show/" + item_id + "/" + type,
+      type: "GET",
+      dataType: "html",
+      success: function(data){
+        $("#modal-expand_item").html(data).modal('setting', {
+          onApprove: function() {
+            return true;
+          }
+        }).modal('show');
+      }
+    });
+  });

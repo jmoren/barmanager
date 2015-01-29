@@ -11,4 +11,8 @@ class ItemTicket < ActiveRecord::Base
     price = self.item.price
     self.sub_total = price * self.quantity
   end
+
+  def full_delivered?
+    delivered
+  end
 end

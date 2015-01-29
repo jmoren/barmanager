@@ -7,6 +7,10 @@
   .field
     = f.label :name, "Nombre"
     = f.text_field :name, placeholder: "Agregar nombre", autocomplete: "off"
+  .field
+    = f.label :kitchen, "Cocina"
+    .ui.toggle.checkbox
+      = f.check_box :kitchen
 
   .ui.divider
   .field
