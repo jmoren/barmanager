@@ -5,6 +5,13 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+admin = User.create({
+  username: "admin",
+  email: "admin@email.com",
+  password: "admin123",
+  password_confirmation: "admin123",
+  admin: true
+})
 
 45.times do |i|
   Table.create( number: i + 1, status: 'closed')

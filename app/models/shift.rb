@@ -7,6 +7,11 @@ class Shift < ActiveRecord::Base
   validates :opening_cash, numericality: true, on: :create
   validates :closing_cash, numericality: true, on: :update
 
+  # to use with cancan
+  def active
+    is_open?
+  end
+
   def is_open?
     self.close.nil?
   end

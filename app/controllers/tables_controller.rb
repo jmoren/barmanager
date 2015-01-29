@@ -1,4 +1,6 @@
 class TablesController < ApplicationController
+  load_and_authorize_resource
+
   before_action :set_table, only: [:show, :edit, :update, :destroy, :open, :close]
 
   # GET /tables
@@ -31,7 +33,7 @@ class TablesController < ApplicationController
 
   # GET /tables/new
   def new
-    @table = Table.new(number: Table.maximum(:number).to_i + 1)
+    @table = Table.new
   end
 
   # GET /tables/1/edit
@@ -98,6 +100,6 @@ class TablesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def table_params
-      params.require(:table).permit(:number, :description)
+      params.require(:table).permit(:description, :color)
     end
 end

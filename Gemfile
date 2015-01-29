@@ -29,7 +29,7 @@ gem 'kaminari'
 gem 'pg'
 
 gem 'devise'
-
+gem 'cancancan', '~> 1.10'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 

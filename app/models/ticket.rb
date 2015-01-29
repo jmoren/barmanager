@@ -20,6 +20,7 @@ class Ticket < ActiveRecord::Base
   validates :status, inclusion: ['open', 'closed']
 
   before_create :set_serial_number
+  before_save :get_total
 
   def formatted_number
     "%0.6d" % self.number
@@ -40,5 +41,10 @@ class Ticket < ActiveRecord::Base
 
   def has_items?
     items.size > 0 || promotions.size > 0
+  end
+
+  def get_total
+    self.total = item_tickets.sum(:sub_total) + promotion_tickets.sum(:subtotal) + additionals.sum(:amount)
+    self.total
   end
 end

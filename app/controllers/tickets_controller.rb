@@ -1,4 +1,6 @@
 class TicketsController < ApplicationController
+  load_and_authorize_resource
+
   before_action :set_ticket, only: [:show, :edit, :update, :destroy]
 
   # GET /tickets
@@ -89,7 +91,7 @@ class TicketsController < ApplicationController
       @table.open!(@ticket)
       old_table.close!
 
-      msg = "Se movio el ticket a la mesa #{@table.number}"
+      msg = "Se movio el ticket a la mesa #{@table.name}"
     end
 
     flash[:notice] = msg

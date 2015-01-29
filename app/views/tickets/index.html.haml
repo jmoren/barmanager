@@ -1,6 +1,6 @@
 - if params[:table_id]
   %h2.ui.header.left.floated
-    = "Tickets de la Mesa ##{@table.number}"
+    = "Tickets de la Mesa ##{@table.name}"
   %h2.ui.header.right.floated
     = link_to "Ver todos", tickets_path, class: "ui button teal"
 - else
@@ -21,7 +21,7 @@
       %th Total
       %th Estado
       %th
-      
+
     %tbody
       - @tickets.order("date").each do |ticket|
         %tr

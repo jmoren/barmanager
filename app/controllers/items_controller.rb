@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_item, only: [:show, :edit, :update, :destroy]
-
+  layout "admin"
   # GET /items
   # GET /items.json
   def index

@@ -1,16 +1,42 @@
 class ItemTicketsController < ApplicationController
   before_action :set_ticket
-  before_action :set_item_ticket, only: [:destroy]
-  
+  before_action :set_item_ticket, only: [:destroy, :increase, :decrease]
+
   def create
+
     @item_ticket = @ticket.item_tickets.new(item_ticket_params)
-    @item_ticket.save
-    redirect_to @item_ticket.ticket.table
+
+    existent_item_ticket = @ticket.item_tickets.where(item_id: @item_ticket.item_id).first
+    if existent_item_ticket
+      existent_item_ticket.quantity += @item_ticket.quantity
+      existent_item_ticket.save
+    else
+      @item_ticket.save
+    end
+    redirect_to @ticket.table
   end
 
   def destroy
     table = @item_ticket.ticket.table
     @item_ticket.destroy
+    redirect_to table
+  end
+
+  def increase
+    table = @item_ticket.ticket.table
+    @item_ticket.quantity += 1
+    @item_ticket.save
+    redirect_to table
+  end
+
+  def decrease
+    table = @item_ticket.ticket.table
+    if (@item_ticket.quantity == 1)
+      @item_ticket.destroy
+    else
+      @item_ticket.quantity -= 1
+      @item_ticket.save
+    end
     redirect_to table
   end
 
