@@ -113,6 +113,11 @@
       </div>
     </div>
     <div class="main container">
+      <% if alert %>
+        <div class="ui message error" style="margin: 10px;">
+          <%= alert %>
+        </div>
+      <% end %>
       <% if current_user %>
         <div id="open-tables">
           <div class="side">
@@ -157,11 +162,6 @@
         </div>
       <% end %>
       <div class="panel <%= current_user.nil? ? 'signin' : nil %>">
-        <% if alert %>
-          <div class="ui message error">
-            <%= alert %>
-          </div>
-        <% end %>
         <div class="segment ui">
           <%= yield %>
         </div>

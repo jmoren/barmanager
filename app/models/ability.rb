@@ -6,12 +6,15 @@ class Ability
       can :manage, :all
     else
       cannot :manage, User
-      cannot :read, Shift
-      can :update, Table
-      can :manage, ItemTicket
-      can :manage, PromotionTicket
-      can :manage, Additional
-      can [:create, :update], Shift
+      cannot :manage, Category
+
+      can :index, Item
+      can :index, Promotion
+
+      can [:read, :open], Table
+      can [:move_to, :edit, :update, :delete], Ticket
+      can :create, Shift
+      can :close, Shift, user_id: user.id
     end
   end
 end

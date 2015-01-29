@@ -31,7 +31,8 @@
     });
 
     $(".item-form input[name=code_number]").on("keyup", function(){
-      val = $(this).val();
+      var val = $(this).val();
+      console.log(val.length);
       if(val.length >= 1){
         $.ajax({
           url: "/items?code=" + val,

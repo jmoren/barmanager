@@ -1,4 +1,5 @@
 class PromotionsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_promotion, only: [:show, :edit, :update, :destroy, :add_item]
   layout "admin"
   # GET /promotions

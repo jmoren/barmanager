@@ -1,4 +1,5 @@
 class CategoriesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_category, except: [:new, :create, :index]
   layout "admin"
   def index
