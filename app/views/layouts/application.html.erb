@@ -54,30 +54,18 @@
             <i class="dropdown icon"></i>
             Configuracion
             <div class="menu">
-              <div class="ui dropdown item">
-                <i class="dropdown icon"></i>
+              <%= link_to items_path, class: "item" do %>
                 Items
-                <div class="menu">
-                  <%= link_to "Nuevo Item", new_item_path, class: "item" %>
-                  <%= link_to "Items", items_path, class: "item" %>
-                </div>
-              </div>
-              <div class="ui dropdown item">
                 <i class="dropdown icon"></i>
-                Promos
-                <div class="menu">
-                  <%= link_to "Nueva Promo", new_promotion_path, class: "item" %>
-                  <%= link_to "Promociones", promotions_path, class: "item" %>
-                </div>
-              </div>
-              <div class="ui dropdown item">
+              <% end %>
+              <%= link_to promotions_path, class: "item" do %>
+                Promociones
                 <i class="dropdown icon"></i>
+              <% end %>
+              <%= link_to categories_path, class: "item" do %>
                 Categorias
-                <div class="menu">
-                  <%= link_to "Nueva Categoria", new_category_path, class: "item"%>
-                  <%= link_to "Ver todas", categories_path, class: "item"%>
-                </div>
-              </div>
+                <i class="dropdown icon"></i>
+              <% end %>
               <%= link_to users_path, class: "item" do %>
                 Usuarios
                 <i class="dropdown icon"></i>
@@ -95,6 +83,10 @@
           <%= link_to shifts_path, class: "item" do %>
             <i class="icon time"></i>
             Turnos
+          <% end %>
+          <%= link_to statistics_path, class: "item" do %>
+            <i class="icon signal"></i>
+            Estadisticas
           <% end %>
           <%= link_to "#", class: "launch item" do %>
             <i class="icon star"></i> Favoritos
@@ -121,10 +113,23 @@
       <% if current_user %>
         <div id="open-tables">
           <div class="side">
+            <h4 class="ui header"> Turno actual</h4>
             <% if @current_shift %>
-              <h4 class="ui header"> Turno actual</h4>
-              <%= link_to @current_shift, class: "ui button orange fluid" do %>
-                <i class="icon idea"></i> Turno Actual
+              <div class="<%= @current_shift.has_open_tables? ? 'fluid' : 'two' %> ui buttons">
+                <%= link_to @current_shift, class: "ui button blue" do %>
+                  <i class="icon idea"></i> Ver
+                <% end %>
+                <% unless @current_shift.has_open_tables? %>
+                  <%= link_to close_shift_path(@current_shift), method: :put, class: "ui button" do %>
+                    <i class="icon lock"></i>
+                    Cerrar
+                  <% end %>
+                <% end %>
+              </div>
+            <% else %>
+              <%= link_to new_shift_path, class: "ui button blue fluid" do %>
+                <i class="icon unlock"></i>
+                Abrir turno
               <% end %>
             <% end %>
           </div>

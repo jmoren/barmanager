@@ -1,7 +1,8 @@
 class ShiftsController < ApplicationController
   load_and_authorize_resource
   before_action :set_shift, only: [:show, :edit, :update, :destroy]
-
+  layout "admin"
+  
   # GET /shifts
   # GET /shifts.json
   def index
@@ -28,10 +29,10 @@ class ShiftsController < ApplicationController
   def close
     @shift = Shift.find(params['id'])
     @shift.add_closed_data
-
+    url = current_user.admin? ? shifts_path : root_path
     respond_to do |format|
       if !@shift.has_open_tables? && @shift.save
-        format.html { redirect_to @shift, notice: 'Turno cerrado con exito' }
+        format.html { redirect_to url, notice: 'Turno cerrado con exito' }
         format.json { render action: 'show', status: :created, location: @shift }
       else
         format.html { render action: 'show' }
@@ -46,9 +47,10 @@ class ShiftsController < ApplicationController
     @shift = Shift.new(shift_params)
     @shift.open = DateTime.now
     @shift.user = current_user
+    url = current_user.admin? ? @shift : root_path
     respond_to do |format|
       if @shift.save
-        format.html { redirect_to @shift, notice: 'Turno abierto con exito' }
+        format.html { redirect_to url, notice: 'Turno abierto con exito' }
         format.json { render action: 'show', status: :created, location: @shift }
       else
         format.html { render action: 'new' }

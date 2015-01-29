@@ -3,7 +3,7 @@
   = @shift.open.strftime('%d/%m/%Y - %H:%M %p')
 .ui.header.right.floated
   - if @current_shift && @current_shift.id == @shift.id
-    .ui.button.blue
+    .ui.button.green
       Abrierto
     - unless @shift.has_open_tables?
       = link_to close_shift_path(@shift), method: :put, class: "ui button orange" do
@@ -11,32 +11,32 @@
         Cerrar
 
 .ui.divider.clearing
+- if current_user.admin?
+  .ui.message.center{class: @shift.is_open? ? 'negative' : 'positive'}
+    %div
+      %b= number_to_currency @total_tickets
+    %small
+      - if @shift.is_open?
+        PARCIAL VENTAS
+      - else
+        TOTAL VENDIDO
 
-.ui.message.center{class: @shift.is_open? ? 'negative' : 'positive'}
-  %div
-    %b= number_to_currency @total_tickets
-  %small
-    - if @shift.is_open?
-      PARCIAL VENTAS
-    - else
-      TOTAL VENDIDO
+  %table.ui.table
+    %tbody
+      %tr
+        %td Cierre:
+        %td= @shift.close.nil? ? "No dispobible" : "#{l @shift.close, format: '%d/%m/%Y - %H:%M %p'}"
+      %tr
+        %td Caja inicial:
+        %td= number_to_currency @shift.opening_cash.to_f
+      %tr
+        %td Gastos
+        %td= number_to_currency @total_expenses
+      %tr
+        %td Caja final:
+        %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses)
 
-%table.ui.table
-  %tbody
-    %tr
-      %td Cierre:
-      %td= @shift.close.nil? ? "No dispobible" : "#{l @shift.close, format: '%d/%m/%Y - %H:%M %p'}"
-    %tr
-      %td Caja inicial:
-      %td= number_to_currency @shift.opening_cash.to_f
-    %tr
-      %td Gastos
-      %td= number_to_currency @total_expenses
-    %tr
-      %td Caja final:
-      %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses)
-
-%h2.ui.divider.header.horizontal
+%h2.ui.header
   Gastos
 - if @shift.is_open?
   = render partial: '/expenses/form'
@@ -57,30 +57,31 @@
         .ui.button
           = "-#{number_to_currency @total_expenses}"
 
-%h2.ui.divider.header.horizontal
-  Tickets
-- if @shift.tickets.empty?
-  .ui.message.center
-    No hay tickets
-- else
-  %table.ui.table
-    %thead
-      %th{style: "width:15%"} Num
-      %th{style: "width:30%"} Mesa
-      %th{style: "width:20%"} Estado
-      %th.center.aligned Total
-    %tbody
-      - @shift.tickets.each do |ticket|
+- if current_user.admin?
+  %h2.ui.header
+    Tickets
+  - if @shift.tickets.empty?
+    .ui.message.center
+      No hay tickets
+  - else
+    %table.ui.table
+      %thead
+        %th{style: "width:15%"} Num
+        %th{style: "width:30%"} Mesa
+        %th{style: "width:20%"} Estado
+        %th.center.aligned Total
+      %tbody
+        - @shift.tickets.each do |ticket|
+          %tr
+            %td= ticket.formatted_number
+            %td= ticket.table.try(:name) || 'Mesa eliminada'
+            %td= ticket.status == 'closed' ? '<i class="icon lock"></i> Cerrado'.html_safe : '<i class="icon unlock"></i> Abierto'.html_safe
+            %td.center.aligned= number_to_currency ticket.total
         %tr
-          %td= ticket.formatted_number
-          %td= ticket.table.try(:name) || 'Mesa eliminada'
-          %td= ticket.status == 'closed' ? '<i class="icon lock"></i> Cerrado'.html_safe : '<i class="icon unlock"></i> Abierto'.html_safe
-          %td.center.aligned= number_to_currency ticket.total
-      %tr
-        %td{colspan: 3}
-        %td.center.aligned
-          .ui.button
-            = number_to_currency @total_tickets
+          %td{colspan: 3}
+          %td.center.aligned
+            .ui.button
+              = number_to_currency @total_tickets
 
 - unless @by_items.empty?
   .ui.grid.statistics
@@ -97,13 +98,9 @@
 .ui.divider
 
 .center
-  = link_to shifts_path, class: "ui button" do
+  = link_to current_user.admin? ? shifts_path : :back, class: "ui button" do
     %i.icon.arrow.left
     Volver
-
-  = link_to tables_path, class: "ui button orange" do
-    Mesas
-    %i.icon.arrow.right
 
 .center
   .ui.label.blue{style: "margin: 10px 0"}

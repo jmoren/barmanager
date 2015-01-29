@@ -1,4 +1,6 @@
 class StatisticsController < ApplicationController
+  before_action :authorize_admin
+  layout "admin"
   def index
     if params[:date]
       selected_date = Date.parse(params[:date])
@@ -26,5 +28,10 @@ class StatisticsController < ApplicationController
         end
       end
     end
+  end
+
+  private
+  def authorize_admin
+    redirect_to root_path, alert: "No tenes permisos" unless current_user.admin?
   end
 end

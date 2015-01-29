@@ -17,30 +17,18 @@
           <i class="dropdown icon"></i>
           Configuracion
           <div class="menu">
-            <div class="ui dropdown item">
-              <i class="dropdown icon"></i>
+            <%= link_to items_path, class: "item" do %>
               Items
-              <div class="menu">
-                <%= link_to "Nuevo Item", new_item_path, class: "item" %>
-                <%= link_to "Items", items_path, class: "item" %>
-              </div>
-            </div>
-            <div class="ui dropdown item">
               <i class="dropdown icon"></i>
-              Promos
-              <div class="menu">
-                <%= link_to "Nueva Promo", new_promotion_path, class: "item" %>
-                <%= link_to "Promociones", promotions_path, class: "item" %>
-              </div>
-            </div>
-            <div class="ui dropdown item">
+            <% end %>
+            <%= link_to promotions_path, class: "item" do %>
+              Promociones
               <i class="dropdown icon"></i>
+            <% end %>
+            <%= link_to categories_path, class: "item" do %>
               Categorias
-              <div class="menu">
-                <%= link_to "Nueva Categoria", new_category_path, class: "item"%>
-                <%= link_to "Ver todas", categories_path, class: "item"%>
-              </div>
-            </div>
+              <i class="dropdown icon"></i>
+            <% end %>
             <%= link_to users_path, class: "item" do %>
               Usuarios
               <i class="dropdown icon"></i>

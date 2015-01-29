@@ -1,0 +1,17 @@
+- if @current_shift
+  .ui.message.blue
+    .content
+      .header
+        Ya hay un turno abierto
+      %p
+        Ahora si podes abrir mesas y empezar a cargar tickets
+- else
+  .ui.message.icon.warning
+    %i.icon.food
+    .content
+      .header
+        Para comenzar debes abrir un turno
+      %p
+        Una vez que hayas abierto el turno podra comenzar a administrar las mesas.
+
+        = link_to "Abrir turno", new_shift_path

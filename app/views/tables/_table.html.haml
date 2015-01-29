@@ -1,10 +1,10 @@
 .item.table{class: "#{@table.try(:id) == table.id ? 'open' : ''}"}
   .content
-
     = link_to table, class: "header" do
       = table.name
-    .extra{ class: table.status == 'open' ? 'green' : '' }
-      .ui.label.tiny.status{class:table.status == 'open' ? 'green' : ''}
+    .extra
+      .ui.label.tiny.status
+        %i.icon.alarm{class: table.color}
         = table.status == 'open' ? 'Abierta' : 'Cerrada'
       %small.actions
         = link_to table, method: :delete, data: {confirm: "Estas seguro?"}, class: "action" do

@@ -8,8 +8,8 @@
         %p
           Con la mesa abierta, podras administrar el ticket hasta cerrar la venta.
   - else
-    %h1.ui.header.center
-      = @table.name
+    %h2.center.ui.header
+      = "Mesa #{@table.name}"
     .center
       -if @table.open? && @current_ticket
         - if !@current_ticket.has_items?
@@ -27,10 +27,7 @@
         = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
           %i.icon.unlock
           Abrir Mesa
-      = link_to tickets_path(table_id: @table.id), class: "ui button lebeled blue" do
-        %i.icon.file
-        Ver Tickets
-
+      
     - if @current_ticket
       .ui.divider
       .ui.label.orange{style: "float:right"}

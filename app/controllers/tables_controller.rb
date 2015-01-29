@@ -6,14 +6,10 @@ class TablesController < ApplicationController
   # GET /tables
   # GET /tables.json
   def index
-    @last_shift = Shift.last
-    @tables = Table.all
-    if request.xhr?
-      if params[:ticket_id]
-        @ticket = Ticket.find(params[:ticket_id])
-        @tables = Table.where(status: "closed")
-        render 'index', layout: false
-      end
+    if params[:ticket_id]
+      @ticket = Ticket.find(params[:ticket_id])
+      @tables = Table.where(status: "closed")
+      render 'index', layout: false
     end
   end
 

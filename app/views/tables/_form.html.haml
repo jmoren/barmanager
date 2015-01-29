@@ -5,10 +5,10 @@
         - @table.errors.full_messages.each do |msg|
           %li= msg
     .ui.divider
-  .ui.grid
-    .ui.wide.column.seven.field
+  .three.fields
+    .field
       = f.text_field :description, placeholder: "Agrega una descripcion"
-    .ui.wide.column.four.field
+    .field
       .ui.selection.dropdown.item
         = f.hidden_field :color
         .text Color
@@ -31,7 +31,7 @@
           .item{ data: {value: "pink"}}
             .ui.pink.empty.circular.label
             Rosa
-    .ui.wide.column.five.field
+    .field
       %button.ui.button.green{type: "submit"}
         Guardar
-      = link_to "Cancelar", @table.new_record? ? tables_path : @table, class: "ui button"
+      = link_to "Cancelar", :back, class: "ui button"

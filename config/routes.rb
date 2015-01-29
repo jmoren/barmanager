@@ -41,5 +41,5 @@ BarManager::Application.routes.draw do
   end
 
   resources :users
-  root to: "statistics#index"
+  root to: "home#index"
 end
