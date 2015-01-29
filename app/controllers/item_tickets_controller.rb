@@ -31,6 +31,7 @@ class ItemTicketsController < ApplicationController
     new_item_ticket = @ticket.item_tickets.where(item_id: params[:id]).last.dup
     table = @ticket.table
     new_item_ticket.quantity = 1
+    new_item_ticket.delivered = false
     new_item_ticket.save
     redirect_to table
   end
