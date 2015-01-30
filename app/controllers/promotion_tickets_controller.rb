@@ -1,6 +1,6 @@
 class PromotionTicketsController < ApplicationController
   before_action :set_ticket
-  before_action :set_promotion_ticket, only: [:destroy, :increase_delivered, :increase, :decrease]
+  before_action :set_promotion_ticket, only: [:destroy, :increase_delivered, :decrease]
 
   def create
     @promotion_ticket = @ticket.promotion_tickets.new(promotion_ticket_params)
@@ -20,27 +20,24 @@ class PromotionTicketsController < ApplicationController
       prom_tick_item.delivered += 1
       prom_tick_item.save
     end
-    redirect_to @promotion_ticket.ticket.table
+    redirect_to :back
   end
 
   def increase
-    table = @promotion_ticket.ticket.table
-    @promotion_ticket.quantity += 1
-    @promotion_ticket.set_sub_total
-    @promotion_ticket.save
+    table = @ticket.table
+    new_promotion_ticket = @ticket.promotion_tickets.where(promotion_id: params[:id]).last.dup
+    new_promotion_ticket.quantity = 1
+    new_promotion_ticket.set_sub_total
+    new_promotion_ticket.save
     redirect_to table
   end
 
-  def decrease
-    table = @promotion_ticket.ticket.table
-    if (@promotion_ticket.quantity == 1)
-      @promotion_ticket.destroy
-    else
-      @promotion_ticket.quantity -= 1
-      @promotion_ticket.set_sub_total
-      @promotion_ticket.save
-    end
-    redirect_to table
+  def destroy_all
+    @table = @ticket.table
+
+    @ticket.promotion_tickets.where(promotion_id: params[:promotion_id]).destroy_all
+
+    redirect_to @table
   end
 
   private

@@ -31,4 +31,17 @@ class Table < ActiveRecord::Base
     self.update(status: "closed")
   end
 
+  def kitchen_item_tickets
+    self.tickets.where(status: :open).last.item_tickets
+      .joins(item: [:category]).where("categories.kitchen = ? and item_tickets.delivered = ?", true, false)
+      .order("item_tickets.created_at desc")
+  end
+
+  def kitchen_promotion_tickets
+    self.tickets.where(status: :open).last.promotion_tickets
+      .joins([{promotion: {items: :category}}, :promotion_ticket_items])
+      .where("categories.kitchen = ?", true)
+      .order("promotion_tickets.created_at desc")
+  end
+
 end

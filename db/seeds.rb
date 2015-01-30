@@ -14,7 +14,7 @@ admin = User.create({
 })
 
 45.times do |i|
-  Table.create( number: i + 1, status: 'closed')
+  Table.create(status: 'closed')
 end
 
 Category.create([

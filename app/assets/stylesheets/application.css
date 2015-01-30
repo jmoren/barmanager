@@ -127,3 +127,7 @@ body{
   -ms-transition: 0.3s width ease, 0.5s transform ease;
   transition: 0.3s width ease, 0.5s transform ease;
 }
+
+i.icon.big-icon {
+  font-size: 2em;
+}

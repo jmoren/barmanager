@@ -1,0 +1,48 @@
+%i.close.icon
+.header
+  %h2.ui.left.floated.header
+    Mesa
+    = @table
+  %h2.ui.right.floated.header
+    Ticket Nro
+    = @current_ticket.formatted_number
+  .clearfix
+
+.content
+  %table.ui.celled.structured.table
+    %thead
+      %tr
+        %th.center.aligned Hora
+        %th.center.aligned pedido
+        %th.center.aligned Cantidad
+        %th.center.aligned estado
+        %th.center.aligned
+    %tbody
+      - @promo_tickets.each do |pt|
+        %tr
+          %td.center.aligned= pt.created_at.strftime('%H:%M %p')
+          %td.center.aligned
+            = pt.promotion.description
+            - unless pt.full_delivered?
+              .ui.list{style: "font-size: 12px; margin-top: 10px"}
+                - pt.promotion_ticket_items.each do |prod|
+                  .item{style: "background: #f1f1f1; padding: 5px;border-bottom: solid 1px #ccc"}
+                    .content
+                      .header= prod.promotion_item.item.description
+                      .meta
+                        %span.price
+                          = "Total #{(prod.promotion_item.quantity * pt.quantity)} - Entregado: #{prod.delivered}"
+                          - unless prod.delivered?
+                            = link_to increase_delivered_ticket_promotion_ticket_path(@current_ticket, pt, prod_id: prod.id),
+                              method: :put, style: "float: right" do
+                              %i.icon.plus.circle
+          %td.center.aligned= pt.quantity
+          %td.center.aligned
+            - if pt.full_delivered?
+              %i.icon.checkmark.box.big-icon
+            - else
+              %i.icon.wait.orange.big-icon
+          %td.center.aligned
+            - unless pt.full_delivered?
+              = link_to ticket_promotion_ticket_path(@current_ticket, pt), method: :delete, class: "ui button red icon" do
+                %i.trash.icon

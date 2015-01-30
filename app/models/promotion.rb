@@ -1,6 +1,8 @@
 class Promotion < ActiveRecord::Base
   has_many :promotion_items, dependent: :destroy
 
+  has_many :items, through: :promotion_items
+
   validates :description, :code, :day_price, :night_price, presence: true
   validates :day_price, :night_price, numericality: { greater_than: 0 }
   validates :code, uniqueness: true
