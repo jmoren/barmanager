@@ -84,6 +84,16 @@
             <i class="icon time"></i>
             Turnos
           <% end %>
+          <%= link_to kitchen_path, class: "item" do %>
+              <i class="icon food"></i>
+              Cocina
+            <% end %>
+          <% if current_user.admin? %>
+            <%= link_to daily_cashes_path, class: "item" do %>
+              <i class="icon food"></i>
+              Cierres Diario
+            <% end %>
+          <% end %>
           <%= link_to statistics_path, class: "item" do %>
             <i class="icon signal"></i>
             Estadisticas

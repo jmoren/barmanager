@@ -1,7 +1,7 @@
 class Shift < ActiveRecord::Base
   belongs_to :user
   has_many :tickets
-  has_many :expenses
+  has_many :expenses, as: :shift_or_daily_cash
 
   validates :opening_cash, presence: true
   validates :opening_cash, numericality: true, on: :create

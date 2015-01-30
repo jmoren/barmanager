@@ -13,6 +13,13 @@ BarManager::Application.routes.draw do
     resources :expenses, only: [:create, :destroy]
   end
 
+  resources :daily_cashes do
+    member do
+      put :close
+    end
+    resources :expenses, only: [:create, :destroy]
+  end
+
   resources :statistics, only: [:index]
 
   resources :categories
@@ -46,6 +53,6 @@ BarManager::Application.routes.draw do
   resources :users
   get 'kitchen', to: 'kitchen#index'
   get 'kitchen/:ticket_id/show/:item_id/:type', to: 'kitchen#show'
-
+  get 'close_day', to: 'daily_cashes#show_daily_cash'
   root to: "home#index"
 end

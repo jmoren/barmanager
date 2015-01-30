@@ -1,0 +1,20 @@
+%h2.ui.header.left.floated
+  Cierres diarios
+
+.ui.clearing.divider
+
+%table.table.ui
+  %thead
+    %th Fecha
+    %th Estado
+    %th Caja final
+    %th
+  %tbody
+    - @daily_cashes.each do |dc|
+      %tr{class: dc.created_at == Date.today ? 'positive' : ''}
+        %td= dc.date.strftime('%d/%m/%Y - %H:%M %p')
+        %td= dc.close ? 'Cerrado' : 'No cerrado'
+        %td= number_to_currency dc.total
+        %td
+          = link_to dc, class: "ui button mini icon tooltip", data: { content: "Ver detalles", variation: "inverted"} do
+            %i.icon.search

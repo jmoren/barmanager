@@ -39,7 +39,7 @@
 %h2.ui.header
   Gastos
 - if @shift.is_open?
-  = render partial: '/expenses/form'
+  = render partial: '/expenses/form', locals: { shift_or_daily_cash: @shift }
 
 %table.ui.table
   %thead

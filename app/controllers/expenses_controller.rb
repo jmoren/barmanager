@@ -1,8 +1,9 @@
 class ExpensesController < ApplicationController
   def create
-    @shift = Shift.find(params[:shift_id])
-    @expense = @shift.expenses.create(expense_params)
-    redirect_to @shift
+    type = params[:type]
+    owner = type == "Shift" ? Shift.find(params[:shift_id]) : DailyCash.find(params[:daily_cash_id])
+    @expense = owner.expenses.create(expense_params)
+    redirect_to :back
   end
 
   def destroy
