@@ -22,7 +22,7 @@ class Table < ActiveRecord::Base
       ticket.date     = Time.now
       ticket.total    = 0
       ticket.status   = "open"
-      ticket.shift    = Shift.last
+      ticket.shift    = Shift.last_open
       ticket.save
     end
   end
@@ -42,6 +42,7 @@ class Table < ActiveRecord::Base
       .joins([{promotion: {items: :category}}, :promotion_ticket_items])
       .where("categories.kitchen = ?", true)
       .order("promotion_tickets.created_at desc")
+      .uniq
   end
 
 end

@@ -84,4 +84,23 @@ $(document).ready(function(){
     event.preventDefault();
   });
 
+
+  $(".expand-item-row").on("click", function(e){
+    e.preventDefault();
+    ticket_id = $(this).data("ticket-id");
+    type = $(this).data("type");
+    item_id = type === "promotion" ? $(this).data("promo-id") : $(this).data("item-id");
+    $.ajax({
+      url: "/kitchen/"+ticket_id+"/show/" + item_id + "/" + type,
+      type: "GET",
+      dataType: "html",
+      success: function(data){
+        $("#modal-expand_item").html(data).modal('setting', {
+          onApprove: function() {
+            return true;
+          }
+        }).modal('show');
+      }
+    });
+  });
 });

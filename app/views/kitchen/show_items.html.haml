@@ -1,8 +1,7 @@
 %i.close.icon
 .header
   %h2.ui.left.floated.header
-    Mesa
-    = @table
+    = @table.nil? ? "Para llevar" : "Mesa #{@table.name}"
   %h2.ui.right.floated.header
     Ticket Nro
     = @current_ticket.formatted_number

@@ -5,13 +5,14 @@ class ItemTicketsController < ApplicationController
   def create
     @item_ticket = @ticket.item_tickets.new(item_ticket_params)
     @item_ticket.save
-    redirect_to @item_ticket.ticket.table
+    dest = @item_ticket.ticket.table || @item_ticket.ticket
+    redirect_to dest
   end
 
   def destroy
-    table = @item_ticket.ticket.table
+    dest = @item_ticket.ticket.table || @item_ticket.ticket
     @item_ticket.destroy
-    redirect_to table
+    redirect_to dest
   end
 
   def deliver
@@ -20,11 +21,11 @@ class ItemTicketsController < ApplicationController
   end
 
   def destroy_all
-    @table = @ticket.table
+    dest = @ticket.table || @ticket
 
     @ticket.item_tickets.where(item_id: params[:item_id]).destroy_all
 
-    redirect_to @table
+    redirect_to dest
   end
 
   def increase
@@ -33,7 +34,7 @@ class ItemTicketsController < ApplicationController
     new_item_ticket.quantity = 1
     new_item_ticket.delivered = false
     new_item_ticket.save
-    redirect_to table
+    redirect_to table.nil? ? @ticket : table
   end
 
   private

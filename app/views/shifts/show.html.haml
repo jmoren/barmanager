@@ -5,13 +5,13 @@
   - if @current_shift && @current_shift.id == @shift.id
     .ui.button.green
       Abrierto
-    - unless @shift.has_open_tables?
+    - unless @shift.has_open_tickets?
       = link_to close_shift_path(@shift), method: :put, class: "ui button orange" do
         %i.icon.lock
         Cerrar
 
 .ui.divider.clearing
-- if current_user.admin?
+- if current_user.admin? || !@shift.is_open?
   .ui.message.center{class: @shift.is_open? ? 'negative' : 'positive'}
     %div
       %b= number_to_currency @total_tickets
@@ -57,7 +57,7 @@
         .ui.button
           = "-#{number_to_currency @total_expenses}"
 
-- if current_user.admin?
+- if current_user.admin? || !@shift.is_open?
   %h2.ui.header
     Tickets
   - if @shift.tickets.empty?
@@ -74,7 +74,7 @@
         - @shift.tickets.each do |ticket|
           %tr
             %td= ticket.formatted_number
-            %td= ticket.table.try(:name) || 'Mesa eliminada'
+            %td= ticket.table.try(:name) || 'Para llevar'
             %td= ticket.status == 'closed' ? '<i class="icon lock"></i> Cerrado'.html_safe : '<i class="icon unlock"></i> Abierto'.html_safe
             %td.center.aligned= number_to_currency ticket.total
         %tr

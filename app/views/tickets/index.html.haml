@@ -6,7 +6,8 @@
 - else
   %h2.ui.header.left.floated
     Todos los Tickets
-
+  %h2.ui.header.right.floated
+    = link_to "Ticket para llevar", tickets_path(q: 'noTable'), class: "ui button teal"
 .ui.divider.clearing
 
 - if @tickets.empty?
@@ -16,6 +17,7 @@
 - else
   %table.ui.table
     %thead
+      %th #
       %th Mesa
       %th Fecha
       %th Total
@@ -25,12 +27,20 @@
     %tbody
       - @tickets.order("date").each do |ticket|
         %tr
-          %td= ticket.table.try(:name) || 'Mesa eliminada'
+          %td= ticket.shift_id
+          %td
+            - if ticket.table
+              = link_to ticket.table.name, ticket.table
+            - else
+              Para llevar
           %td= ticket.date.strftime("%d/%m/%Y")
           %td= number_to_currency ticket.total
           %td= ticket.status == 'closed' ? "Cerrado" : "Abierto"
           %td
             = link_to ticket, class: "ui button icon mini circular basic orange" do
               %i.icon.external.arrow.right
+            - if ticket.table && ticket.open?
+              = link_to unlink_table_ticket_path(ticket), method: :patch, class: "ui button icon mini circular basic red" do
+                %i.icon.remove
 
   = paginate @tickets

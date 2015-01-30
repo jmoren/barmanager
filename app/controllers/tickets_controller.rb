@@ -1,16 +1,20 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_ticket, only: [:show, :edit, :update, :destroy]
+  before_action :set_ticket, only: [:show, :edit, :update, :destroy, :unlink_table]
 
   # GET /tickets
   # GET /tickets.json
   def index
     if params[:table_id]
       @table   = Table.find(params[:table_id])
-      @tickets = Ticket.where(table_id: params[:table_id]).page params[:page]
+      @tickets = Ticket.where(table_id: params[:table_id]).order(created_at: :desc).page params[:page]
     else
-      @tickets = Ticket.all.page params[:page]
+      if params[:q].present? && params[:q] == 'noTable'
+        @tickets = Ticket.without_table.order(created_at: :desc).page params[:page]
+      else
+        @tickets = Ticket.all.order(created_at: :desc).page params[:page]
+      end
     end
   end
 
@@ -22,6 +26,12 @@ class TicketsController < ApplicationController
   # GET /tickets/new
   def new
     @ticket = Ticket.new
+    @ticket.date     = Time.now
+    @ticket.total    = 0
+    @ticket.status   = "open"
+    @ticket.shift    = Shift.last_open
+    @ticket.save
+    redirect_to @ticket
   end
 
   # GET /tickets/1/edit
@@ -48,10 +58,11 @@ class TicketsController < ApplicationController
   # PATCH/PUT /tickets/1
   # PATCH/PUT /tickets/1.json
   def update
+    dest = @ticket.table || @ticket
     respond_to do |format|
       if @ticket.update(ticket_params)
         @ticket.table.close!
-        format.html { redirect_to @ticket.table, notice: 'Ticket was successfully updated.' }
+        format.html { redirect_to dest , notice: 'Ticket was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -89,7 +100,7 @@ class TicketsController < ApplicationController
       old_table = @ticket.table
       @ticket.update(table_id: @table.id)
       @table.open!(@ticket)
-      old_table.close!
+      old_table.close! if old_table
 
       msg = "Se movio el ticket a la mesa #{@table.name}"
     end
@@ -98,6 +109,21 @@ class TicketsController < ApplicationController
     redirect_to @ticket.table
   end
 
+  def close
+    if @ticket.has_items?
+      @ticket.close!
+    else
+      @ticket.destroy
+    end
+    redirect_to tickets_path(q: 'noTable')
+  end
+
+  def unlink_table
+    table = @ticket.table
+    @ticket.update(table_id: nil)
+    table.close! if table
+    redirect_to @ticket.open? ? @ticket : tickets_path
+  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket

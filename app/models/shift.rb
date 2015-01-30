@@ -16,8 +16,8 @@ class Shift < ActiveRecord::Base
     self.close.nil?
   end
 
-  def has_open_tables?
-    Table.where(status: :open).count > 0
+  def has_open_tickets?
+    Ticket.where(status: :open, shift_id: self.id).count > 0
   end
 
   def total_expenses

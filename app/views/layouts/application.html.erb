@@ -115,11 +115,11 @@
           <div class="side">
             <h4 class="ui header"> Turno actual</h4>
             <% if @current_shift %>
-              <div class="<%= @current_shift.has_open_tables? ? 'fluid' : 'two' %> ui buttons">
+              <div class="<%= @current_shift.has_open_tickets? ? 'fluid' : 'two' %> ui buttons">
                 <%= link_to @current_shift, class: "ui button blue" do %>
                   <i class="icon idea"></i> Ver
                 <% end %>
-                <% unless @current_shift.has_open_tables? %>
+                <% unless @current_shift.has_open_tickets? %>
                   <%= link_to close_shift_path(@current_shift), method: :put, class: "ui button" do %>
                     <i class="icon lock"></i>
                     Cerrar
@@ -135,6 +135,9 @@
           </div>
           <div class="panel">
             <h4 class="ui header"> Mesas abiertas</h4>
+            <%= link_to new_ticket_path, class: "ui basic active button teal", style: "float: right" do %>
+              <i class="icon send"></i> Para llevar
+            <% end %>
             <% @open_tables.each do |table| %>
               <%= link_to table, class: "ui #{'basic active' unless @table.try(:id) == table.id} button #{table.color}" do %>
                 <i class="icon food"></i> <%= table.name %>

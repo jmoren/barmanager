@@ -8,11 +8,10 @@ class Ability
       can :index, Promotion
       can :index, Item
       can :index, Category
-
+      can :manage, Ticket
       can [:read, :open, :close], Table
-      can [:move_to, :edit, :update, :destroy], Ticket
-      can :create, Shift
       can [:close, :show], Shift, user_id: user.id
+      can [:create, :index], Shift
     end
   end
 end

@@ -11,7 +11,7 @@
       - unless ki.full_delivered?
         %tr
           %td.center.aligned= ki.ticket.formatted_number
-          %td.center.aligned= ki.ticket.table.name
+          %td.center.aligned= ki.ticket.table.try(:name) || "Para llevar"
           %td.center.aligned= ki.created_at.strftime('%H:%M %p')
           %td
             .ui.divided.selection.list
@@ -20,7 +20,7 @@
                   .ui.horizontal.label
                     = ki.quantity
                   = ki.item.description
-                  = link_to deliver_ticket_item_ticket_path(ki.ticket, ki), method: :put, style: "float: right", class: "ui button green icon mini" do
+                  = link_to deliver_ticket_item_ticket_path(ki.ticket, ki, return: true), method: :put, style: "float: right", class: "ui button green icon mini" do
                     %i.sign.out.icon
               - else
                 - ki.promotion_ticket_items.each do |promo_ticket_item|
@@ -32,8 +32,5 @@
                         = promo_ticket_item.delivered
                       = promo_ticket_item.promotion_item.item.description
                       - if (promo_ticket_item.promotion_item.quantity * ki.quantity) > promo_ticket_item.delivered
-                        = link_to increase_delivered_ticket_promotion_ticket_path(ki.ticket, ki, prod_id: promo_ticket_item.id), method: :put, style: "float: right", class: "ui button green icon mini" do
+                        = link_to increase_delivered_ticket_promotion_ticket_path(ki.ticket, ki, prod_id: promo_ticket_item.id, return: true), method: :put, style: "float: right", class: "ui button green icon mini" do
                           %i.sign.out.icon
-
-
-

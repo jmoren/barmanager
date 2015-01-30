@@ -23,11 +23,14 @@
         = link_to "#", class: "change-table ui labeled icon button", data: { id: @current_ticket.id } do
           %i.icon.refresh
           Cambiar Mesa
+        = link_to unlink_table_ticket_path(@current_ticket), method: :patch, class: "ui button icon labeled blue" do
+          %i.icon.remove
+          Remover de la mesa
       - else
         = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
           %i.icon.unlock
           Abrir Mesa
-      
+
     - if @current_ticket
       .ui.divider
       .ui.label.orange{style: "float:right"}
@@ -145,24 +148,3 @@
         Una vez que hayas abierto el turno podra comenzar a administrar las mesas.
 
         = link_to "Abrir turno", new_shift_path
-
-:javascript
-
-  $(".expand-item-row").on("click", function(e){
-    e.preventDefault();
-    ticket_id = $(this).data("ticket-id");
-    type = $(this).data("type");
-    item_id = type === "promotion" ? $(this).data("promo-id") : $(this).data("item-id");
-    $.ajax({
-      url: "/kitchen/"+ticket_id+"/show/" + item_id + "/" + type,
-      type: "GET",
-      dataType: "html",
-      success: function(data){
-        $("#modal-expand_item").html(data).modal('setting', {
-          onApprove: function() {
-            return true;
-          }
-        }).modal('show');
-      }
-    });
-  });

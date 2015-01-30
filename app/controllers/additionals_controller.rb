@@ -4,13 +4,15 @@ class AdditionalsController < ApplicationController
   def create
     @additional = @ticket.additionals.new(additional_params)
     @additional.save
-    redirect_to @ticket.table
+    dest = @ticket.table || @ticket
+    redirect_to dest
   end
 
   def destroy
     @additional = @ticket.additionals.find(params[:id])
     @additional.destroy
-    redirect_to @ticket.table
+    dest = @ticket.table || @ticket
+    redirect_to dest
   end
 
 private

@@ -1,7 +1,7 @@
 class PromotionTicket < ActiveRecord::Base
   belongs_to :promotion
   belongs_to :ticket
-  has_many :promotion_ticket_items, dependent: :destroy
+  has_many   :promotion_ticket_items, dependent: :destroy
 
   validates :promotion_id, :quantity, presence: true
   validates :quantity, numericality: { only_integer: true, greater_than: 0 }

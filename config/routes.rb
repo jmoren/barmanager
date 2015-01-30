@@ -28,6 +28,8 @@ BarManager::Application.routes.draw do
 
   resources :tickets do
     patch :move_to, on: :member, as: :change
+    patch :unlink_table, on: :member, as: :unlink_table
+    patch :close, on: :member, as: :close
     resources :item_tickets do
       put :increase, on: :member
       put :deliver, on: :member

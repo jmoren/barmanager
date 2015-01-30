@@ -15,13 +15,14 @@ class Ticket < ActiveRecord::Base
   has_many :items, through: :item_tickets
   has_many :promotions, through: :promotion_tickets
 
-  validates :table_id, :shift_id, :date, :status, :total, presence: true
+  validates :shift_id, :date, :status, :total, presence: true
   validates :total, numericality: true
   validates :status, inclusion: ['open', 'closed']
 
   before_create :set_serial_number
   before_save :get_total
 
+  scope :without_table, -> { where(table_id: [nil, ""])}
   def formatted_number
     "%0.6d" % self.number
   end
@@ -40,7 +41,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def has_items?
-    items.size > 0 || promotions.size > 0
+    items.size > 0 || promotions.size > 0 || additionals.size > 0
   end
 
   def get_total
@@ -49,10 +50,31 @@ class Ticket < ActiveRecord::Base
   end
 
   def grouped_item_tickets
-    self.item_tickets.joins(:item).group(:item_id).select("sum(item_tickets.quantity) as quantity, sum(item_tickets.sub_total) as sub_total, item_id,  items.id").references(:item)
+    self.item_tickets.joins(:item)
+      .group(:item_id)
+      .select("sum(item_tickets.quantity) as quantity, sum(item_tickets.sub_total) as sub_total, item_id,  items.id")
+      .references(:item)
   end
 
   def grouped_promotion_tickets
-    self.promotion_tickets.joins(:promotion).group(:promotion_id).select("sum(promotion_tickets.quantity) as quantity, sum(promotion_tickets.subtotal) as subtotal, promotion_id, promotions.id").references(:promotion)
+    self.promotion_tickets.joins(:promotion)
+      .group(:promotion_id)
+      .select("sum(promotion_tickets.quantity) as quantity, sum(promotion_tickets.subtotal) as subtotal, promotion_id, promotions.id")
+      .references(:promotion)
+  end
+
+  def item_tickets_to_kitchen
+    self.item_tickets.joins(item: [:category])
+        .where("categories.kitchen = ? and item_tickets.delivered = ?", true, false)
+        .order("item_tickets.created_at desc")
+        .flatten.compact
+  end
+
+  def promotion_tickets_to_kitchen
+    self.promotion_tickets
+        .joins([{promotion: {items: :category}}, :promotion_ticket_items])
+        .where("categories.kitchen = ?", true)
+        .order("promotion_tickets.created_at desc")
+        .uniq
   end
 end
