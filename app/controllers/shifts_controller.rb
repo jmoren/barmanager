@@ -14,12 +14,15 @@ class ShiftsController < ApplicationController
   def show
     @total_tickets  = @shift.total_tickets
     @total_expenses = @shift.total_expenses
+    @total_extractions = @shift.total_extractions
     @by_items = @shift.count_items
   end
 
   # GET /shifts/new
   def new
     @shift = Shift.new(open: DateTime.now)
+    last_shift = Shift.order(close: :desc).first
+    @shift.opening_cash = last_shift.closing_cash.to_f - last_shift.total_extractions
   end
 
   # GET /shifts/1/edit
@@ -27,7 +30,7 @@ class ShiftsController < ApplicationController
   end
 
   def close
-    @shift = Shift.find(params['id'])
+    @shift = Shift.includes(:user).find(params['id'])
     @shift.add_closed_data
     url = current_user.admin? ? shifts_path : root_path
     respond_to do |format|
@@ -44,7 +47,7 @@ class ShiftsController < ApplicationController
   # POST /shifts
   # POST /shifts.json
   def create
-    @shift = Shift.new(shift_params)
+    @shift = Shift.new(opening_cash: params[:opening_cash])
     @shift.open = DateTime.now
     @shift.user = current_user
     url = current_user.admin? ? @shift : root_path
@@ -54,20 +57,6 @@ class ShiftsController < ApplicationController
         format.json { render action: 'show', status: :created, location: @shift }
       else
         format.html { render action: 'new' }
-        format.json { render json: @shift.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /shifts/1
-  # PATCH/PUT /shifts/1.json
-  def update
-    respond_to do |format|
-      if @shift.update(shift_params)
-        format.html { redirect_to @shift, notice: 'Shift was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
         format.json { render json: @shift.errors, status: :unprocessable_entity }
       end
     end
@@ -87,10 +76,5 @@ class ShiftsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_shift
       @shift = Shift.find(params[:id])
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def shift_params
-      params.require(:shift).permit(:open, :close, :opening_cash, :closing_cash)
     end
 end

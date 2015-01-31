@@ -58,11 +58,10 @@ class TicketsController < ApplicationController
   # PATCH/PUT /tickets/1
   # PATCH/PUT /tickets/1.json
   def update
-    dest = @ticket.table || @ticket
     respond_to do |format|
       if @ticket.update(ticket_params)
         @ticket.table.close!
-        format.html { redirect_to dest , notice: 'Ticket was successfully updated.' }
+        format.html { redirect_to @ticket , notice: 'Ticket was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -91,7 +90,6 @@ class TicketsController < ApplicationController
 
   def move_to
     @ticket = Ticket.find(params[:id])
-    new_table = params[:new_table]
     @table = Table.find(params[:ticket][:table_id])
 
     if @table.open?
@@ -114,8 +112,8 @@ class TicketsController < ApplicationController
       @ticket.close!
     else
       @ticket.destroy
+      redirect_to tickets_path(q: 'noTable')
     end
-    redirect_to tickets_path(q: 'noTable')
   end
 
   def unlink_table

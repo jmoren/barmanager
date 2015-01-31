@@ -35,11 +35,14 @@
       %tr
         %td Caja final:
         %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses)
+      %tr
+        %td Caja inicial proximo turno:
+        %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses - @total_extractions)
 
 %h2.ui.header
   Gastos
 - if @shift.is_open?
-  = render partial: '/expenses/form', locals: { shift_or_daily_cash: @shift }
+  = render partial: '/expenses/form', locals: { shift_or_user: @shift }
 
 %table.ui.table
   %thead
@@ -56,6 +59,27 @@
       %td.center.aligned
         .ui.button
           = "-#{number_to_currency @total_expenses}"
+
+%h2.ui.header
+  Extracciones
+- if @shift.is_open?
+  = render partial: '/extractions/form', locals: { shift: @shift }
+
+%table.ui.table
+  %thead
+    %th{style: "width:65%"} Descripcion
+    %th.center.aligned Monto
+  %tbody
+    - @shift.extractions.each do |extraction|
+      - unless extraction.new_record?
+        %tr
+          %td= extraction.description
+          %td.center.aligned= number_to_currency extraction.amount
+    %tr
+      %td
+      %td.center.aligned
+        .ui.button
+          = "-#{number_to_currency @total_extractions}"
 
 - if current_user.admin? || !@shift.is_open?
   %h2.ui.header

@@ -6,6 +6,11 @@ class User < ActiveRecord::Base
          :authentication_keys => [:login]
 
   has_many :shifts
+  has_many :expenses, as: :shift_or_user
+
+  def total_expenses(date)
+    expenses.where(date: date).sum(:amount)
+  end
 
   attr_accessor :login
 

@@ -1,5 +1,5 @@
 @media print {
-  div#side, div.menu.fixed, a.ui.button {
+  div.side, div.menu.fixed, a.ui.button, button.print {
     display: none;
   }
 

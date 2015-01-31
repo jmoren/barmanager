@@ -1,19 +1,20 @@
 class ExpensesController < ApplicationController
   def create
-    type = params[:type]
-    owner = type == "Shift" ? Shift.find(params[:shift_id]) : DailyCash.find(params[:daily_cash_id])
+    is_shift = params[:user_id].nil?
+    owner = is_shift ? Shift.find(params[:shift_id]) : User.find(params[:user_id])
     @expense = owner.expenses.create(expense_params)
     redirect_to :back
   end
 
   def destroy
-    @shift = Shift.find(params[:shift_id])
-    @expense = @shift.expenses.find(params[:id])
+    is_shift = params[:user_id].nil?
+    owner = is_shift ? Shift.find(params[:shift_id]) : User.find(params[:user_id])
+    @expense = owner.expenses.find(params[:id])
     @expense.destroy
-    redirect_to @shift
+    redirect_to :back
   end
 private
   def expense_params
-    params.require(:expense).permit(:description, :amount)
+    params.require(:expense).permit(:description, :amount, :type)
   end
 end

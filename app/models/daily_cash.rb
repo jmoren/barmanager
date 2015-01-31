@@ -1,7 +1,6 @@
 class DailyCash < ActiveRecord::Base
-  has_many :expenses, as: :shift_or_daily_cash
 
-  def total_expenses
-    expenses.sum(:amount)
+  def self.last_closed
+    DailyCash.where(close: true).order(date: :desc).first
   end
 end

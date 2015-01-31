@@ -19,7 +19,7 @@
       %tr{class: shift.id == @current_shift.try(:id) ? 'positive' : ''}
         %td= shift.open.strftime('%d/%m/%Y - %H:%M %p')
         %td= shift.close.nil? ? '-----' : shift.close.strftime('%d/%m/%Y - %H:%M %p')
-        %td= shift.user.username
+        %td= shift.user.try(:username)
         %td
           - if current_user.admin? || shift.user.username == current_user.username
             = link_to shift, class: "ui button mini icon tooltip", data: { content: "Ver detalles", variation: "inverted"} do

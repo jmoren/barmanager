@@ -2,6 +2,10 @@ BarManager::Application.routes.draw do
 
   devise_for :users
 
+  resources :users do
+    resources :expenses, only: [:create, :destroy]
+  end
+
   resources :promotions do
     resources :promotion_items
   end
@@ -11,13 +15,13 @@ BarManager::Application.routes.draw do
       put :close
     end
     resources :expenses, only: [:create, :destroy]
+    resources :extractions, only: [:create, :destroy]
   end
 
   resources :daily_cashes do
     member do
       put :close
     end
-    resources :expenses, only: [:create, :destroy]
   end
 
   resources :statistics, only: [:index]

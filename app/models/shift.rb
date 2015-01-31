@@ -1,7 +1,8 @@
 class Shift < ActiveRecord::Base
   belongs_to :user
   has_many :tickets
-  has_many :expenses, as: :shift_or_daily_cash
+  has_many :expenses, as: :shift_or_user
+  has_many :extractions
 
   validates :opening_cash, presence: true
   validates :opening_cash, numericality: true, on: :create
@@ -22,6 +23,10 @@ class Shift < ActiveRecord::Base
 
   def total_expenses
     expenses.sum(:amount).to_f
+  end
+
+  def total_extractions
+    extractions.sum(:amount).to_f
   end
 
   def total_tickets

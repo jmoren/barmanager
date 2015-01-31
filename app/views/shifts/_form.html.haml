@@ -7,19 +7,14 @@
   %b
     = Time.now.strftime('%H:%M %p')
 
+.ui.label
+  %i.icon.money.green
+  = number_to_currency @shift.opening_cash
+
 .ui.divider
 
-= form_for @shift, html: { class: "ui form" } do |f|
-  - if @shift.errors.any?
-    .ui.message.negative
-      %ul.list
-        - @shift.errors.full_messages.each do |msg|
-          %li= msg
-  .inline.fields
-    .field
-      = f.number_field :opening_cash, placeholder: "Monto inicial $"
-    .field
-      %button.ui.button.green{ type: "submit"}
-        Abrir
-    .field
-      = link_to "Cancelar", shifts_path, class: "ui button"
+.ui.grid
+  .two.wide.column
+    = link_to "Abrir", shifts_path(@shift.id, opening_cash: @shift.opening_cash), method: :post, class: "ui button green"
+  .two.wide.column
+    = link_to "Cancelar", shifts_path, class: "ui button"
