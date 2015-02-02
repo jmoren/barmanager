@@ -36,17 +36,20 @@
         %td Caja final:
         %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses)
       %tr
+        %td Extracciones
+        %td= number_to_currency @total_extractions
+      %tr
         %td Caja inicial proximo turno:
         %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses - @total_extractions)
 
 %h2.ui.header
   Gastos
 - if @shift.is_open?
-  = render partial: '/expenses/form', locals: { shift_or_user: @shift }
+  = render partial: '/expenses/form_shift', locals: { shift_or_user: @shift }
 
 %table.ui.table
   %thead
-    %th{style: "width:65%"} Descripcion
+    %th{style: "width:45%"} Descripcion
     %th.center.aligned Monto
   %tbody
     - @shift.expenses.each do |expense|

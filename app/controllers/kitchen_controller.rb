@@ -23,4 +23,25 @@ class KitchenController < ApplicationController
       render :show_promos, layout: false
     end
   end
+
+  def print_table
+    @current_ticket = Ticket.find(params[:ticket_id])
+    @table = @current_ticket.table
+
+    @item_tickets = @current_ticket.item_tickets.where(delivered: false)
+    @promo_tickets = @current_ticket.promotion_tickets.map { |pt| pt if !pt.full_delivered? }
+
+    @kitchen_items = (@item_tickets | @promo_tickets)
+
+    puts "ALALLALALALA"
+    puts "ALALLALALALA"
+    puts "ALALLALALALA"
+    puts @kitchen_items.inspect
+    puts "ALALLALALALA"
+    puts "ALALLALALALA"
+    puts "ALALLALALALA"
+    puts "ALALLALALALA"
+
+    render :index, layout: false
+  end
 end

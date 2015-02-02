@@ -131,3 +131,9 @@ body{
 i.icon.big-icon {
   font-size: 2em;
 }
+
+.ui.inverted.menu .item .menu a.item:hover,
+.ui.inverted.menu .item .menu .link.item:hover {
+  background-color: #3b83c0 !important;
+  color: white !important;
+}

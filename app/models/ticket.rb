@@ -49,6 +49,11 @@ class Ticket < ActiveRecord::Base
     self.total
   end
 
+  def deliver_all
+    item_tickets.update_all(delivered: true)
+    promotion_tickets.map(&:deliver_all)
+  end
+
   def grouped_item_tickets
     self.item_tickets.joins(:item)
       .group(:item_id)

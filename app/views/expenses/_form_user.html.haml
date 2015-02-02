@@ -1,0 +1,21 @@
+= form_for Expense.new, html: { class: "ui form"} do |f|
+  .ui.grid
+    .ten.wide.column.field
+      = f.hidden_field :shift_or_user_type, value: "User"
+      = f.text_field :description, placeholder: "Agregar un gasto"
+    .three.wide.column.field
+      .ui.fluid.search.selection.dropdown.combo
+        = f.hidden_field :shift_or_user_id
+        %i.dropdown.icon
+        .default.text Usuario
+        .menu
+          - User.all.each do |user|
+            .item{ data: { value: user.id} }
+              = user.username
+    .three.wide.column.field
+      = f.number_field :amount, placeholder: "Costo $"
+    .two.wide.column.field
+      = f.submit "Agregar", class: "ui button blue"
+
+:javascript
+  $('.dropdown').dropdown();

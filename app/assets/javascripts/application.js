@@ -18,12 +18,12 @@
 //= require picker.time
 
 $(document).ready(function(){
-  $('.dropdown').dropdown();
   $('.dropdown.tables').dropdown({
     onChange: function (val) {
       window.location = '/tables/' + val + '?status=open';
     }
   });
+  $('.dropdown.config').dropdown();
   $('.checkbox').checkbox();
   $('.datepicker').pickadate();
   $("#ticket-entry .item").tab();
@@ -53,6 +53,39 @@ $(document).ready(function(){
       }
     });
   });
+
+  $("#show-kitchen").on("click", function(e){
+    e.preventDefault();
+    id = $(this).data("id");
+    $.ajax({
+      url: "/kitchen/"+id+"/print_table",
+      type: "GET",
+      dataType: "html",
+      success: function(data){
+        $("#modal-kitchen").html(data).modal('setting', {
+          onApprove: function() {
+            //window.print();
+            return deliverAll(id);
+          }
+        }).modal('show');
+      }
+    });
+  });
+
+  function deliverAll(ticketId){
+    $.ajax({
+      url: "/tickets/"+ticketId+"/deliver_all",
+      type: "patch",
+      dataType: "json",
+      success: function() {
+        return true;
+      },
+      error: function(){
+        alert("Hubo un error enviando el ticket a imprimir.");
+        return false;
+      }
+    });
+  }
 
   $(".dropdown .table-option").click(function(a,b,c){
     window.location = '/tables/' + $(a.currentTarget).attr('data-code') + '?status=open';

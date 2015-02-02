@@ -1,7 +1,7 @@
 %i.close.icon
 .header
   %h2.ui.header
-    = "Ticket Numero ##{@ticket.number} - Cambiar Mesa"
+    = "Ticket Numero ##{@ticket.try(:number)} - Cambiar Mesa"
 
 
 .content

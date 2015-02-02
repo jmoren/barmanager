@@ -1,3 +1,12 @@
+- if @open_shift_count > 0
+  .ui.message.icon.warning
+    %i.icon.food
+    .content
+      .header
+        Cuidado!
+      %p
+        = "Aun hay #{@open_shift_count} turnos abiertos en el dia que deseas cerrar"
+
 %h2.ui.header.left.floated
   %i.icon.remove.bookmark{style: "font-size:25px"}
   = @daily_cash.date.strftime('%d/%m/%Y - %H:%M %p')
@@ -14,9 +23,9 @@
 - if current_user.admin?
   .ui.message.center{class: 'negative'}
     %div
-      %b= number_to_currency @daily_cash.total
+      %b= number_to_currency @total_shifts
     %small
-      TOTAL DEL DIA
+      TOTAL TURNOS DEL DIA
 
   %table.ui.table
     %tbody
@@ -26,47 +35,46 @@
         %td= l @daily_cash.date, format: '%d/%m/%Y'
       %tr
         %td
-          %b Total Arrastrado
-          (total del ultimo cierre):
-        %td= number_to_currency @last_closed_daily_cash.total
+          %b Extracciones
+          (Suma del total de las extracciones del dia)
+        %td= number_to_currency @daily_cash.total
       %tr
         %td
-          %b Total del dia
-          (Suma del total de los turnos)
-        %td= number_to_currency @total_shifts
-      %tr
-        %td
-          %b Gastos del dia
+          %b Gastos
           (Gastos fuera del turno)
         %td= number_to_currency @total_expenses
       %tr
         %td
           %b Caja Real
-          (Suma de tickets - gastos del dia):
-        %td= number_to_currency @total_shifts - @total_expenses
-      %tr
-        %td
-          %b Caja final
-          (Caja real + Total arrastrado):
-        %td= number_to_currency @daily_cash.total
+          (Suma de extracciones - gastos del dia):
+        %td= number_to_currency @daily_cash.total - @total_expenses
 
 - unless @daily_cash.close
   %h2.ui.header
     Gastos extras
-  = render partial: '/expenses/form', locals: { shift_or_user: current_user }
+  = render partial: '/expenses/form_user'
 
 
 %table.ui.table
   %thead
-    %th{style: "width:65%"} Descripcion
+    %th
+    %th Usuario
+    %th{style: "width:45%"} Descripcion
     %th.center.aligned Monto
   %tbody
     - @users_expenses.each do |expense|
       - unless expense.new_record?
         %tr
+          %td
+            = link_to expense, method: :delete do
+              %i.icon.red.trash
+          %td= expense.shift_or_user.try(:username)
           %td= expense.description
           %td.center.aligned= number_to_currency expense.amount
+
     %tr
+      %td
+      %td
       %td
       %td.center.aligned
         .ui.button
@@ -86,6 +94,7 @@
         %th Usuario
         %th Caja inicial
         %th Caja final
+        %th Extracciones
         %th
       %tbody
         - @shifts.each do |shift|
@@ -95,6 +104,7 @@
             %td= shift.user.username
             %td= number_to_currency shift.opening_cash
             %td= number_to_currency shift.closing_cash
+            %td= number_to_currency shift.extractions.sum(:amount)
             %td
               = link_to shift, class: "ui button mini icon tooltip", data: { content: "Ver detalles", variation: "inverted"} do
                 %i.icon.search

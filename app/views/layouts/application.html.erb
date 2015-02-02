@@ -50,35 +50,33 @@
       <div class="container">
         <%= link_to "Bar Manager", root_path, class: "item" %>
         <% if current_user %>
-          <div class="ui dropdown item">
+          <div class="ui dropdown item config">
             <i class="dropdown icon"></i>
             Configuracion
             <div class="menu">
               <%= link_to items_path, class: "item" do %>
                 Items
-                <i class="dropdown icon"></i>
               <% end %>
               <%= link_to promotions_path, class: "item" do %>
                 Promociones
-                <i class="dropdown icon"></i>
               <% end %>
               <%= link_to categories_path, class: "item" do %>
                 Categorias
-                <i class="dropdown icon"></i>
+              <% end %>
+              <%= link_to new_table_path, class: "item" do %>
+                Agregar Mesa
               <% end %>
               <%= link_to users_path, class: "item" do %>
                 Usuarios
-                <i class="dropdown icon"></i>
+              <% end %>
+              <%= link_to statistics_path, class: "item" do %>
+                Estadisticas
               <% end %>
             </div>
           </div>
           <%= link_to tickets_path, class: "item" do %>
             <i class="icon file"></i>
             Tickets
-          <% end %>
-          <%= link_to new_table_path, class: "item" do %>
-            <i class="icon plus"></i>
-            Mesas
           <% end %>
           <%= link_to shifts_path, class: "item" do %>
             <i class="icon time"></i>
@@ -93,10 +91,6 @@
               <i class="icon food"></i>
               Cierres Diario
             <% end %>
-          <% end %>
-          <%= link_to statistics_path, class: "item" do %>
-            <i class="icon signal"></i>
-            Estadisticas
           <% end %>
           <%= link_to "#", class: "launch item" do %>
             <i class="icon star"></i> Favoritos
@@ -157,7 +151,7 @@
         </div>
         <div class="side">
           <div class="ui items">
-            <div class="ui fluid search selection dropdown combo">
+            <div class="ui fluid search selection dropdown combo tables">
               <input id="table_id" name="table[table_id]" type="hidden">
               <i class="dropdown icon" tabindex="-1"></i>
               <input class="search table-search" tabindex="0"><div class="default text">Seleccione Mesa</div>

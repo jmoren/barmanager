@@ -31,6 +31,10 @@ class PromotionTicket < ActiveRecord::Base
     end
   end
 
+  def deliver_all
+    promotion_ticket_items.update_all(delivered: true)
+  end
+
   def full_delivered?
     self.promotion_ticket_items.map(&:delivered?).select { |a| !a }.empty?
   end

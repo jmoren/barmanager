@@ -22,7 +22,11 @@ class ShiftsController < ApplicationController
   def new
     @shift = Shift.new(open: DateTime.now)
     last_shift = Shift.order(close: :desc).first
-    @shift.opening_cash = last_shift.closing_cash.to_f - last_shift.total_extractions
+    if last_shift
+      @shift.opening_cash = last_shift.closing_cash.to_f - last_shift.total_extractions
+    else
+      @shift.opening_cash = 0
+    end
   end
 
   # GET /shifts/1/edit
@@ -47,7 +51,8 @@ class ShiftsController < ApplicationController
   # POST /shifts
   # POST /shifts.json
   def create
-    @shift = Shift.new(opening_cash: params[:opening_cash])
+    oc = params[:opening_cash] ? params[:opening_cash] : 0
+    @shift = Shift.new(opening_cash: oc)
     @shift.open = DateTime.now
     @shift.user = current_user
     url = current_user.admin? ? @shift : root_path

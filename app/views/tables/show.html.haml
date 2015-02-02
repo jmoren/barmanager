@@ -26,6 +26,9 @@
         = link_to unlink_table_ticket_path(@current_ticket), method: :patch, class: "ui button icon labeled blue" do
           %i.icon.remove
           Remover de la mesa
+        = link_to "#", id: "show-kitchen", class: "ui button icon labeled teal", data: { id: @current_ticket.id }  do
+          %i.icon.print
+          Imprimir pedido
       - else
         = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
           %i.icon.unlock
@@ -138,6 +141,7 @@
     #modal-expand_item.ui.modal
     #modal-ticket.ui.modal
     #modal-table.ui.modal.small
+    #modal-kitchen.ui.modal
 - else
   .ui.message.icon.warning
     %i.icon.food

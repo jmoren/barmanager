@@ -88,6 +88,15 @@ class TicketsController < ApplicationController
     end
   end
 
+  def deliver_all
+    @ticket = Ticket.find(params[:id])
+    @ticket.deliver_all
+    render json: "ok", status: 200
+
+    rescue
+      render json: "error", status: 500
+  end
+
   def move_to
     @ticket = Ticket.find(params[:id])
     @table = Table.find(params[:ticket][:table_id])
@@ -110,6 +119,7 @@ class TicketsController < ApplicationController
   def close
     if @ticket.has_items?
       @ticket.close!
+      redirect_to @ticket
     else
       @ticket.destroy
       redirect_to tickets_path(q: 'noTable')
