@@ -33,15 +33,6 @@ class KitchenController < ApplicationController
 
     @kitchen_items = (@item_tickets | @promo_tickets)
 
-    puts "ALALLALALALA"
-    puts "ALALLALALALA"
-    puts "ALALLALALALA"
-    puts @kitchen_items.inspect
-    puts "ALALLALALALA"
-    puts "ALALLALALALA"
-    puts "ALALLALALALA"
-    puts "ALALLALALALA"
-
     render :index, layout: false
   end
 end

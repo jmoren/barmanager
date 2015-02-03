@@ -64,7 +64,7 @@ $(document).ready(function(){
       success: function(data){
         $("#modal-kitchen").html(data).modal('setting', {
           onApprove: function() {
-            //window.print();
+            window.print();
             return deliverAll(id);
           }
         }).modal('show');
@@ -77,10 +77,10 @@ $(document).ready(function(){
       url: "/tickets/"+ticketId+"/deliver_all",
       type: "patch",
       dataType: "json",
-      success: function() {
+      success: function(data) {
         return true;
       },
-      error: function(){
+      error: function(a,b,c){
         alert("Hubo un error enviando el ticket a imprimir.");
         return false;
       }

@@ -91,10 +91,10 @@ class TicketsController < ApplicationController
   def deliver_all
     @ticket = Ticket.find(params[:id])
     @ticket.deliver_all
-    render json: "ok", status: 200
+    render json: @ticket, status: 200
 
-    rescue
-      render json: "error", status: 500
+    rescue error
+      render json: error, status: 500
   end
 
   def move_to
