@@ -9,7 +9,10 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require_tree .
+ *= require semantic
+ *= require default
+ *= require default.date
+ *= require default.time
  */
 
 html {

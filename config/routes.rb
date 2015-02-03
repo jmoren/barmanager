@@ -57,5 +57,7 @@ BarManager::Application.routes.draw do
   get 'kitchen/:ticket_id/show/:item_id/:type', to: 'kitchen#show'
   get 'kitchen/:ticket_id/print_table', as: 'print_table', to: 'kitchen#print_table'
   get 'close_day', to: 'daily_cashes#show_daily_cash'
-  root to: "home#index"
+
+  get '/home/index', to: 'home#index'
+  root to: "home#home"
 end

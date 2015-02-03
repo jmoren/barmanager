@@ -36,7 +36,7 @@ class ShiftsController < ApplicationController
   def close
     @shift = Shift.includes(:user).find(params['id'])
     @shift.add_closed_data
-    url = current_user.admin? ? shifts_path : root_path
+    url = current_user.admin? ? shifts_path : home_index_path
     respond_to do |format|
       if !@shift.has_open_tickets? && @shift.save
         format.html { redirect_to url, notice: 'Turno cerrado con exito' }
@@ -55,7 +55,7 @@ class ShiftsController < ApplicationController
     @shift = Shift.new(opening_cash: oc)
     @shift.open = DateTime.now
     @shift.user = current_user
-    url = current_user.admin? ? @shift : root_path
+    url = current_user.admin? ? @shift : home_index_path
     respond_to do |format|
       if @shift.save
         format.html { redirect_to url, notice: 'Turno abierto con exito' }

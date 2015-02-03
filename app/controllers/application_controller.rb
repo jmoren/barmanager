@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_path, alert: "No tenes permisos para ver esta pagina o realizar esa accion"
+    redirect_to home_index_path, alert: "No tenes permisos para ver esta pagina o realizar esa accion"
   end
 
   def get_tables

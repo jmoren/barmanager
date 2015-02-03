@@ -71,7 +71,7 @@ class TablesController < ApplicationController
   def destroy
     @table.destroy
     respond_to do |format|
-      format.html { redirect_to root_path }
+      format.html { redirect_to home_index_path }
       format.json { head :no_content }
     end
   end
@@ -82,7 +82,7 @@ class TablesController < ApplicationController
       redirect_to @table
     else
       respond_to do |format|
-        format.html { redirect_to root_path }
+        format.html { redirect_to home_index_path }
         format.json { head :no_content }
       end
     end
