@@ -28,8 +28,8 @@ class KitchenController < ApplicationController
     @current_ticket = Ticket.find(params[:ticket_id])
     @table = @current_ticket.table
 
-    @item_tickets = @current_ticket.item_tickets.where(delivered: false)
-    @promo_tickets = @current_ticket.promotion_tickets.map { |pt| pt if !pt.full_delivered? }
+    @item_tickets = @table.kitchen_item_tickets.where(delivered: false)
+    @promo_tickets = @table.kitchen_promotion_tickets.map { |pt| pt if !pt.full_delivered? }
 
     @kitchen_items = (@item_tickets | @promo_tickets)
 
