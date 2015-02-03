@@ -35,6 +35,10 @@ class ShiftsController < ApplicationController
 
   def close
     @shift = Shift.includes(:user).find(params['id'])
+    @total_tickets  = @shift.total_tickets
+    @total_expenses = @shift.total_expenses
+    @total_extractions = @shift.total_extractions
+    @by_items = @shift.count_items
     @shift.add_closed_data
     url = current_user.admin? ? shifts_path : root_path
     respond_to do |format|

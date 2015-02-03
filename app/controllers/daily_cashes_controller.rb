@@ -1,5 +1,6 @@
 class DailyCashesController < ApplicationController
   load_and_authorize_resource
+  layout "admin"
 
   def index
     @daily_cashes = DailyCash.all.order(date: :desc)
