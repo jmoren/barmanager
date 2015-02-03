@@ -64,6 +64,7 @@ $(document).ready(function(){
       success: function(data){
         $("#modal-kitchen").html(data).modal('setting', {
           onApprove: function() {
+            $('div.panel').hide()
             window.print();
             return deliverAll(id);
           }
@@ -78,9 +79,11 @@ $(document).ready(function(){
       type: "patch",
       dataType: "json",
       success: function(data) {
+        $('div.panel').show();
         return true;
       },
       error: function(a,b,c){
+        $('div.panel').show();
         alert("Hubo un error enviando el ticket a imprimir.");
         return false;
       }

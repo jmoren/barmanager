@@ -1,5 +1,6 @@
 @media print {
-  div.side, div.menu.fixed, a.ui.button, div.ui.button.basic.blue.print, div.panel, button.print{
+  div.side, div.menu.fixed, a.ui.button, div.ui.button.basic.blue.print,
+  button.print, div.ui.segment.tab, div#ticket-entry, div#tickets{
     display: none !important;
   }
 
