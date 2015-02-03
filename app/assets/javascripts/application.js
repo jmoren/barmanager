@@ -64,7 +64,7 @@ $(document).ready(function(){
       success: function(data){
         $("#modal-kitchen").html(data).modal('setting', {
           onApprove: function() {
-            $('div.panel').hide()
+            $('div.panel').hide();
             window.print();
             return deliverAll(id);
           }

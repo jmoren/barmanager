@@ -1,5 +1,11 @@
-%h2.ui.header.center
-  Rojo Bar
+.ui.center
+  %b Ticket no valido como factura.
+.ui.divider
+.ui.center
+  %b{style:'font-size:16px;'}
+    Rojo Bar
+  %p
+    CHACABUCO 101 ESQ. 25 DE MAYO
 %h2.ui.header.left.floated
   = "Ticket # #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
   .sub.header
@@ -150,7 +156,7 @@
               %h3.header= entry.description
               = number_to_currency entry.amount
 .ui.divider
-Ticket no valido como factura.
+Gracias por su visita...
 .ui.divider
 = link_to tickets_path, class: "ui button" do
   %i.icon.arrow.left
