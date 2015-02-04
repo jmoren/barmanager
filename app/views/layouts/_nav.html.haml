@@ -1,0 +1,42 @@
+.ui.menu.inverted.fixed
+  .container
+    = link_to "Bar Manager", home_index_path, class: "item"
+    - if current_user
+      .ui.dropdown.item.config
+        %i.dropdown.icon
+        Configuracion
+        .menu
+          = link_to items_path, class: "item" do
+            Items
+          = link_to promotions_path, class: "item" do
+            Promociones
+          = link_to categories_path, class: "item" do
+            Categorias
+          = link_to new_table_path, class: "item" do
+            Agregar Mesa
+          = link_to users_path, class: "item" do
+            Usuarios
+          = link_to statistics_path, class: "item" do
+            Estadisticas
+      = link_to tickets_path, class: "item" do
+        %i.icon.file
+        Tickets
+      = link_to shifts_path, class: "item" do
+        %i.icon.time
+        Turnos
+      = link_to kitchen_path, class: "item" do
+        %i.icon.food
+        Cocina
+      - if current_user.admin?
+        = link_to daily_cashes_path, class: "item" do
+          %i.icon.food
+          Cierres Diario
+      = link_to "#", class: "launch item" do
+        %i.icon.star
+        Favoritos
+      - if current_user
+        .menu.right
+          .item= current_user.login
+          .item.icon
+            = link_to destroy_user_session_path, method: :delete, class: "ui button red" do
+              Salir

@@ -1,0 +1,24 @@
+!!!
+%html
+  %head
+    %title Rojo Bar
+    %script{ type:"text/javascript", src:"https://maps.googleapis.com/maps/api/js?key=AIzaSyCRngKslUGJTlibkQ3FkfTxj3Xss1UlZDA&sensor=false"}
+    %link{ href: "http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic", rel: "stylesheet", type: "text/css"}
+    %link{ href: "http://fonts.googleapis.com/css?family=Montserrat:400,700", rel: "stylesheet", type: "text/css"}
+
+  %body#page-top{data: {spy: "scroll", target:".navbar-fixed-top"} }
+    = yield
+    %footer
+      .container.text-center
+        %a.btn.btn-default{href: "/tickets"}
+          Admin
+        .credits
+          %small
+            2015 &copy; - Web y Aplicacion creada por Jorge Moreno y Jairo De Morais
+            %br
+            %a{:href => "mailto:jmoren@gmail.com"}
+              %i.fa.fa-envelope-o
+              Contacto
+
+    = stylesheet_link_tag    "home", media: "all"
+    = javascript_include_tag "home"
