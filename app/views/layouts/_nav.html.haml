@@ -24,9 +24,6 @@
       = link_to shifts_path, class: "item" do
         %i.icon.time
         Turnos
-      = link_to kitchen_path, class: "item" do
-        %i.icon.food
-        Cocina
       - if current_user.admin?
         = link_to daily_cashes_path, class: "item" do
           %i.icon.food

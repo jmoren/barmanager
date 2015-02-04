@@ -13,24 +13,24 @@
     .center
       -if @table.open? && @current_ticket
         - if !@current_ticket.has_items?
-          = link_to ticket_path(@current_ticket, table_id: @table.id), method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button red" do
+          = link_to ticket_path(@current_ticket, table_id: @table.id), method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button labeled icon small red" do
             %i.icon.trash
             Borrar Ticket
         - else
-          = link_to "#", class: "close-table ui labeled icon button teal", data: { id: @current_ticket.id } do
+          = link_to "#", class: "close-table ui labeled icon button teal small", data: { id: @current_ticket.id } do
             %i.icon.lock
             Cerrar Mesa
-        = link_to "#", class: "change-table ui labeled icon button", data: { id: @current_ticket.id } do
+        = link_to "#", class: "change-table ui labeled icon button small", data: { id: @current_ticket.id } do
           %i.icon.refresh
           Cambiar Mesa
-        = link_to unlink_table_ticket_path(@current_ticket), method: :patch, class: "ui button icon labeled blue" do
+        = link_to unlink_table_ticket_path(@current_ticket), method: :patch, class: "ui button small icon labeled blue" do
           %i.icon.remove
           Remover de la mesa
-        = link_to "#", id: "show-kitchen", class: "ui button icon labeled teal", data: { id: @current_ticket.id }  do
+        = link_to "#", id: "show-kitchen", class: "ui button icon labeled small teal", data: { id: @current_ticket.id }  do
           %i.icon.print
           Imprimir pedido
       - else
-        = link_to open_table_path(@table), method: :put,  class: "ui labeled icon button orange" do
+        = link_to open_table_path(@table), method: :put,  class: "ui small labeled icon button orange" do
           %i.icon.unlock
           Abrir Mesa
 
@@ -86,10 +86,10 @@
                 %td.center.aligned= number_to_currency entry.sub_total
                 %td.left.aligned{style: "vertical-align: top"}
                   - if @table.open?
-                    = link_to increase_ticket_item_ticket_path(@current_ticket, entry), method: :put do
-                      %i.icon.circular.small.plus.green
-                    = link_to "#", data: {ticket_id: @current_ticket.id, item_id: entry.item.id, type: 'item' }, class: "expand-item-row" do
-                      %i.icon.circular.small.expand.red
+                    = link_to increase_ticket_item_ticket_path(@current_ticket, entry), method: :put, class: 'ui button mini circular basic icon green' do
+                      %i.icon.plus.green
+                    = link_to "#", data: {ticket_id: @current_ticket.id, item_id: entry.item.id, type: 'item' }, class: "expand-item-row ui button mini circular basic icon red" do
+                      %i.icon.expand.red
 
           - @current_ticket.grouped_promotion_tickets.each do |entry|
             - unless entry.new_record?
@@ -105,14 +105,14 @@
                 %td.center.aligned{style: "vertical-align: top"}= number_to_currency entry.subtotal
                 %td
                   - if @table.open?
-                    = link_to increase_ticket_promotion_ticket_path(@current_ticket, entry), method: :put do
-                      %i.icon.circular.small.plus.green
-                    = link_to "#", data: {ticket_id: @current_ticket.id, promo_id: entry.promotion.id, type: 'promotion' }, class: "expand-item-row" do
-                      %i.icon.circular.small.expand.red
+                    = link_to increase_ticket_promotion_ticket_path(@current_ticket, entry), method: :put, class: 'ui button mini circular basic icon green' do
+                      %i.icon.plus.green
+                    = link_to "#", data: {ticket_id: @current_ticket.id, promo_id: entry.promotion.id, type: 'promotion' }, class: "expand-item-row ui button mini circular basic icon red" do
+                      %i.icon.expand.red
 
         %tfoot
           %tr
-            %td{colspan: 4}
+            %td{colspan: 5}
             %td.center.aligned
               .ui.label.blue.fluid{style: "font-size: 16px"}
                 = number_to_currency @current_ticket.get_total

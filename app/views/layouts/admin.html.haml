@@ -7,6 +7,30 @@
     %link{:href => "http://fonts.googleapis.com/css?family=Lato", :rel => "stylesheet", :type => "text/css"}/
     = csrf_meta_tags
   %body
+    #toc.ui.vertical.sidebar.menu.right
+      .item
+        %a{:href => "/"}
+          %b Productos
+      .item
+        - @categories.each do |cat|
+          - Item.by_category(cat.id).favourites.each_with_index do |item, index|
+            - if index == 0
+              .ui.small.header= cat.name
+            .menu
+              .item
+                = item.description
+                .ui.label
+                  = item.code
+      .item
+        %a{:href => "/"}
+          %b Promos
+      .item
+        .menu
+          - Promotion.favourites.each do |prom|
+            .item
+              .ui.label.left.teal
+                = prom.code
+              = prom.description
     .pusher
       = render partial: '/layouts/nav'
       .main.container
