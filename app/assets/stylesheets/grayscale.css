@@ -45,7 +45,6 @@ p {
 }
 
 a {
-    color: #000;
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
@@ -54,7 +53,6 @@ a {
 a:hover,
 a:focus {
     text-decoration: none;
-    color: #11505d;
 }
 
 .light {
@@ -103,6 +101,13 @@ a:focus {
 .navbar-custom .nav li a.active {
     outline: 0;
     background-color: #ddd;
+}
+
+.navbar-custom.top-nav-collapse .nav li a:hover,
+.navbar-custom.top-nav-collapse .nav li a:focus,
+.navbar-custom.top-nav-collapse .nav li a.active {
+    outline: 0;
+    background-color: rgba(255,255,255,.3);
 }
 
 @media(min-width:767px) {
