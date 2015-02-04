@@ -26,8 +26,8 @@
 
     %tbody
       - @tickets.order("date").each do |ticket|
-        %tr
-          %td= ticket.shift_id
+        %tr{class: ticket.open? ? 'positive' : nil}
+          %td= ticket.number
           %td
             - if ticket.table
               = link_to ticket.table.name, ticket.table
@@ -37,10 +37,16 @@
           %td= number_to_currency ticket.total
           %td= ticket.status == 'closed' ? "Cerrado" : "Abierto"
           %td
-            = link_to ticket, class: "ui button icon mini circular basic orange" do
-              %i.icon.external.arrow.right
-            - if ticket.table && ticket.open?
-              = link_to unlink_table_ticket_path(ticket), method: :patch, class: "ui button icon mini circular basic red" do
-                %i.icon.remove
-
+            - if ticket.open?
+              = link_to ticket.table.nil? ? ticket : ticket.table, class: "ui button icon mini circular basic orange" do
+                %i.icon.external.arrow.right
+              - unless ticket.table.nil?
+                = link_to unlink_table_ticket_path(ticket),
+                  method: :patch,
+                  class: "ui button icon mini circular basic red tooltip",
+                  data: { content:"Sacar de la mesa", variation: "inverted"} do
+                  %i.icon.remove
+            - else
+              = link_to ticket, class: "ui button icon mini circular basic orange" do
+                %i.icon.external.arrow.right
   = paginate @tickets

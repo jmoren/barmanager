@@ -42,14 +42,13 @@
             .side
               %h4.ui.header Turno actual
               - if @current_shift
-                %div{:class => "#{@current_shift.has_open_tickets? ? 'fluid' : 'two'} ui buttons"}
+                .two.ui.buttons
                   = link_to @current_shift, class: "ui button blue" do
                     %i.icon.idea
                     Ver
-                  - unless @current_shift.has_open_tickets?
-                    = link_to close_shift_path(@current_shift), method: :put, class: "ui button" do
-                      %i.icon.lock
-                      Cerrar
+                  = link_to close_shift_path(@current_shift), method: :put, class: "ui button" do
+                    %i.icon.lock
+                    Cerrar
               - else
                 = link_to new_shift_path, class: "ui button blue fluid" do
                   %i.icon.unlock
@@ -63,6 +62,11 @@
                 = link_to table, class: "ui #{'basic active' unless @table.try(:id) == table.id} button #{table.color}" do
                   %i.icon.food
                   = table.name
+              - @open_tickets.each do |ticket|
+                = link_to ticket, class: "ui #{'basic active' unless @ticket.try(:id) == ticket.id} button" do
+                  %i.icon.file.outline
+                  = "Para llevar ##{ticket.number}"
+
           .side
             .ui.items
               .ui.fluid.search.selection.dropdown.combo.tables
@@ -78,6 +82,9 @@
                 = render @table
               - @closed_tables.each do |table|
                 = render table unless @table.try(:id) == table.id
-        %div{:class => "panel #{current_user.nil? ? 'signin' : nil}"}
+        .panel{:class => "#{current_user.nil? ? 'signin' : nil}"}
           .segment.ui
+            - unless @current_shift
+              .ui.message.error
+                No hay un turno abierto, para cerrar tickets, debes tener uno.
             = yield

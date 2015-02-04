@@ -15,7 +15,7 @@ class Ticket < ActiveRecord::Base
   has_many :items, through: :item_tickets
   has_many :promotions, through: :promotion_tickets
 
-  validates :shift_id, :date, :status, :total, presence: true
+  validates :date, :status, :total, presence: true
   validates :total, numericality: true
   validates :status, inclusion: ['open', 'closed']
 
@@ -23,6 +23,7 @@ class Ticket < ActiveRecord::Base
   before_save :get_total
 
   scope :without_table, -> { where(table_id: [nil, ""])}
+
   def formatted_number
     "%0.6d" % self.number
   end
@@ -33,7 +34,10 @@ class Ticket < ActiveRecord::Base
   end
 
   def close!
-    self.update(status: "closed")
+    self.update(status: "closed", shift_id: Shift.last_open.id)
+    unless self.table.nil?
+      self.table.close!
+    end
   end
 
   def open?

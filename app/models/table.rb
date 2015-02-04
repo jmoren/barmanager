@@ -22,7 +22,6 @@ class Table < ActiveRecord::Base
       ticket.date     = Time.now
       ticket.total    = 0
       ticket.status   = "open"
-      ticket.shift    = Shift.last_open
       ticket.save
     end
   end

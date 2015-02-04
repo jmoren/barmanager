@@ -6,6 +6,7 @@
     Rojo Bar
   %p
     CHACABUCO 101 ESQ. 25 DE MAYO
+.ui.divider
 %h2.ui.header.left.floated
   = "Ticket # #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
   .sub.header
@@ -15,10 +16,15 @@
 .ui.header.right.floated
 
   - if @ticket.open?
-    = link_to close_ticket_path(@ticket), method: :patch, class: "ui button green basic", data: { id: @ticket.id } do
-      %i.icon.lock
-      Cerrar
-    = link_to "#", class: "change-table ui button red basic", data: { id: @ticket.id } do
+    - if @current_shift
+      = link_to close_ticket_path(@ticket), method: :patch, class: "ui button green basic", data: { id: @ticket.id } do
+        %i.icon.lock
+        Cerrar
+    - unless @ticket.has_items?
+      = link_to @ticket, method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button basic red" do
+        %i.icon.trash
+        Borrar Ticket
+    = link_to "#", class: "change-table ui button blue basic", data: { id: @ticket.id } do
       %i.icon.refresh
       Asignar a una mesa
   - else
@@ -139,23 +145,23 @@
           .ui.button.fluid.blue
             = number_to_currency @ticket.get_total
 
-
-  %h3.ui.header Adicionales
-  .ui.divider
-  .ui.grid
-    .four.wide.column
-      .ui.mini.statistic
-        .value= number_to_currency @ticket.additionals.sum(:amount)
-        .label Total
-    .twelve.wide.column
-      .ui.list.horizontal
-        - @ticket.additionals.each do |entry|
-          .item
-            %i.icon.bookmark.orange.circular
-            .content
-              %h3.header= entry.description
-              = number_to_currency entry.amount
-.ui.divider
+  - unless @ticket.additionals.empty?
+    %h3.ui.header Adicionales
+    .ui.divider
+    .ui.grid
+      .four.wide.column
+        .ui.mini.statistic
+          .value= number_to_currency @ticket.additionals.sum(:amount)
+          .label Total
+      .twelve.wide.column
+        .ui.list.horizontal
+          - @ticket.additionals.each do |entry|
+            .item
+              %i.icon.bookmark.orange.circular
+              .content
+                %h3.header= entry.description
+                = number_to_currency entry.amount
+    .ui.divider
 Gracias por su visita...
 .ui.divider
 = link_to tickets_path, class: "ui button" do

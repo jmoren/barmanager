@@ -8,12 +8,12 @@ class TicketsController < ApplicationController
   def index
     if params[:table_id]
       @table   = Table.find(params[:table_id])
-      @tickets = Ticket.where(table_id: params[:table_id]).order(created_at: :desc).page params[:page]
+      @tickets = Ticket.where(table_id: params[:table_id]).order(status: :desc, created_at: :desc).page params[:page]
     else
       if params[:q].present? && params[:q] == 'noTable'
-        @tickets = Ticket.without_table.order(created_at: :desc).page params[:page]
+        @tickets = Ticket.without_table.order(status: :desc, created_at: :desc).page params[:page]
       else
-        @tickets = Ticket.all.order(created_at: :desc).page params[:page]
+        @tickets = Ticket.order(status: :desc, created_at: :desc).page params[:page]
       end
     end
   end
@@ -25,13 +25,12 @@ class TicketsController < ApplicationController
 
   # GET /tickets/new
   def new
-    @ticket = Ticket.new
-    @ticket.date     = Time.now
-    @ticket.total    = 0
-    @ticket.status   = "open"
-    @ticket.shift    = Shift.last_open
-    @ticket.save
-    redirect_to @ticket
+    @ticket = Ticket.create(date: Time.now, total: 0, status: 'open')
+    if @ticket
+      redirect_to @ticket
+    else
+      redirect home_index_path, alert: "Error creando ticket para llevar"
+    end
   end
 
   # GET /tickets/1/edit
@@ -140,6 +139,6 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:table_id, :date, :total, :payment, :number, :status)
+      params.require(:ticket).permit(:table_id, :shift_id, :date, :total, :payment, :number, :status)
     end
 end

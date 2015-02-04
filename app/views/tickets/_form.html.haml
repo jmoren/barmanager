@@ -10,7 +10,10 @@
 .content
   = form_for @ticket, html: {id: "update-ticket", class: "ui form" } do |f|
     = f.hidden_field :status, value: "closed"
-    = f.hidden_field :payment, value: "efectivo"
+    = f.hidden_field :shift_id, value: Shift.last_open.try(:id)
+    - if @current_shift.nil?
+      .ui.message.red
+        %b Debes abrir turno antes de cerrar un ticket
     - if !@ticket.has_items?
       .ui.message.yellow
         No hay items.
@@ -57,7 +60,7 @@
             Borrar
 
       .field
-        - if @ticket.has_items?
+        - if @ticket.has_items? && @current_shift
           %button.ui.button.green.icon.labeled{ type: "submit"}
             %i.icon.check
             Guardar
