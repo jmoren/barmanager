@@ -39,6 +39,16 @@ class UsersController < ApplicationController
     redirect_to users_path
   end
 
+  def monthly_detail
+    month = params[:month]
+    date = Date.new(Date.today.year, month.to_i, 1)
+    @user = User.find(params[:id])
+    @expenses = @user.monthly_expenses(date)
+    @extractions = @user.monthly_extractions(date)
+    @difference = @extractions.sum(:amount) - @expenses.sum(:amount)
+    render :monthly_detail, layout: false
+  end
+
 private
   def user_params
     params.require(:user).permit(:email, :admin, :username, :password, :password_confirmation)

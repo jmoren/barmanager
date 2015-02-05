@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150131165943) do
+ActiveRecord::Schema.define(version: 20150205171842) do
 
   create_table "additionals", force: true do |t|
     t.string  "description"
@@ -30,10 +30,11 @@ ActiveRecord::Schema.define(version: 20150131165943) do
 
   create_table "daily_cashes", force: true do |t|
     t.integer  "total"
-    t.boolean  "close",      default: false
+    t.boolean  "close",         default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "date"
+    t.float    "total_expense"
   end
 
   create_table "expenses", force: true do |t|
@@ -77,6 +78,15 @@ ActiveRecord::Schema.define(version: 20150131165943) do
   end
 
   add_index "items", ["code"], name: "index_items_on_code", unique: true, using: :btree
+
+  create_table "monthly_cashes", force: true do |t|
+    t.float    "total"
+    t.boolean  "close"
+    t.date     "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "total_expense"
+  end
 
   create_table "organizations", force: true do |t|
     t.string   "name"

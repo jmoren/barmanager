@@ -21,6 +21,13 @@ BarManager::Application.routes.draw do
     end
   end
 
+  resources :monthly_cashes do
+    get :close_month, on: :collection
+    member do
+      put :close
+    end
+  end
+
   resources :statistics, only: [:index]
 
   resources :categories
@@ -52,12 +59,16 @@ BarManager::Application.routes.draw do
     end
   end
 
-  resources :users
+  resources :users do
+    member do
+      get :monthly_detail
+    end
+  end
   get 'kitchen', to: 'kitchen#index'
   get 'kitchen/:ticket_id/show/:item_id/:type', to: 'kitchen#show'
   get 'kitchen/:ticket_id/print_table', as: 'print_table', to: 'kitchen#print_table'
   get 'close_day', to: 'daily_cashes#show_daily_cash'
 
   get '/home/index', to: 'home#index'
-  root to: "home#home"
+  root to: "home#index"
 end

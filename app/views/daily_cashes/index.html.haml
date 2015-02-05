@@ -7,14 +7,18 @@
   %thead
     %th Fecha
     %th Estado
-    %th Caja final
+    %th Extracciones
+    %th Gastos
+    %th balance
     %th
   %tbody
     - @daily_cashes.each do |dc|
       %tr{class: dc.created_at == Date.today ? 'positive' : ''}
-        %td= dc.date.strftime('%d/%m/%Y - %H:%M %p')
+        %td= dc.date.strftime('%d/%m/%Y')
         %td= dc.close ? 'Cerrado' : 'No cerrado'
         %td= number_to_currency dc.total
+        %td= number_to_currency dc.total_expenses
+        %td= number_to_currency dc.total - dc.total_expenses
         %td
           = link_to dc, class: "ui button mini icon tooltip", data: { content: "Ver detalles", variation: "inverted"} do
             %i.icon.search

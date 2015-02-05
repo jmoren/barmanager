@@ -1,0 +1,113 @@
+.ui.message.icon.warning
+  %i.icon.lock
+  .content
+    - if @monthly_cash.close
+      .header
+        Cierre mensual
+    - else
+      .header
+        Cierre Parcial
+      = "Este mes no puede ser cerrar hasta el #{l @last_day, format: '%d/%m/%Y'}"
+
+    %p
+      = "Desde: #{l @first_day, format: '%d/%m/%Y'}, Hasta #{ l @last_day, format: '%d/%m/%Y'}"
+
+.ui.divider.clearing
+
+.ui.message.center{class: 'negative'}
+  %h2.ui.header
+    Cierre General
+  %table.ui.table
+    %tbody
+      %tr
+        %td
+          %b Extracciones
+          (Suma del total de las extracciones del mes)
+        %td= number_to_currency @monthly_cash.total
+      %tr
+        %td
+          %b Gastos
+          (Total gastos extras del mes)
+        %td= number_to_currency @monthly_cash.total_expenses
+      %tr
+        %td
+          %b Balance
+          (Suma de extracciones - gastos del mes):
+        %td= number_to_currency @monthly_cash.total - @monthly_cash.total_expenses
+
+.ui.divider.clearing
+
+.ui.message.center{class: 'positive'}
+  %h2.ui.header
+    Cierre mensual por usuario
+  %table.ui.table
+    %thead
+      %th Usuario
+      %th Total extraciones del mes
+      %th Total gastos del mes
+      %th Differencia
+      %th
+    %tbody
+      - User.all.each do |user|
+        %tr
+          %td= user.username
+          %td= number_to_currency user.monthly_extractions(@first_day).sum(:amount)
+          %td= number_to_currency user.monthly_expenses(@first_day).sum(:amount)
+          %td= number_to_currency user.monthly_extractions(@first_day).sum(:amount) - user.monthly_expenses(@first_day).sum(:amount)
+          %td
+            = link_to "#", data: {user_id: user.id, month: @first_day.month}, class: "expand-user-row ui button mini circular basic icon red" do
+              %i.icon.expand.red
+
+.ui.divider.clearing
+
+.ui.message.center{class: 'positive'}
+  %h2.ui.header
+    Cierres por dia
+  - if @daily_closes.empty?
+    .ui.message.center
+      No hay Cierres para este mes
+  - else
+    %table.ui.table
+      %thead
+        %th Fecha
+        %th Total extracciones
+        %th Total gastos
+      %tbody
+        - @daily_closes.each do |dc|
+          - unless dc.new_record?
+            %tr
+              %td= dc.date
+              %td= number_to_currency dc.total
+              %td.center.aligned= number_to_currency dc.total_expenses
+
+%h2.ui.header.left.floated
+  .ui.header.right.floated
+    - if @monthly_cash.close
+      .ui.button.red
+        Cerrado
+    - if Date.today > @last_day
+      = link_to close_monthly_cash_path(@monthly_cash), method: :put, class: "ui button orange" do
+        %i.icon.lock
+        Cerrar
+
+#modal-expand_user.ui.modal
+
+:javascript
+  $(".expand-user-row").on("click", function(e){
+    e.preventDefault();
+    user_id = $(this).data("user-id");
+    month = $(this).data("month");
+    $.ajax({
+      url: "/users/"+user_id+"/monthly_detail?month=" + month,
+      type: "GET",
+      dataType: "html",
+      success: function(data){
+        $("#modal-expand_user").html(data).modal('setting', {
+          onApprove: function() {
+            return true;
+          }
+        }).modal('show');
+      }
+    });
+  });
+

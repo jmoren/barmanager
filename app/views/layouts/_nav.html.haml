@@ -26,14 +26,20 @@
         Turnos
       - if current_user.admin?
         = link_to daily_cashes_path, class: "item" do
-          %i.icon.food
+          %i.icon.lock
           Cierres Diario
       = link_to "#", class: "launch item" do
         %i.icon.star
         Favoritos
       - if current_user
         .menu.right
-          .item= current_user.login
-          .item.icon
-            = link_to destroy_user_session_path, method: :delete, class: "ui button red" do
-              Salir
+          .ui.dropdown.item.config
+            %i.dropdown.icon
+            = current_user.login
+            .menu
+              = link_to close_day_path, class: "item" do
+                Cerrar dia
+              = link_to close_month_monthly_cashes_path, class: "item" do
+                Cerrar mes
+              = link_to destroy_user_session_path, method: :delete, class: "item" do
+                Salir

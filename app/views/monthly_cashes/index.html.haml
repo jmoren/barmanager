@@ -1,0 +1,26 @@
+%h2.ui.header.left.floated
+  Cierres mensuales
+
+.ui.clearing.divider
+
+%table.table.ui
+  %thead
+    %th Fecha inicio
+    %th Fecha fin
+    %th Estado
+    %th Extracciones
+    %th Gastos
+    %th Balance
+    %th
+  %tbody
+    - @monthly_cashes.each do |mc|
+      %tr{class: mc.created_at.month == Date.today.month ? 'positive' : ''}
+        %td= mc.date.beginning_of_month.strftime('%d/%m/%Y - %H:%M %p')
+        %td= mc.date.strftime('%d/%m/%Y - %H:%M %p')
+        %td= mc.close ? 'Cerrado' : 'No cerrado'
+        %td= number_to_currency mc.total
+        %td= number_to_currency mc.total_expenses
+        %td= number_to_currency mc.total - mc.total_expenses
+        %td
+          = link_to mc, class: "ui button mini icon tooltip", data: { content: "Ver detalles", variation: "inverted"} do
+            %i.icon.search

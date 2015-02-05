@@ -1,0 +1,46 @@
+%i.close.icon
+.header
+  %h2.ui.left.floated.header
+    Usuario:
+    = @user.username
+  %h2.ui.right.floated.header
+    Diferencia
+    = number_to_currency @difference
+  .clearfix
+
+.content
+  .ui.message.center{class: 'positive'}
+    %h2.ui.header
+      Extracciones
+    - if @extractions.empty?
+      No hay extracciones para este mes
+    -else
+      %table.ui.table
+        %thead
+          %th Fecha
+          %th Descripcion
+          %th Total
+        %tbody
+          - @extractions.each do |ext|
+            %tr
+              %td= ext.shift.created_at
+              %td= ext.description
+              %td= number_to_currency ext.amount
+
+  .ui.message.center{class: 'negative'}
+    %h2.ui.header
+      Gastos
+    - if @expenses.empty?
+      No hay gastos para este mes
+    -else
+      %table.ui.table
+        %thead
+          %th Fecha
+          %th Descripcion
+          %th Total
+        %tbody
+          - @expenses.each do |exp|
+            %tr
+              %td= exp.created_at
+              %td= exp.description
+              %td= number_to_currency exp.amount

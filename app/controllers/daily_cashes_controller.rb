@@ -30,6 +30,7 @@ class DailyCashesController < ApplicationController
       @users_expenses = Expense.where('expenses.shift_or_user_type = ? AND expenses.created_at BETWEEN ? AND ?', "User", date.beginning_of_day, date.end_of_day)
       @total_expenses = @users_expenses.sum(:amount)
       @daily_cash.total = @shifts.sum(&:total_extractions)
+      @daily_cash.total_expenses = @total_expenses
       @daily_cash.save
 
       @open_shift_count = @shifts.select { |sh| sh.is_open? }.count.to_i

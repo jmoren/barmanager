@@ -32,4 +32,14 @@ class User < ActiveRecord::Base
       where(conditions).first
     end
   end
+
+  def monthly_extractions(date)
+    Extraction.joins(:shift).where("shifts.user_id = ? and shifts.created_at between ? and ?",
+      id, date.beginning_of_month, date.end_of_month)
+  end
+
+  def monthly_expenses(date)
+    Expense.where("shift_or_user_type = ? and shift_or_user_id = ? and created_at between ? and ?",
+      "User", id, date.beginning_of_month, date.end_of_month)
+  end
 end
