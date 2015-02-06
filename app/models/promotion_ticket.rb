@@ -31,11 +31,14 @@ class PromotionTicket < ActiveRecord::Base
     end
   end
 
-  def deliver_all
-    promotion_ticket_items.update_all(delivered: true)
+  def deliver_all_kitchen
+    promotion_ticket_items
+      .joins(promotion_item: {item: :category})
+      .where("categories.kitchen = true")
+      .update_all(delivered: true)
   end
 
   def full_delivered?
-    self.promotion_ticket_items.map(&:delivered?).select { |a| a if !a }.empty?
+    !self.promotion_ticket_items.map(&:delivered?).include?(false)
   end
 end

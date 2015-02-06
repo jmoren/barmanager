@@ -87,12 +87,12 @@ class TicketsController < ApplicationController
     end
   end
 
-  def deliver_all
+  def deliver_all_kitchen
     @ticket = Ticket.find(params[:id])
-    @ticket.deliver_all
+    @ticket.deliver_all_kitchen
     render json: @ticket, status: 200
 
-    rescue error
+    rescue => error
       render json: error, status: 500
   end
 

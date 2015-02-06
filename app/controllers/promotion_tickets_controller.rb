@@ -39,7 +39,7 @@ class PromotionTicketsController < ApplicationController
   end
 
   def destroy_all
-    dest = @ticket.table | @ticket
+    dest = @ticket.table || @ticket
 
     @ticket.promotion_tickets.where(promotion_id: params[:promotion_id]).destroy_all
 

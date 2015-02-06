@@ -45,7 +45,7 @@ BarManager::Application.routes.draw do
     patch :move_to, on: :member, as: :change
     patch :unlink_table, on: :member, as: :unlink_table
     patch :close, on: :member, as: :close
-    patch :deliver_all, on: :member, as: :deliver_all
+    patch :deliver_all_kitchen, on: :member, as: :deliver_all_kitchen
     resources :item_tickets do
       put :increase, on: :member
       put :deliver, on: :member

@@ -53,9 +53,9 @@ class Ticket < ActiveRecord::Base
     self.total
   end
 
-  def deliver_all
+  def deliver_all_kitchen
     item_tickets.update_all(delivered: true)
-    promotion_tickets.map(&:deliver_all)
+    promotion_tickets.map(&:deliver_all_kitchen)
     additionals.update_all(delivered: true)
   end
 

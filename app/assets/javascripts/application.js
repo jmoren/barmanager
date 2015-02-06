@@ -75,7 +75,7 @@ $(document).ready(function(){
 
   function deliverAll(ticketId){
     $.ajax({
-      url: "/tickets/"+ticketId+"/deliver_all",
+      url: "/tickets/"+ticketId+"/deliver_all_kitchen",
       type: "patch",
       dataType: "json",
       success: function(data) {
