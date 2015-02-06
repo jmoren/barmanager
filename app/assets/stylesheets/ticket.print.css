@@ -1,6 +1,6 @@
 @media print {
-  div.ui.menu, div#open-tables, div.side, div.table-actions, div.ui.divider, div.table-form, i.icon.remove,
-  a.ui.button, div.ui.actions{
+  div.ui.menu, div#open-tables, div.side, div.table-actions, div.ui.divider, div.table-form, i.icon,
+  a.ui.button, div.ui.actions {
     display: none !important;
   }
   table tr th {
@@ -39,6 +39,11 @@
     border: none !important;
     box-shadow: none !important;
     font-size: 14px;
+  }
+  h4.ui.header.right.floated {
+    font-size: 12px !important;
+    float: left !important;
+    margin-left: 10px !important;
   }
 
 }

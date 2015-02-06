@@ -3,7 +3,7 @@ class KitchenController < ApplicationController
   def index
     items               = Table.open.map(&:kitchen_item_tickets).flatten.compact
     promotions          = Table.open.map(&:kitchen_promotion_tickets).flatten.compact
-    items_to_carry      = Ticket.without_table.where(status: :open).map(&:item_tickets_to_kitchen)
+    items_to_carry      = Ticket.without_table.where(status: :open).map(&:item_tickets_to_kitchen).flat.compact
     promotions_to_carry = Ticket.without_table.where(status: :open).map(&:promotion_tickets_to_kitchen)
     @kitchen_items = (items | promotions | items_to_carry | promotions_to_carry).flatten.compact
 
@@ -26,10 +26,10 @@ class KitchenController < ApplicationController
 
   def print_table
     @current_ticket = Ticket.find(params[:ticket_id])
-    @table = @current_ticket.table
 
-    @item_tickets = @table.kitchen_item_tickets.where(delivered: false)
-    @promo_tickets = @table.kitchen_promotion_tickets.map { |pt| pt if !pt.full_delivered? }
+    @item_tickets = @current_ticket.item_tickets_to_kitchen.where(delivered: false)
+    @promo_tickets = @current_ticket.promotion_tickets_to_kitchen.map { |pt| pt if !pt.full_delivered? }
+
     @additionals = @current_ticket.additionals.where(delivered: false, kitchen: true)
     @kitchen_items = (@item_tickets | @promo_tickets)
 
