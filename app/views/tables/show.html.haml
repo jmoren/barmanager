@@ -25,9 +25,13 @@
           %i.icon.trash
           Borrar Ticket
       - else
-        = link_to "#", class: "close-table ui labeled icon button teal small", data: { id: @current_ticket.id } do
-          %i.icon.lock
-          Cerrar Mesa
+        - if @current_ticket.fully_delivered?
+          = link_to "#", class: "close-table ui labeled icon button teal small", data: { id: @current_ticket.id } do
+            %i.icon.lock
+            Cerrar Mesa
+        - else
+          .ui.message.warning
+            No se puede cerrar la mesa, hay items no entregados.
       = link_to "#", class: "change-table ui labeled icon button small", data: { id: @current_ticket.id } do
         %i.icon.refresh
         Cambiar Mesa

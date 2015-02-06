@@ -80,6 +80,7 @@ $(document).ready(function(){
       dataType: "json",
       success: function(data) {
         $('div.panel').show();
+        location.reload();
         return true;
       },
       error: function(a,b,c){
