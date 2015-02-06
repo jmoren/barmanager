@@ -56,6 +56,7 @@ class Ticket < ActiveRecord::Base
   def deliver_all
     item_tickets.update_all(delivered: true)
     promotion_tickets.map(&:deliver_all)
+    additionals.update_all(delivered: true)
   end
 
   def grouped_item_tickets

@@ -11,12 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205171842) do
+ActiveRecord::Schema.define(version: 20150206195118) do
 
   create_table "additionals", force: true do |t|
     t.string  "description"
     t.float   "amount"
     t.integer "ticket_id"
+    t.boolean "kitchen"
+    t.boolean "delivered",   default: false
   end
 
   add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id", using: :btree
@@ -30,11 +32,11 @@ ActiveRecord::Schema.define(version: 20150205171842) do
 
   create_table "daily_cashes", force: true do |t|
     t.integer  "total"
-    t.boolean  "close",         default: false
+    t.boolean  "close",          default: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.date     "date"
-    t.float    "total_expense"
+    t.float    "total_expenses"
   end
 
   create_table "expenses", force: true do |t|
@@ -46,7 +48,7 @@ ActiveRecord::Schema.define(version: 20150205171842) do
     t.datetime "updated_at"
   end
 
-  add_index "expenses", ["shift_or_user_id"], name: "index_expenses_on_shift_or_daily_cash_id", using: :btree
+  add_index "expenses", ["shift_or_user_id"], name: "index_expenses_on_shift_or_user_id", using: :btree
 
   create_table "extractions", force: true do |t|
     t.integer "amount"
@@ -85,7 +87,7 @@ ActiveRecord::Schema.define(version: 20150205171842) do
     t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "total_expense"
+    t.float    "total_expenses"
   end
 
   create_table "organizations", force: true do |t|

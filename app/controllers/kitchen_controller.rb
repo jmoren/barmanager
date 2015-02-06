@@ -30,7 +30,7 @@ class KitchenController < ApplicationController
 
     @item_tickets = @table.kitchen_item_tickets.where(delivered: false)
     @promo_tickets = @table.kitchen_promotion_tickets.map { |pt| pt if !pt.full_delivered? }
-
+    @additionals = @current_ticket.additionals.where(delivered: false, kitchen: true)
     @kitchen_items = (@item_tickets | @promo_tickets)
 
     render :index, layout: false

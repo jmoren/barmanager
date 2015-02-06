@@ -22,6 +22,6 @@ private
   end
 
   def additional_params
-    params.require(:additional).permit(:description, :amount)
+    params.require(:additional).permit(:description, :amount, :kitchen)
   end
 end

@@ -1,12 +1,12 @@
-%i.close.icon
-.header
-  %h2.ui.left.floated.header
-    = @table.nil? ? "Para llevar" : "Mesa #{@table.name}"
-  %h2.ui.right.floated.header
-    Ticket Nro
-    = @current_ticket.formatted_number
-  .clearfix
+.ui.header
+  = @table.nil? ? "Para llevar" : "Mesa #{@table.name}"
 
+  - if @current_ticket
+    .ui.header.right.floated
+      .ui.label.orange{style: "float:right"}
+        %i.icon.tag
+        = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
+.clearfix
 .content
   %table.ui.celled.structured.table
     %thead
@@ -32,6 +32,12 @@
                         .ui.horizontal.label
                           = promo_ticket_item.promotion_item.quantity * ki.quantity
                         = promo_ticket_item.promotion_item.item.description
+
+  - @additionals.each do |entry|
+    .card
+      .content
+        %h3.header= entry.description
+        = number_to_currency entry.amount
 
   .ui.actions
     %button.ui.button.green.icon.labeled.ok.print

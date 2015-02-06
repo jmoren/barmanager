@@ -1,20 +1,13 @@
 .ui.center
   %b Ticket no valido como factura.
 .ui.divider
-.ui.center
-  %b{style:'font-size:16px;'}
-    Rojo Bar
-  %p
-    CHACABUCO 101 ESQ. 25 DE MAYO
-.ui.divider
 %h2.ui.header.left.floated
   = "Ticket # #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
   .sub.header
     = @ticket.created_at.strftime('%d/%m/%Y - %H:%M %p')
     .ui.label.mini{class: @ticket.status == 'open' ? 'red' : 'green'}
       = @ticket.status == 'open' ? 'Abierto' : 'Cerrado'
-.ui.header.right.floated
-
+.ui.header.right.floated.table-actions
   - if @ticket.open?
     - if @current_shift
       = link_to close_ticket_path(@ticket), method: :patch, class: "ui button green basic", data: { id: @ticket.id } do
@@ -27,31 +20,35 @@
     = link_to "#", class: "change-table ui button blue basic", data: { id: @ticket.id } do
       %i.icon.refresh
       Asignar a una mesa
+    .ui.button.basic.blue.print{onclick: "window.print();" }
+      %i.icon.print
+      Imprimir
   - else
     .ui.button.basic.blue.print{onclick: "window.print();" }
       %i.icon.print
       Imprimir
 .ui.divider.clearing
 - if @ticket.open?
-  .ui.secondary.menu.teal#ticket-entry
-    = link_to "#", data: { tab: "items" }, class: "item active"  do
-      %i.icon.plus
-      Items
-    = link_to "#", data: { tab: "promos" }, class: "item"  do
-      %i.icon.plus
-      Promos
-    = link_to "#", data: { tab: "adicional" }, class: "item" do
-      %i.icon.plus
-      Adicionales
+  .table-form
+    .ui.secondary.menu.teal#ticket-entry
+      = link_to "#", data: { tab: "items" }, class: "item active"  do
+        %i.icon.plus
+        Items
+      = link_to "#", data: { tab: "promos" }, class: "item"  do
+        %i.icon.plus
+        Promos
+      = link_to "#", data: { tab: "adicional" }, class: "item" do
+        %i.icon.plus
+        Adicionales
 
-  .ui.segment.tab.active{ "data-tab" => 'items' }
-    = render partial: 'item_tickets/form', locals: { ticket: @ticket }
+    .ui.segment.tab.active{ "data-tab" => 'items' }
+      = render partial: 'item_tickets/form', locals: { ticket: @ticket }
 
-  .ui.segment.tab{"data-tab" => 'promos'}
-    = render partial: 'promotion_tickets/form', locals: { ticket: @ticket }
+    .ui.segment.tab{"data-tab" => 'promos'}
+      = render partial: 'promotion_tickets/form', locals: { ticket: @ticket }
 
-  .ui.segment.tab{"data-tab" => 'adicional'}
-    = render partial: 'additionals/form', locals: { ticket: @ticket }
+    .ui.segment.tab{"data-tab" => 'adicional'}
+      = render partial: 'additionals/form', locals: { ticket: @ticket }
 
   %table.table.ui#tickets
     %thead

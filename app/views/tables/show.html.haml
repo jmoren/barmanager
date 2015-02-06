@@ -8,9 +8,17 @@
       %p
         Con la mesa abierta, podras administrar el ticket hasta cerrar la venta.
 - else
-  %h2.center.ui.header
+  .ui.header
     = "Mesa #{@table.name}"
-  .center
+
+    - if @current_ticket
+      .ui.header.right.floated
+        .ui.label.orange{style: "float:right"}
+          %i.icon.tag
+          = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
+
+  .ui.divider
+  .center.table-actions
     -if @table.open? && @current_ticket
       - if !@current_ticket.has_items?
         = link_to ticket_path(@current_ticket, table_id: @table.id), method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button labeled icon small red" do
@@ -28,47 +36,47 @@
         Remover de la mesa
       = link_to "#", id: "show-kitchen", class: "ui button icon labeled small teal", data: { id: @current_ticket.id }  do
         %i.icon.print
-        Imprimir pedido
+        Ticket de cocina
+      .ui.button.basic.blue.print{onclick: "window.print();" }
+        %i.icon.print
+        Imprimir
     - else
       = link_to open_table_path(@table), method: :put,  class: "ui small labeled icon button orange" do
         %i.icon.unlock
         Abrir Mesa
 
+  .ui.divider
+
   - if @current_ticket
-    .ui.divider
-    .ui.label.orange{style: "float:right"}
-      %i.icon.tag
-      = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
     - if @current_ticket.open?
+      .table-form
+        .ui.secondary.menu.teal#ticket-entry
+          = link_to "#", data: { tab: "items" }, class: "item active"  do
+            %i.icon.plus
+            Items
+          = link_to "#", data: { tab: "promos" }, class: "item"  do
+            %i.icon.plus
+            Promos
+          = link_to "#", data: { tab: "adicional" }, class: "item" do
+            %i.icon.plus
+            Adicionales
 
-      .ui.secondary.menu.teal#ticket-entry
-        = link_to "#", data: { tab: "items" }, class: "item active"  do
-          %i.icon.plus
-          Items
-        = link_to "#", data: { tab: "promos" }, class: "item"  do
-          %i.icon.plus
-          Promos
-        = link_to "#", data: { tab: "adicional" }, class: "item" do
-          %i.icon.plus
-          Adicionales
+        .ui.segment.tab.active{ "data-tab" => 'items' }
+          = render partial: 'item_tickets/form', locals: { ticket: @current_ticket }
 
-      .ui.segment.tab.active{ "data-tab" => 'items' }
-        = render partial: 'item_tickets/form', locals: { ticket: @current_ticket }
+        .ui.segment.tab{"data-tab" => 'promos'}
+          = render partial: 'promotion_tickets/form', locals: { ticket: @current_ticket }
 
-      .ui.segment.tab{"data-tab" => 'promos'}
-        = render partial: 'promotion_tickets/form', locals: { ticket: @current_ticket }
-
-      .ui.segment.tab{"data-tab" => 'adicional'}
-        = render partial: 'additionals/form', locals: { ticket: @current_ticket }
+        .ui.segment.tab{"data-tab" => 'adicional'}
+          = render partial: 'additionals/form', locals: { ticket: @current_ticket }
 
     %table.table.ui#tickets
       %thead
         %th
-        %th Codigo
         %th Descripcion
         %th Cantidad
         %th Precio
-        %th.center.aligned Sub Total
+        %th.center.aligned Sub total
         %th
 
       %tbody
@@ -79,8 +87,7 @@
                 - if @table.open?
                   = link_to destroy_all_ticket_item_tickets_path(@current_ticket, item_id: entry.item_id), method: :delete do
                     %i.icon.remove.circle.outline.red
-              %td{style: "vertical-align: top"}= entry.item.code
-              %td= entry.item.description
+              %td= "#{entry.item.code} - #{entry.item.description}"
               %td= entry.quantity
               %td= number_to_currency entry.item.price
               %td.center.aligned= number_to_currency entry.sub_total
@@ -98,8 +105,7 @@
                 - if @table.open?
                   = link_to destroy_all_ticket_promotion_tickets_path(@current_ticket, promotion_id: entry.promotion_id), method: :delete do
                     %i.icon.remove.circle.outline.red
-              %td{style: "vertical-align: top"}= entry.promotion.code
-              %td{style: "vertical-align: top"}= "Promo #{entry.promotion.description}"
+              %td{style: "vertical-align: top"}= "Promo #{entry.promotion.code} - #{entry.promotion.description}"
               %td{style: "vertical-align: top"}= entry.quantity
               %td{style: "vertical-align: top"}= number_to_currency entry.promotion.price
               %td.center.aligned{style: "vertical-align: top"}= number_to_currency entry.subtotal
@@ -112,23 +118,24 @@
 
       %tfoot
         %tr
-          %td{colspan: 5}
-          %td.center.aligned
+          %td{colspan: 4}
+          %td.center.aligned{colspan: 1}
             .ui.label.blue.fluid{style: "font-size: 16px"}
               = number_to_currency @current_ticket.get_total
+          %td
 
     %h3.ui.header
       Adicionales
     .ui.divider
-    .ui.three.cards
+    .ui.four.cards
       - @current_ticket.additionals.each do |entry|
         - unless entry.new_record?
-          .card
+          .card.no-border
             .content
               - if @table.open?
                 = link_to ticket_additional_path(@current_ticket, entry), method: :delete, style: "float: right;margin:0" do
                   %i.icon.remove.circle.outline.red
-              %h3.header= entry.description
+              %b= entry.description
               = number_to_currency entry.amount
 
 

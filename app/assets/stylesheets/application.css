@@ -13,6 +13,7 @@
  *= require default
  *= require default.date
  *= require default.time
+ *= require ticket.print
  */
 
 html {
@@ -139,4 +140,9 @@ i.icon.big-icon {
 .ui.inverted.menu .item .menu .link.item:hover {
   background-color: #3b83c0 !important;
   color: white !important;
+}
+
+.ui.four.cards div.card.no-border {
+  box-shadow: none !important;
+  border: 1px solid #CCC;
 }

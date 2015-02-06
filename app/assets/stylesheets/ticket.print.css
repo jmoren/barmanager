@@ -1,10 +1,18 @@
 @media print {
-  div.side, div.menu.fixed, a.ui.button, div.ui.button.basic.blue.print,
-  button.print, div.ui.segment.tab, div#ticket-entry, div#tickets{
+  div.ui.menu, div#open-tables, div.side, div.table-actions, div.ui.divider, div.table-form, i.icon.remove,
+  a.ui.button, div.ui.actions{
     display: none !important;
   }
-
-  div.segment.ui, div#modal-kitchen {
+  table tr th {
+    margin-right: 0px !important;
+    padding: 0px 5px 0px 5px !important;
+  }
+  table, table tr, table tr td, .ui.modal .ui.header, .ui.modal .content {
+    margin: 0px !important;
+    padding: 0px !important;
+    border: none !important;
+  }
+  div.segment.ui, div#modal-kitchen, .ui.page.dimmer, .ui.modal {
     float: none !important;
     display: block !important;
     width: 100% !important;
@@ -13,6 +21,24 @@
     top: 0 !important;
     box-shadow: none !important;
     margin: 0px !important;
+    padding: 0px !important;
+    border: none !important;
+    font-size: 14px;
+  }
+
+  div.ui.blue.label, div.ui.orange.label, div.sub.header {
+    color: black !important;
+  }
+
+  .ui.four.cards div.card.no-border {
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .ui.modal div.ui.header {
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 14px;
   }
 
 }
