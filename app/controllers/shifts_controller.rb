@@ -21,9 +21,9 @@ class ShiftsController < ApplicationController
   # GET /shifts/new
   def new
     @shift = Shift.new(open: DateTime.now)
-    last_shift = Shift.order(close: :desc).first
-    if last_shift
-      @shift.opening_cash = last_shift.closing_cash.to_f - last_shift.total_extractions
+    @last_shift = Shift.order(close: :desc).first
+    if @last_shift
+      @shift.opening_cash = @last_shift.closing_cash.to_f - @last_shift.total_extractions
     else
       @shift.opening_cash = 0
     end

@@ -1,3 +1,17 @@
+- if @last_shift
+  .ui.message.icon.success
+    %i.icon.cash
+    .content
+      .header
+        Ultimo turno cerrado
+      .ui.tag.labels
+        %a.ui.label.blue
+          = @last_shift.close.strftime('%d/%m/%Y %H:%M %p')
+        %a.ui.label.blue
+          ="Cierre de caja : #{number_to_currency @last_shift.closing_cash}"
+        %a.ui.label.blue
+          ="Extracciones : #{number_to_currency @last_shift.total_extractions}"
+
 .ui.label
   %i.icon.calendar
   %b
