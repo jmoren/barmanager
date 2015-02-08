@@ -1,8 +1,22 @@
 = form_for [shift, shift.extractions.new], html: { class: "ui form"} do |f|
   .ui.grid
-    .ten.wide.column.field
+    .eight.wide.column.field
       = f.text_field :description, placeholder: "Agregar un Extraccion"
+    - if current_user.admin?
+      .three.wide.column.field
+        .ui.fluid.search.selection.dropdown.combo
+          = f.hidden_field :user_id
+          %i.dropdown.icon
+          .default.text Usuario
+          .menu
+            - User.all.each do |user|
+              .item{ data: { value: user.id} }
+                = user.username
     .three.wide.column.field
       = f.number_field :amount, placeholder: "Valor $"
     .two.wide.column.field
       = f.submit "Agregar", class: "ui button blue"
+
+
+:javascript
+  $('.dropdown').dropdown();

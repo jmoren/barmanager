@@ -1,25 +1,35 @@
-.ui.center
-  %b Ticket no valido como factura.
+.ui.header
+  .ui.label.orange
+    %i.icon.tag
+    = "Ticket nro. #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
+  - if @ticket
+    %h4.ui.header.right.floated
+      %i.calendar.icon.mini
+      .content
+        = @ticket.created_at.strftime('%d/%m/%Y - %H:%M %p')
+        .ui.label.mini{class: @ticket.status == 'open' ? 'red' : 'green', style: "float:right"}
+          = @ticket.status == 'open' ? 'Abierto' : 'Cerrado'
+
 .ui.divider
-%h2.ui.header.left.floated
-  = "Ticket # #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
-  .sub.header
-    = @ticket.created_at.strftime('%d/%m/%Y - %H:%M %p')
-    .ui.label.mini{class: @ticket.status == 'open' ? 'red' : 'green'}
-      = @ticket.status == 'open' ? 'Abierto' : 'Cerrado'
-.ui.header.right.floated.table-actions
+.ui.right.floated.table-actions
   - if @ticket.open?
-    - if @current_shift
-      = link_to close_ticket_path(@ticket), method: :patch, class: "ui button green basic", data: { id: @ticket.id } do
+    - if @current_shift && @ticket.fully_delivered?
+      = link_to close_ticket_path(@ticket), method: :patch, class: "ui labeled icon button teal small", data: { id: @ticket.id } do
         %i.icon.lock
         Cerrar
+    - else
+      .ui.message.warning
+        No se puede cerrar la mesa, hay items no entregados.
     - unless @ticket.has_items?
-      = link_to @ticket, method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button basic red" do
+      = link_to @ticket, method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button icon labeled small red" do
         %i.icon.trash
         Borrar Ticket
-    = link_to "#", class: "change-table ui button blue basic", data: { id: @ticket.id } do
+    = link_to "#", class: "change-table ui labeled icon button blue small", data: { id: @ticket.id } do
       %i.icon.refresh
       Asignar a una mesa
+    = link_to "#", id: "show-kitchen", class: "ui button icon labeled small teal", data: { id: @ticket.id }  do
+      %i.icon.print
+      Ticket de cocina
     .ui.button.basic.blue.print{onclick: "window.print();" }
       %i.icon.print
       Imprimir
@@ -167,3 +177,4 @@ Gracias por su visita...
 #modal-expand_item.ui.modal
 #modal-ticket.ui.modal
 #modal-table.ui.modal.small
+#modal-kitchen.ui.modal

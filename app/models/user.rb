@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
 
   has_many :shifts
   has_many :expenses, as: :shift_or_user
+  has_many :extractions
 
   def total_expenses(date)
     expenses.where(date: date).sum(:amount)
@@ -34,12 +35,10 @@ class User < ActiveRecord::Base
   end
 
   def monthly_extractions(date)
-    Extraction.joins(:shift).where("shifts.user_id = ? and shifts.created_at between ? and ?",
-      id, date.beginning_of_month, date.end_of_month)
+    extractions.where("created_at between ? and ?", date.beginning_of_month, date.end_of_month)
   end
 
   def monthly_expenses(date)
-    Expense.where("shift_or_user_type = ? and shift_or_user_id = ? and created_at between ? and ?",
-      "User", id, date.beginning_of_month, date.end_of_month)
+    expenses.where("created_at between ? and ?", date.beginning_of_month, date.end_of_month)
   end
 end

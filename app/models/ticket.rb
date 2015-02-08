@@ -77,7 +77,6 @@ class Ticket < ActiveRecord::Base
     self.item_tickets.joins(item: [:category])
         .where("categories.kitchen = ? and item_tickets.delivered = ?", true, false)
         .order("item_tickets.created_at desc")
-        .flatten.compact
   end
 
   def promotion_tickets_to_kitchen
@@ -86,6 +85,10 @@ class Ticket < ActiveRecord::Base
         .where("categories.kitchen = ?", true)
         .order("promotion_tickets.created_at desc")
         .uniq
+  end
+
+  def additionals_to_kitchen
+    self.additionals.where(kitchen: true)
   end
 
   def fully_delivered?

@@ -70,14 +70,17 @@
 %table.ui.table
   %thead
     %th{style: "width:65%"} Descripcion
+    %th Usuario
     %th.center.aligned Monto
   %tbody
     - @shift.extractions.each do |extraction|
       - unless extraction.new_record?
         %tr
           %td= extraction.description
+          %td= extraction.user.username
           %td.center.aligned= number_to_currency extraction.amount
     %tr
+      %td
       %td
       %td.center.aligned
         .ui.button

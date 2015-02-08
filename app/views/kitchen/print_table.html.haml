@@ -11,15 +11,12 @@
   %table.ui.celled.structured.table
     %thead
       %tr
-        %th.center.aligned Mesa
         %th.center.aligned Hora
         %th Pedido
-        %th En cocina
     %tbody
       - @kitchen_items.each do |ki|
         - unless ki.nil? || ki.full_delivered?
           %tr
-            %td.center.aligned= ki.ticket.table.try(:name) || "Para llevar"
             %td.center.aligned= ki.created_at.strftime('%H:%M %p')
             %td
               .ui.divided.selection.list
@@ -35,27 +32,12 @@
                         .ui.horizontal.label
                           = promo_ticket_item.promotion_item.quantity * ki.quantity
                         = promo_ticket_item.promotion_item.item.description
-            %td
-              - if ki.full_delivered?
-                %i.icon.checkmark.box.big-icon
-              - else
-                %i.icon.wait.orange.big-icon
 
-      - @additionals.each do |ad|
-        %tr
-          %td.center.aligned= ad.ticket.table.try(:name) || "Para llevar"
-          %td.center.aligned= ad.created_at.strftime('%H:%M %p')
-          %td
-            %p
-              .ui.horizontal.label
-                = ad.amount
-              = ad.description
-          %td
-            - if ad.full_delivered?
-              %i.icon.checkmark.box.big-icon
-            - else
-              %i.icon.wait.orange.big-icon
-
+  - @additionals.each do |entry|
+    .card
+      .content
+        %h3.header= entry.description
+        = number_to_currency entry.amount
 
   .ui.actions
     %button.ui.button.green.icon.labeled.ok.print

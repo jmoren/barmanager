@@ -1,14 +1,13 @@
 class KitchenController < ApplicationController
   layout "admin"
   def index
-    items               = Table.open.map(&:kitchen_item_tickets).flatten.compact
-    promotions          = Table.open.map(&:kitchen_promotion_tickets).flatten.compact
-    items_to_carry      = Ticket.without_table.where(status: :open).map(&:item_tickets_to_kitchen).flat.compact
-    promotions_to_carry = Ticket.without_table.where(status: :open).map(&:promotion_tickets_to_kitchen)
-    @kitchen_items = (items | promotions | items_to_carry | promotions_to_carry).flatten.compact
+    items        = Ticket.where(status: 'open').map(&:item_tickets_to_kitchen).flatten.compact
+    promotions   = Ticket.where(status: 'open').map(&:promotion_tickets_to_kitchen).flatten.compact
+    @additionals = Ticket.where(status: 'open').map(&:additionals_to_kitchen).flatten.compact
+
+    @kitchen_items = (items | promotions).flatten.compact
 
     @kitchen_items.sort{ |x,y| y.created_at <=> x.created_at }
-
   end
 
   def show
@@ -32,7 +31,6 @@ class KitchenController < ApplicationController
 
     @additionals = @current_ticket.additionals.where(delivered: false, kitchen: true)
     @kitchen_items = (@item_tickets | @promo_tickets)
-
-    render :index, layout: false
+    render :print_table, layout: false
   end
 end
