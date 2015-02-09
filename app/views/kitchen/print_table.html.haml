@@ -1,5 +1,5 @@
 .ui.header
-  = @table.nil? ? "Para llevar" : "Mesa #{@table.name}"
+  = @current_ticket.table.nil? ? "Para llevar" : "Mesa #{@current_ticket.table.name}"
 
   - if @current_ticket
     .ui.header.right.floated
