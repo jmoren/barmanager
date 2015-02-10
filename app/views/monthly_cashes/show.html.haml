@@ -44,6 +44,7 @@
     %thead
       %th Usuario
       %th Total extraciones del mes
+      %th Total vales del mes
       %th Total gastos del mes
       %th Differencia
       %th
@@ -51,7 +52,8 @@
       - User.all.each do |user|
         %tr
           %td= user.username
-          %td= number_to_currency user.monthly_extractions(@first_day).sum(:amount)
+          %td= number_to_currency user.monthly_extractions(@first_day).where(personal: false).sum(:amount)
+          %td= number_to_currency user.monthly_extractions(@first_day).where(personal: true).sum(:amount)
           %td= number_to_currency user.monthly_expenses(@first_day).sum(:amount)
           %td= number_to_currency user.monthly_extractions(@first_day).sum(:amount) - user.monthly_expenses(@first_day).sum(:amount)
           %td

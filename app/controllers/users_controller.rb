@@ -44,7 +44,8 @@ class UsersController < ApplicationController
     date = Date.new(Date.today.year, month.to_i, 1)
     @user = User.find(params[:id])
     @expenses = @user.monthly_expenses(date)
-    @extractions = @user.monthly_extractions(date)
+    @extractions = @user.monthly_extractions(date).where(personal: false)
+    @vales = @user.monthly_extractions(date).where(personal: true)
     @difference = @extractions.sum(:amount) - @expenses.sum(:amount)
     render :monthly_detail, layout: false
   end

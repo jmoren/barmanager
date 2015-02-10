@@ -27,6 +27,23 @@
               %td= ext.description
               %td= number_to_currency ext.amount
 
+    %h2.ui.header
+      Vales
+    - if @vales.empty?
+      No hay Vales para este mes
+    -else
+      %table.ui.table
+        %thead
+          %th Fecha
+          %th Descripcion
+          %th Total
+        %tbody
+          - @vales.each do |val|
+            %tr
+              %td= val.shift.created_at
+              %td= val.description
+              %td= number_to_currency val.amount
+
   .ui.message.center{class: 'negative'}
     %h2.ui.header
       Gastos

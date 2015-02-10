@@ -21,6 +21,6 @@ class ExtractionsController < ApplicationController
   end
 private
   def extractions_params
-    params.require(:extraction).permit(:description, :amount, :user_id, :shift_id)
+    params.require(:extraction).permit(:description, :amount, :personal, :user_id, :shift_id)
   end
 end

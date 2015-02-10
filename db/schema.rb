@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150208153842) do
+ActiveRecord::Schema.define(version: 20150210183949) do
 
   create_table "additionals", force: true do |t|
     t.string   "description"
@@ -55,12 +55,14 @@ ActiveRecord::Schema.define(version: 20150208153842) do
   create_table "extractions", force: true do |t|
     t.integer  "amount"
     t.string   "description"
-    t.integer  "user_id"
     t.integer  "shift_id"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "personal"
   end
 
+  add_index "extractions", ["shift_id"], name: "index_extractions_on_shift_id", using: :btree
   add_index "extractions", ["user_id"], name: "index_extractions_on_user_id", using: :btree
 
   create_table "item_tickets", force: true do |t|
