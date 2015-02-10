@@ -26,7 +26,7 @@ class DailyCashesController < ApplicationController
     else
       @daily_cash = DailyCash.find_or_create_by(date: date)
       @shifts = Shift.joins(:user).where('shifts.open BETWEEN ? AND ?', date.beginning_of_day, date.end_of_day)
-      @total_shifts = @shifts.sum(:closing_cash)
+      @total_shifts = @shifts.sum(:closing_cash) - @shifts.sum(:opening_cash)
       @users_expenses = Expense.where('expenses.shift_or_user_type = ? AND expenses.created_at BETWEEN ? AND ?', "User", date.beginning_of_day, date.end_of_day)
       @total_expenses = @users_expenses.sum(:amount)
       @daily_cash.total = @shifts.sum(&:total_extractions)

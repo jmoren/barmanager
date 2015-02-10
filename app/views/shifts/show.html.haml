@@ -77,7 +77,7 @@
       - unless extraction.new_record?
         %tr
           %td= extraction.description
-          %td= extraction.user.username
+          %td= extraction.user.try(:username)
           %td.center.aligned= number_to_currency extraction.amount
     %tr
       %td
