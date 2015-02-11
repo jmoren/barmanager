@@ -2,9 +2,18 @@
   .ui.grid
     = f.hidden_field :shift_or_user_id
     = f.hidden_field :shift_or_user_type
-    .ten.wide.column.field
+    .nine.wide.column.field
       = f.text_field :description, placeholder: "Agregar un gasto"
     .three.wide.column.field
+      .ui.fluid.search.selection.dropdown.combo
+        = f.hidden_field :supplier_id
+        %i.dropdown.icon
+        .default.text Proveedor
+        .menu
+          - Supplier.all.each do |sup|
+            .item{ data: { value: sup.id} }
+              = sup.name
+    .two.wide.column.field
       = f.number_field :amount, placeholder: "Costo $"
     .two.wide.column.field
       = f.submit "Agregar", class: "ui button blue"

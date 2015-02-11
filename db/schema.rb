@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150210183949) do
+ActiveRecord::Schema.define(version: 20150211201839) do
 
   create_table "additionals", force: true do |t|
     t.string   "description"
@@ -48,9 +48,11 @@ ActiveRecord::Schema.define(version: 20150210183949) do
     t.string   "shift_or_user_type", default: "Shift"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "supplier_id"
   end
 
   add_index "expenses", ["shift_or_user_id"], name: "index_expenses_on_shift_or_user_id", using: :btree
+  add_index "expenses", ["supplier_id"], name: "index_expenses_on_supplier_id", using: :btree
 
   create_table "extractions", force: true do |t|
     t.integer  "amount"
@@ -153,6 +155,14 @@ ActiveRecord::Schema.define(version: 20150210183949) do
   end
 
   add_index "shifts", ["user_id"], name: "index_shifts_on_user_id", using: :btree
+
+  create_table "suppliers", force: true do |t|
+    t.string   "name"
+    t.string   "address"
+    t.string   "phone"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "tables", force: true do |t|
     t.datetime "created_at"

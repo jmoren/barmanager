@@ -48,15 +48,18 @@
 
 %table.ui.table
   %thead
-    %th{style: "width:45%"} Descripcion
+    %th{style: "width:35%"} Descripcion
+    %th Proveedor
     %th.center.aligned Monto
   %tbody
     - @shift.expenses.each do |expense|
       - unless expense.new_record?
         %tr
           %td= expense.description
+          %td= expense.supplier.try(:name)
           %td.center.aligned= number_to_currency expense.amount
     %tr
+      %td
       %td
       %td.center.aligned
         .ui.button
