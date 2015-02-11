@@ -43,11 +43,6 @@
           %b Gastos
           (Gastos fuera del turno)
         %td= number_to_currency @total_expenses
-      %tr
-        %td
-          %b Caja Real
-          (Suma de extracciones - gastos del dia):
-        %td= number_to_currency @daily_cash.total - @total_expenses
 
 - unless @daily_cash.close
   %h2.ui.header
