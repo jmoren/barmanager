@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%h2.ui.header
+  = @supplier.name
+.ui.divider
+%p
+  %b Direccion:
+  = @supplier.address
+%p
+  %b Telefono:
+  = @supplier.phone
+
+.ui.divider
+= link_to 'Editar', edit_supplier_path(@supplier), class: "ui button orange"
+= link_to 'Atras', suppliers_path, class: "ui button"

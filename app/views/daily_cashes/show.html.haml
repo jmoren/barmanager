@@ -44,7 +44,7 @@
           (Gastos fuera del turno)
         %td= number_to_currency @total_expenses
 
-- unless @daily_cash.close
+- if !@daily_cash.close && @daily_cash.date == Date.today
   %h2.ui.header
     Gastos extras
   = render partial: '/expenses/form_user'
@@ -54,7 +54,8 @@
   %thead
     %th
     %th Usuario
-    %th{style: "width:45%"} Descripcion
+    %th{style: "width:35%"} Descripcion
+    %th Proveedor
     %th.center.aligned Monto
   %tbody
     - @users_expenses.each do |expense|
@@ -65,9 +66,11 @@
               %i.icon.red.trash
           %td= expense.shift_or_user.try(:username)
           %td= expense.description
+          %td= expense.supplier.try(:name)
           %td.center.aligned= number_to_currency expense.amount
 
     %tr
+      %td
       %td
       %td
       %td
