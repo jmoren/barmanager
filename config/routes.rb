@@ -1,5 +1,7 @@
 BarManager::Application.routes.draw do
 
+  resources :clients
+
   resources :suppliers
 
   devise_for :users
@@ -48,6 +50,7 @@ BarManager::Application.routes.draw do
     patch :unlink_table, on: :member, as: :unlink_table
     patch :close, on: :member, as: :close
     patch :deliver_all_kitchen, on: :member, as: :deliver_all_kitchen
+    resources :ticket_payments
     resources :item_tickets do
       put :increase, on: :member
       put :deliver, on: :member

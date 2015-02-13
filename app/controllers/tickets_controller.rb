@@ -25,11 +25,15 @@ class TicketsController < ApplicationController
 
   # GET /tickets/new
   def new
-    @ticket = Ticket.create(date: Time.now, total: 0, status: 'open')
-    if @ticket
+    @ticket = Ticket.new(date: Time.now, total: 0, status: 'open')
+    if params[:client_id]
+      @ticket.client_id = params[:client_id]
+    end
+
+    if @ticket.save
       redirect_to @ticket
     else
-      redirect home_index_path, alert: "Error creando ticket para llevar"
+      redirect home_index_path, alert: "Error creando ticket"
     end
   end
 

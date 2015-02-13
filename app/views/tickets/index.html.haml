@@ -19,6 +19,7 @@
     %thead
       %th #
       %th Mesa
+      %th Cliente
       %th Fecha
       %th Total
       %th Estado
@@ -31,8 +32,11 @@
           %td
             - if ticket.table
               = link_to ticket.table.name, ticket.table
-            - else
+            - elsif ticket.table.nil? && ticket.client.nil?
               Para llevar
+            - else
+              \---
+          %td= ticket.client.try(:name) || '---'
           %td= ticket.date.strftime("%d/%m/%Y")
           %td= number_to_currency ticket.total
           %td= ticket.status == 'closed' ? "Cerrado" : "Abierto"

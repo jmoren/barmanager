@@ -1,0 +1,21 @@
+%h2.ui.header
+  Clientes
+
+%table.ui.table
+  %thead
+    %tr
+      %th Name
+      %th Deuda
+      %th
+  %tbody
+    - @clients.each do |client|
+      %tr
+        %td= client.name
+        %td= number_to_currency client.doubt
+        %td
+          = link_to client, class: "ui button mini icon circular basic orange" do
+            %i.icon.arrow.right
+
+%br
+
+= link_to 'Agregar Cliente', new_client_path, class: "ui button blue"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150211201839) do
+ActiveRecord::Schema.define(version: 20150212004433) do
 
   create_table "additionals", force: true do |t|
     t.string   "description"
@@ -30,6 +30,12 @@ ActiveRecord::Schema.define(version: 20150211201839) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "kitchen",    default: false
+  end
+
+  create_table "clients", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "daily_cashes", force: true do |t|
@@ -172,6 +178,15 @@ ActiveRecord::Schema.define(version: 20150211201839) do
     t.string   "color",       default: ""
   end
 
+  create_table "ticket_payments", force: true do |t|
+    t.integer  "ticket_id"
+    t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "ticket_payments", ["ticket_id"], name: "index_ticket_payments_on_ticket_id", using: :btree
+
   create_table "tickets", force: true do |t|
     t.integer  "table_id"
     t.datetime "date"
@@ -182,8 +197,10 @@ ActiveRecord::Schema.define(version: 20150211201839) do
     t.string   "status"
     t.integer  "number"
     t.integer  "shift_id"
+    t.integer  "client_id"
   end
 
+  add_index "tickets", ["client_id"], name: "index_tickets_on_client_id", using: :btree
   add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id", using: :btree
 
   create_table "users", force: true do |t|

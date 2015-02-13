@@ -1,179 +1,182 @@
 .ui.header
-  .ui.label.orange
-    %i.icon.tag
-    = "Ticket nro. #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
   - if @ticket
-    %h4.ui.header.right.floated
-      %i.calendar.icon.mini
-      .content
-        = @ticket.created_at.strftime('%d/%m/%Y - %H:%M %p')
-        .ui.label.mini{class: @ticket.status == 'open' ? 'red' : 'green', style: "float:right"}
-          = @ticket.status == 'open' ? 'Abierto' : 'Cerrado'
+    - if @ticket.client
+      .ui.label
+        = link_to @ticket.client do
+          %i.icon.user.mini
+          Cliente
+          = @ticket.client.name
+    .ui.label.orange
+      %i.icon.tag
+      = "Ticket nro. #{@ticket.formatted_number}-#{@ticket.created_at.strftime('%y')}"
+
+    .ui.label{class: @ticket.status == 'open' ? 'red' : 'green', style: "float:right"}
+      = @ticket.status == 'open' ? 'Abierto' : 'Cerrado'
 
 .ui.divider
-.ui.right.floated.table-actions
+#ticket
+  .table-actions{style: "position: absolute; right: -190px; top: 0;width: 180px; background: #fff; padding: 10px; border: solid 1px #ddd"}
+    %p
+      %b Opciones
+    - if @ticket.open?
+      - if @current_shift && @ticket.fully_delivered?
+        %p
+          = link_to close_ticket_path(@ticket), method: :patch, class: "ui fluid basic icon labeled button teal small", data: { id: @ticket.id } do
+            %i.icon.lock
+            Cerrar
+      %p
+        = link_to "#", class: "change-table ui basic icon labeled button blue small fluid", data: { id: @ticket.id } do
+          %i.icon.refresh
+          Asignar mesa
+      %p
+        = link_to "#", id: "show-kitchen", class: "ui icon labeled button small blue fluid basic", data: { id: @ticket.id }  do
+          %i.icon.food
+          Enviar cocina
+      - unless @ticket.has_items?
+        %p
+          = link_to @ticket, method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui icon labeled button basic fluid small red" do
+            %i.icon.trash
+            Borrar Ticket
+    %p
+      = link_to "#", class: "ui button basic blue small icon labeled fluid", id: "print", onclick: "window.print();" do
+        %i.icon.print
+        Imprimir
   - if @ticket.open?
-    - if @current_shift && @ticket.fully_delivered?
-      = link_to close_ticket_path(@ticket), method: :patch, class: "ui labeled icon button teal small", data: { id: @ticket.id } do
-        %i.icon.lock
-        Cerrar
-    - else
-      .ui.message.warning
-        No se puede cerrar la mesa, hay items no entregados.
-    - unless @ticket.has_items?
-      = link_to @ticket, method: :delete, data: { confirm: "Confirma borrar este ticket?" }, class: "ui button icon labeled small red" do
-        %i.icon.trash
-        Borrar Ticket
-    = link_to "#", class: "change-table ui labeled icon button blue small", data: { id: @ticket.id } do
-      %i.icon.refresh
-      Asignar a una mesa
-    = link_to "#", id: "show-kitchen", class: "ui button icon labeled small teal", data: { id: @ticket.id }  do
-      %i.icon.print
-      Ticket de cocina
-    .ui.button.basic.blue.print{onclick: "window.print();" }
-      %i.icon.print
-      Imprimir
-  - else
-    .ui.button.basic.blue.print{onclick: "window.print();" }
-      %i.icon.print
-      Imprimir
-.ui.divider.clearing
-- if @ticket.open?
-  .table-form
-    .ui.secondary.menu.teal#ticket-entry
-      = link_to "#", data: { tab: "items" }, class: "item active"  do
-        %i.icon.plus
-        Items
-      = link_to "#", data: { tab: "promos" }, class: "item"  do
-        %i.icon.plus
-        Promos
-      = link_to "#", data: { tab: "adicional" }, class: "item" do
-        %i.icon.plus
-        Adicionales
+    .table-form
+      .ui.secondary.menu.teal#ticket-entry
+        = link_to "#", data: { tab: "items" }, class: "item active"  do
+          %i.icon.plus
+          Items
+        = link_to "#", data: { tab: "promos" }, class: "item"  do
+          %i.icon.plus
+          Promos
+        = link_to "#", data: { tab: "adicional" }, class: "item" do
+          %i.icon.plus
+          Adicionales
 
-    .ui.segment.tab.active{ "data-tab" => 'items' }
-      = render partial: 'item_tickets/form', locals: { ticket: @ticket }
+      .ui.segment.tab.active{ "data-tab" => 'items' }
+        = render partial: 'item_tickets/form', locals: { ticket: @ticket }
 
-    .ui.segment.tab{"data-tab" => 'promos'}
-      = render partial: 'promotion_tickets/form', locals: { ticket: @ticket }
+      .ui.segment.tab{"data-tab" => 'promos'}
+        = render partial: 'promotion_tickets/form', locals: { ticket: @ticket }
 
-    .ui.segment.tab{"data-tab" => 'adicional'}
-      = render partial: 'additionals/form', locals: { ticket: @ticket }
+      .ui.segment.tab{"data-tab" => 'adicional'}
+        = render partial: 'additionals/form', locals: { ticket: @ticket }
 
-  %table.table.ui#tickets
-    %thead
-      %th
-      %th Codigo
-      %th Descripcion
-      %th Cantidad
-      %th Precio
-      %th.center.aligned Sub Total
-      %th
+    %table.table.ui#tickets
+      %thead
+        %th
+        %th Codigo
+        %th Descripcion
+        %th Cantidad
+        %th Precio
+        %th.center.aligned Sub Total
+        %th
 
-    %tbody
-      - @ticket.grouped_item_tickets.each do |entry|
-        - unless entry.new_record?
-          %tr
-            %td.left.aligned{style: "vertical-align: top"}
-              = link_to destroy_all_ticket_item_tickets_path(@ticket, item_id: entry.item_id), method: :delete do
-                %i.icon.remove.circle.outline.red
-            %td{style: "vertical-align: top"}= entry.item.code
-            %td= entry.item.description
-            %td= entry.quantity
-            %td= number_to_currency entry.item.price
-            %td.center.aligned= number_to_currency entry.sub_total
-            %td.left.aligned{style: "vertical-align: top"}
-              = link_to increase_ticket_item_ticket_path(@ticket, entry), method: :put do
-                %i.icon.circular.small.plus.green
-              = link_to "#", data: {ticket_id: @ticket.id, item_id: entry.item.id, type: 'item' }, class: "expand-item-row" do
-                %i.icon.circular.small.expand.red
+      %tbody
+        - @ticket.grouped_item_tickets.each do |entry|
+          - unless entry.new_record?
+            %tr
+              %td.left.aligned{style: "vertical-align: top"}
+                = link_to destroy_all_ticket_item_tickets_path(@ticket, item_id: entry.item_id), method: :delete do
+                  %i.icon.remove.circle.outline.red
+              %td{style: "vertical-align: top"}= entry.item.code
+              %td= entry.item.description
+              %td= entry.quantity
+              %td= number_to_currency entry.item.price
+              %td.center.aligned= number_to_currency entry.sub_total
+              %td.left.aligned{style: "vertical-align: top"}
+                = link_to increase_ticket_item_ticket_path(@ticket, entry), method: :put do
+                  %i.icon.circular.small.plus.green
+                = link_to "#", data: {ticket_id: @ticket.id, item_id: entry.item.id, type: 'item' }, class: "expand-item-row" do
+                  %i.icon.circular.small.expand.red
 
-      - @ticket.grouped_promotion_tickets.each do |entry|
-        - unless entry.new_record?
-          %tr
-            %td.left.aligned{style: "vertical-align: top"}
-              = link_to destroy_all_ticket_promotion_tickets_path(@ticket, promotion_id: entry.promotion_id), method: :delete do
-                %i.icon.remove.circle.outline.red
-            %td{style: "vertical-align: top"}= entry.promotion.code
-            %td{style: "vertical-align: top"}= "Promo #{entry.promotion.description}"
-            %td{style: "vertical-align: top"}= entry.quantity
-            %td{style: "vertical-align: top"}= number_to_currency entry.promotion.price
-            %td.center.aligned{style: "vertical-align: top"}= number_to_currency entry.subtotal
-            %td
-              = link_to increase_ticket_promotion_ticket_path(@ticket, entry), method: :put do
-                %i.icon.circular.small.plus.green
-              = link_to "#", data: {ticket_id: @ticket.id, promo_id: entry.promotion.id, type: 'promotion' }, class: "expand-item-row" do
-                %i.icon.circular.small.expand.red
+        - @ticket.grouped_promotion_tickets.each do |entry|
+          - unless entry.new_record?
+            %tr
+              %td.left.aligned{style: "vertical-align: top"}
+                = link_to destroy_all_ticket_promotion_tickets_path(@ticket, promotion_id: entry.promotion_id), method: :delete do
+                  %i.icon.remove.circle.outline.red
+              %td{style: "vertical-align: top"}= entry.promotion.code
+              %td{style: "vertical-align: top"}= "Promo #{entry.promotion.description}"
+              %td{style: "vertical-align: top"}= entry.quantity
+              %td{style: "vertical-align: top"}= number_to_currency entry.promotion.price
+              %td.center.aligned{style: "vertical-align: top"}= number_to_currency entry.subtotal
+              %td
+                = link_to increase_ticket_promotion_ticket_path(@ticket, entry), method: :put do
+                  %i.icon.circular.small.plus.green
+                = link_to "#", data: {ticket_id: @ticket.id, promo_id: entry.promotion.id, type: 'promotion' }, class: "expand-item-row" do
+                  %i.icon.circular.small.expand.red
 
-    %tfoot
-      %tr
-        %td{colspan: 4}
-        %td.center.aligned
-          .ui.label.blue.fluid{style: "font-size: 16px"}
-            = number_to_currency @ticket.get_total
-
-  %h3.ui.header
-    Adicionales
-  .ui.divider
-  .ui.three.cards
-    - @ticket.additionals.each do |entry|
-      - unless entry.new_record?
-        .card
-          .content
-            = link_to ticket_additional_path(@ticket, entry), method: :delete, style: "float: right;margin:0" do
-              %i.icon.remove.circle.outline.red
-            %h3.header= entry.description
-            = number_to_currency entry.amount
-- else
-  %table.ui.table
-    %thead
-      %th Categoria
-      %th Item
-      %th Cantidad
-      %th.center.aligned SubTotal
-    %tbody
-      - @ticket.item_tickets.each do |it|
-        - unless it.new_record?
-          %tr
-            %td= it.item.category.name
-            %td= it.item.description
-            %td= it.quantity
-            %td.center.aligned= number_to_currency it.sub_total
-      - @ticket.promotion_tickets.each do |pro|
+      %tfoot
         %tr
-          %td Promocion
-          %td= pro.promotion.description
-          %td= pro.quantity
-          %td.center.aligned= number_to_currency pro.subtotal
-    %tfoot
-      %tr
-        %td{colspan:3}
-        %td.center.aligned
-          .ui.button.fluid.blue
-            = number_to_currency @ticket.get_total
+          %td{colspan: 5}
+          %td.center.aligned
+            .ui.label.blue.fluid{style: "font-size: 16px"}
+              = number_to_currency @ticket.get_total
 
-  - unless @ticket.additionals.empty?
-    %h3.ui.header Adicionales
+    %h3.ui.header
+      Adicionales
     .ui.divider
-    .ui.grid
-      .four.wide.column
-        .ui.mini.statistic
-          .value= number_to_currency @ticket.additionals.sum(:amount)
-          .label Total
-      .twelve.wide.column
-        .ui.list.horizontal
-          - @ticket.additionals.each do |entry|
-            .item
-              %i.icon.bookmark.orange.circular
-              .content
-                %h3.header= entry.description
-                = number_to_currency entry.amount
-    .ui.divider
-Gracias por su visita...
-.ui.divider
-= link_to tickets_path, class: "ui button" do
-  %i.icon.arrow.left
-  Volver
+    .ui.three.cards
+      - @ticket.additionals.each do |entry|
+        - unless entry.new_record?
+          .card
+            .content
+              = link_to ticket_additional_path(@ticket, entry), method: :delete, style: "float: right;margin:0" do
+                %i.icon.remove.circle.outline.red
+              %h3.header= entry.description
+              = number_to_currency entry.amount
+  - else
+    %table.ui.table
+      %thead
+        %th Categoria
+        %th Item
+        %th Cantidad
+        %th.center.aligned SubTotal
+      %tbody
+        - @ticket.item_tickets.each do |it|
+          - unless it.new_record?
+            %tr
+              %td= it.item.category.name
+              %td= it.item.description
+              %td= it.quantity
+              %td.center.aligned= number_to_currency it.sub_total
+        - @ticket.promotion_tickets.each do |pro|
+          %tr
+            %td Promocion
+            %td= pro.promotion.description
+            %td= pro.quantity
+            %td.center.aligned= number_to_currency pro.subtotal
+      %tfoot
+        %tr
+          %td{colspan: 3}
+          %td.center.aligned
+            .ui.button.fluid.blue
+              = number_to_currency @ticket.get_total
+
+    - unless @ticket.additionals.empty?
+      %h3.ui.header Adicionales
+      .ui.divider
+      .ui.grid
+        .four.wide.column
+          .ui.mini.statistic
+            .value= number_to_currency @ticket.additionals.sum(:amount)
+            .label Total
+        .twelve.wide.column
+          .ui.list.horizontal
+            - @ticket.additionals.each do |entry|
+              .item
+                %i.icon.bookmark.orange.circular
+                .content
+                  %h3.header= entry.description
+                  = number_to_currency entry.amount
+      .ui.divider
+  Gracias por su visita...
+  .ui.divider
+  = link_to tickets_path, class: "ui button" do
+    %i.icon.arrow.left
+    Volver
 #modal-expand_item.ui.modal
 #modal-ticket.ui.modal
 #modal-table.ui.modal.small

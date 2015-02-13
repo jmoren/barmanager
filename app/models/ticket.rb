@@ -8,13 +8,16 @@ class Ticket < ActiveRecord::Base
 
   belongs_to :table
   belongs_to :shift
+  belongs_to :client
+
   has_many :item_tickets, dependent: :destroy
   has_many :promotion_tickets, dependent: :destroy
   has_many :additionals, dependent: :destroy
 
   has_many :items, through: :item_tickets
   has_many :promotions, through: :promotion_tickets
-
+  has_many :ticket_payments
+  
   validates :date, :status, :total, presence: true
   validates :total, numericality: true
   validates :status, inclusion: ['open', 'closed']
@@ -22,7 +25,7 @@ class Ticket < ActiveRecord::Base
   before_create :set_serial_number
   before_save :get_total
 
-  scope :without_table, -> { where(table_id: [nil, ""])}
+  scope :without_table, -> { where(table_id: [nil, ""], client_id: [nil, ""])}
 
   def formatted_number
     "%0.6d" % self.number
@@ -97,5 +100,13 @@ class Ticket < ActiveRecord::Base
     pending_kitchen_items = item_tickets.joins(item: :category).where("categories.kitchen = true").map(&:full_delivered?).include?(false)
 
     !pending_promos && !pending_kitchen_additionals && !pending_kitchen_items
+  end
+
+  def full_paid?
+    self.ticket_payments.sum(:amount) == self.total
+  end
+
+  def payments
+    self.ticket_payments.sum(:amount)
   end
 end
