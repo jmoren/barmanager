@@ -100,7 +100,4 @@
 
         .panel{:class => "#{current_user.nil? ? 'signin' : nil}"}
           .segment.ui
-            - unless @current_shift
-              .ui.message.error
-                No hay un turno abierto, para cerrar tickets, debes tener uno.
             = yield
