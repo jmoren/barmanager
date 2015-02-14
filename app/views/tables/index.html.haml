@@ -12,11 +12,11 @@
 
   = form_for @ticket, url: change_ticket_path(@ticket), method: :patch, html: { class: "ui form"} do |f|
 
-    .ui.grid
-      .six.wide.column.field
+    .two.fields
+      .field
         .ui.message.small
           = "Mover Mesa a la"
-      .ten.wide.column.field
+      .field
         .ui.search.selection.dropdown.large
           = f.hidden_field :table_id
           %i.dropdown.icon
@@ -25,9 +25,15 @@
             - @tables.each do |table|
               .item{ data: {value: table.id}}
                 = table.name
-        .ui.divider
-        .field
-          = f.submit "Mover", class: "ui button blue"
-          .ui.button.close Cancelar
+    .two.fields
+      .field
+        .ui.button.close.icon.labeled.fluid
+          %i.icon.remove
+          Cancelar
+      .field
+        %button.ui.button.icon.labeled.fluid.blue{type:"submit"}
+          %i.icon.check
+          Mover
+
   %script
     $('.dropdown').dropdown({transition: 'drop'});

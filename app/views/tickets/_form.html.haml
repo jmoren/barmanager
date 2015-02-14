@@ -15,17 +15,24 @@
         = @ticket.client.name
     .ui.divider
   = form_for @ticket, html: { class: "ui form"} do |f|
+    .field
+      .ui.search.selection.dropdown.wide
+        = f.hidden_field :client_id
+        %i.dropdown.icon
+        .default.text Seleccionar Cliente
+        .menu
+          - @clients.each do |client|
+            .item{ data: {value: client.id}}
+              = client.name
     .two.fields
       .field
-        .ui.search.selection.dropdown.wide
-          = f.hidden_field :client_id
-          %i.dropdown.icon
-          .default.text Seleccionar Cliente
-          .menu
-            - @clients.each do |client|
-              .item{ data: {value: client.id}}
-                = client.name
+        = link_to "#", class: "ui button fluid labeled icon close" do
+          %i.icon.remove
+          Cancelar
       .field
-        = f.submit "Asignar", class: "ui button blue fluid"
+        %button.ui.button.icon.labeled.fluid.blue{type: "submit"}
+          %i.icon.check
+          Asignar
+
   %script
     $('.dropdown').dropdown({transition: 'drop'});
