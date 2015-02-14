@@ -3,13 +3,12 @@
   .ui.grid
     .ten.wide.column.field
       = f.text_field :description, placeholder: "Agregar adicional"
-    .two.wide.column.field
-      = f.label :kitchen, "Cocina"
-      .ui.toggle.checkbox
-        = f.check_box :kitchen
     .four.wide.column.field
       = f.text_field :amount, placeholder: "$999.99"
-
+    .two.wide.column.field
+      .ui.segment{style: "padding: 0.6em 1em; margin:0;box-shadow:none"}
+        .ui.checkbox.fitted.tooltip{ data: { content: "Es para cocina?", variation: "inverted"}}
+          = f.check_box :kitchen
 :javascript
   $(document).ready(function(){
     $('.additional-form').form({

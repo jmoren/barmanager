@@ -1,3 +1,3 @@
 class TicketPayment < ActiveRecord::Base
-  belongs_to :ticket
+  belongs_to :client
 end

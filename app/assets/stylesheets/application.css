@@ -142,7 +142,12 @@ i.icon.big-icon {
   color: white !important;
 }
 
-.ui.four.cards div.card.no-border {
+.ui.three.cards div.card {
   box-shadow: none !important;
   border: 1px solid #CCC;
+}
+
+#open-tables .ui.grid > .column:not(.row) {
+  padding-top: 1rem !important;
+  padding-bottom: 0 !important;
 }

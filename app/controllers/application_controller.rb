@@ -12,9 +12,9 @@ class ApplicationController < ActionController::Base
   end
 
   def get_tables
-    @open_tables    = Table.open.order('color ASC, description DESC')
     @closed_tables  = Table.closed.order(id: :desc)
-    @open_tickets   = Ticket.without_table.where(status: 'open')
+    @wtable_tickets = Ticket.with_table.opened
+    @ntable_tickets = Ticket.without_table.opened
   end
 
   def current_shift

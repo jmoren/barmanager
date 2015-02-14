@@ -2,6 +2,9 @@
   Cliente
   = @client.name
 %h1.ui.header.right.floated
+  = link_to new_ticket_path(client_id: @client.id), class: "ui button basic orange" do
+    %i.icon.plus
+    Agregar ticket
   = link_to edit_client_path(@client), class: "ui button blue basic" do
     %i.icon.pencil
     Editar
@@ -9,9 +12,13 @@
     %i.icon.arrow.left
     Volver
 .ui.divider.clearing
-= link_to new_ticket_path(client_id: @client.id), class: "ui button icon basic orange" do
-  %i.icon.plus
-  Agregar ticket
+
+%h3 Deuda Total
+.ui.segment.statistic{style: "max-width: 450px;min-width: 350px", class: @client.doubt > 0 ? 'red' : 'green'}
+  .value= number_to_currency(@client.doubt)
+
+
+.ui.divider
 
 %table.ui.table.striped
   %thead
@@ -19,8 +26,6 @@
     %th Fecha
     %th Total
     %th Estado
-    %th Pagado
-    %th Deuda
     %th
   %tbody
     - @client.tickets.each do |ticket|
@@ -33,47 +38,35 @@
           = number_to_currency ticket.get_total
         %td
           = ticket.status == 'closed' ? 'Cerrado' : 'Abierto'
-        %td
-          %i.icon.circular.small.inverted{ class: ticket.full_paid? ? 'check green' : 'remove red'}
-        %td
-          = ticket.total - ticket.payments
         %td.center
           = link_to "#", data: { target: ticket.id }, class: "toggle-row ui button circular basic orange icon mini" do
             %i.icon.plus
 
-      %tr{style: "display: none", id: "ticket-#{ticket.id}"}
-        %td{ colspan: 7}
-          .ui.grid
-            .ten.wide.column
-              %h4.ui.header
-                Pagos Realizados:
-              - if ticket.ticket_payments.empty?
-                No hay pagos todavia
-              - else
-                %table.ui.table.striped.compact
-                  %thead
-                    %th Fecha
-                    %th Monto
-                    %th
-                  %tbody
-                    - ticket.ticket_payments.each do |tp|
-                      - unless tp.new_record?
-                        %tr
-                          %td
-                            = tp.created_at.strftime('%d/%m/%Y')
-                          %td
-                            = number_to_currency tp.amount
-                          %td
-                            = link_to ticket_ticket_payment_path(ticket, tp), method: :delete, style: "float: right" do
-                              %i.icon.remove.circular.red.small
 
-            - unless ticket.full_paid?
-              .six.wide.column
-                %h4.ui.header
-                  Entrar pago:
-                = form_for [ticket, ticket.ticket_payments.new], html: { class: "ui form", style: "margin-top: 15px" } do |f|
-                  .ui.fields
-                    .field
-                      = f.text_field :amount, placeholder: 'Entrar monto'
-                    .field
-                      = f.submit "Guardar", class: "ui button blue"
+%h4.ui.header
+  Pagos
+
+- unless @client.doubt == 0
+  = form_for [@client, @client.ticket_payments.new], html: { class: "ui form" } do |f|
+    .ui.two.fields
+      .field
+        = f.text_field :amount, placeholder: 'Entrar monto'
+      .field
+        = f.submit "Guardar", class: "ui button blue"
+
+%table.ui.table.striped.compact
+  %thead
+    %th Fecha
+    %th Monto
+    %th
+  %tbody
+    - @client.ticket_payments.each do |tp|
+      - unless tp.new_record?
+        %tr
+          %td
+            = tp.created_at.strftime('%d/%m/%Y')
+          %td
+            = number_to_currency tp.amount
+          %td
+            = link_to client_ticket_payment_path(@client, tp), method: :delete, style: "float: right" do
+              %i.icon.remove.circular.red.small

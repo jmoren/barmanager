@@ -18,6 +18,7 @@ class TablesController < ApplicationController
   def show
     if @current_shift && params['status'] == "open"
       @table.open! unless @table.status == "open"
+      redirect_to @table.current_ticket
     end
     @current_ticket = @table.tickets.where(status: 'open').last
   end
@@ -74,7 +75,7 @@ class TablesController < ApplicationController
   def open
     if @current_shift
       @table.open! unless @table.status == "open"
-      redirect_to @table
+      redirect_to @table.current_ticket
     else
       respond_to do |format|
         format.html { redirect_to home_index_path }

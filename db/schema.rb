@@ -179,13 +179,13 @@ ActiveRecord::Schema.define(version: 20150212004433) do
   end
 
   create_table "ticket_payments", force: true do |t|
-    t.integer  "ticket_id"
+    t.integer  "client_id"
     t.float    "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "ticket_payments", ["ticket_id"], name: "index_ticket_payments_on_ticket_id", using: :btree
+  add_index "ticket_payments", ["client_id"], name: "index_ticket_payments_on_client_id", using: :btree
 
   create_table "tickets", force: true do |t|
     t.integer  "table_id"

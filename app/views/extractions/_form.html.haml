@@ -17,7 +17,7 @@
       .ui.toggle.checkbox
         = f.check_box :personal
     .three.wide.column.field
-      = f.number_field :amount, placeholder: "Valor $"
+      = f.text_field :amount, placeholder: "Valor $"
     .two.wide.column.field
       = f.submit "Agregar", class: "ui button blue"
 

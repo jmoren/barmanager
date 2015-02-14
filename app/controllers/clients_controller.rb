@@ -5,7 +5,7 @@ class ClientsController < ApplicationController
 
   def index
     @clients = Client.all
-    respond_with(@clients)
+    render layout: request.xhr? ? false : 'admin'
   end
 
   def show
@@ -35,7 +35,7 @@ class ClientsController < ApplicationController
     @client.destroy
     respond_with(@client)
   end
-
+  
   private
     def set_client
       @client = Client.find(params[:id])

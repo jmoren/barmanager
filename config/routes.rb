@@ -1,6 +1,8 @@
 BarManager::Application.routes.draw do
 
-  resources :clients
+  resources :clients do
+    resources :ticket_payments
+  end
 
   resources :suppliers
 
@@ -48,9 +50,10 @@ BarManager::Application.routes.draw do
   resources :tickets do
     patch :move_to, on: :member, as: :change
     patch :unlink_table, on: :member, as: :unlink_table
+    patch :unlink_client, on: :member, as: :unlink_client
     patch :close, on: :member, as: :close
+    get   :close_ticket, on: :member
     patch :deliver_all_kitchen, on: :member, as: :deliver_all_kitchen
-    resources :ticket_payments
     resources :item_tickets do
       put :increase, on: :member
       put :deliver, on: :member

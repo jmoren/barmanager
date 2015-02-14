@@ -55,33 +55,49 @@
                   Abrir turno
             .panel
               %h4.ui.header Mesas abiertas
-              = link_to new_ticket_path, class: "ui basic active button teal", style: "float: right" do
-                %i.icon.send
-                Para llevar
-              - @open_tables.each do |table|
-                = link_to table, class: "ui #{'basic active' unless @table.try(:id) == table.id} button #{table.color}" do
-                  %i.icon.food
-                  = table.name
-              - @open_tickets.each do |ticket|
-                = link_to ticket, class: "ui #{'basic active' unless @ticket.try(:id) == ticket.id} button" do
-                  %i.icon.file.outline
-                  = "Para llevar ##{ticket.number}"
+              .ui.stackable.three.column.grid
+                - @wtable_tickets.each do |ticket|
+                  .column
+                    - if ticket.table && !ticket.client
+                      = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
+                        %i.icon.food
+                        = ticket.table.name
+                    - elsif ticket.client && !ticket.table
+                      = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button fluid" do
+                        %i.icon.food
+                        = ticket.client.name
+                    - elsif ticket.client && ticket.table
+                      = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
+                        %i.icon.food
+                        = ticket.table.name
+                        \-
+                        = ticket.client.name
 
-          .side
-            .ui.items
-              .ui.fluid.search.selection.dropdown.combo.tables
-                %input#table_id{:name => "table[table_id]", :type => "hidden"}/
-                %i.dropdown.icon{:tabindex => "-1"}
-                %input.search.table-search{:tabindex => "0"}/
-                .default.text Seleccione Mesa
-                .menu{:tabindex => "-1"}
-                  - @closed_tables.each do |table|
-                    .item.table-option{"data-code" => table.id, "data-value" => table.id}
-                      = table.name
-              - if @table && !@table.new_record?
-                = render @table
-              - @closed_tables.each do |table|
-                = render table unless @table.try(:id) == table.id
+                - @ntable_tickets.each do |ticket|
+                  .column
+                    = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button fluid" do
+                      %i.icon.send
+                      = "Para llevar ##{ticket.number}"
+
+        .side
+          = link_to new_ticket_path, class: "ui basic active fluid button teal" do
+            %i.icon.send
+            Ticket para llevar
+          .ui.items
+            .ui.fluid.search.selection.dropdown.combo.tables
+              %input#table_id{:name => "table[table_id]", :type => "hidden"}/
+              %i.dropdown.icon{:tabindex => "-1"}
+              %input.search.table-search{:tabindex => "0"}/
+              .default.text Seleccione Mesa
+              .menu{:tabindex => "-1"}
+                - @closed_tables.each do |table|
+                  .item.table-option{"data-code" => table.id, "data-value" => table.id}
+                    = table.name
+            - if @ticket.try(:table) || @table
+              = render @ticket.try(:table) || @table
+            - @closed_tables.each do |table|
+              = render table unless @table.try(:id) == table.id
+
         .panel{:class => "#{current_user.nil? ? 'signin' : nil}"}
           .segment.ui
             - unless @current_shift

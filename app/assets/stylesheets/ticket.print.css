@@ -1,18 +1,20 @@
 @media print {
-  div.ui.menu, div#open-tables, div.side, div.table-actions, div.ui.divider, div.table-form, i.icon,
-  a.ui.button, div.ui.actions {
+  div.ui.menu, #open-tables, div.side, div.table-actions, div.ui.divider, div.table-form, i.icon,
+  a.ui.button, div.ui.actions, .ui.popup, h1.ui.header, .popup, .ui.message, .status  {
     display: none !important;
   }
+
   table tr th {
     margin-right: 0px !important;
-    padding: 0px 5px 0px 5px !important;
+    padding: 3px 0px !important;
   }
+
   table, table tr, table tr td, .ui.modal .ui.header, .ui.modal .content {
-    margin: 0px !important;
-    padding: 0px !important;
+    padding: 20px 0px 0px 0px !important;
     border: none !important;
   }
-  div.segment.ui, div#modal-kitchen, .ui.page.dimmer, .ui.modal {
+
+  div.segment.ui, #modal-kitchen, .ui.page.dimmer, .ui.modal {
     float: none !important;
     display: block !important;
     width: 100% !important;
@@ -30,9 +32,28 @@
     color: black !important;
   }
 
-  .ui.four.cards div.card.no-border {
+  #additionals h4.ui.header{
+    margin: 10px 0px 0px 0px !important;
+  }
+  #additionals div.card{
     box-shadow: none !important;
     border: none !important;
+    margin-left: 0 !important;
+    display: inline-block !important;
+    float: none !important;
+    width: 30% !important;
+  }
+
+  div.ticket-total .ui.button{
+    color: black !important;
+    font-size: 20px;
+    margin-left: 0;
+    padding-left: 0;
+    text-align: right !important;
+  }
+
+  div.ticket-message{
+    text-align: left !important;
   }
 
   .ui.modal div.ui.header {
@@ -40,6 +61,7 @@
     box-shadow: none !important;
     font-size: 14px;
   }
+
   h4.ui.header.right.floated {
     font-size: 12px !important;
     float: left !important;

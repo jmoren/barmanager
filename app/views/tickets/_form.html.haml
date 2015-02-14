@@ -2,68 +2,30 @@
 .header
   %h2.ui.left.floated.header
     Ticket
-    = "%0.6d" % @ticket.number
+    = "# %0.6d" % @ticket.number
   %h2.ui.right.floated.header
     = l @ticket.created_at, format: "%d/%m/%Y - %H:%M %p"
   .clearfix
-
 .content
-  = form_for @ticket, html: {id: "update-ticket", class: "ui form" } do |f|
-    = f.hidden_field :status, value: "closed"
-    = f.hidden_field :shift_id, value: Shift.last_open.try(:id)
-    - if @current_shift.nil?
-      .ui.message.red
-        %b Debes abrir turno antes de cerrar un ticket
-    - if !@ticket.has_items?
-      .ui.message.yellow
-        No hay items.
-    - else
-      .ui.button.green.icon.labeled
-        %i.icon.dollar
-        = number_to_currency @ticket.get_total, unit: ""
-
-      %table.table.ui
-        %thead
-          %th Tipo
-          %th Item
-          %th Cantidad
-          %th Precio
-          %th Sub Total
-        %tbody
-          - @ticket.item_tickets.each do |t|
-            %tr
-              %td= "IT"
-              %td= t.item.description
-              %td= t.quantity
-              %td= number_to_currency t.item.price
-              %td= number_to_currency t.sub_total
-          - @ticket.promotion_tickets.each do |p|
-            %tr
-              %td= "PR"
-              %td= p.promotion.description
-              %td= p.quantity
-              %td= number_to_currency p.promotion.price
-              %td= number_to_currency p.subtotal
-          - @ticket.additionals.each do |a|
-            %tr
-              %td= "AD"
-              %td= a.description
-              %td= "---"
-              %td= number_to_currency a.amount
-              %td= number_to_currency a.amount
+  - if @ticket.client_id
+    .center
+      = link_to unlink_client_ticket_path(@ticket), method: :patch, class: "ui button icon labeled red" do
+        %i.icon.unlink
+        Remover Cliente
+        = @ticket.client.name
     .ui.divider
+  = form_for @ticket, html: { class: "ui form"} do |f|
     .two.fields
-      .field{style: "text-align: right"}
-        - unless @ticket.has_items?
-          = link_to ticket_path(@ticket, table_id: @ticket.table_id), method: :delete, class: "ui button red" do
-            %i.icon.remove
-            Borrar
-
       .field
-        - if @ticket.has_items? && @current_shift
-          %button.ui.button.green.icon.labeled{ type: "submit"}
-            %i.icon.check
-            Guardar
-        = link_to "#", class: "ui button labeled icon close" do
-          %i.icon.remove
-          Cancelar
+        .ui.search.selection.dropdown.wide
+          = f.hidden_field :client_id
+          %i.dropdown.icon
+          .default.text Seleccionar Cliente
+          .menu
+            - @clients.each do |client|
+              .item{ data: {value: client.id}}
+                = client.name
+      .field
+        = f.submit "Asignar", class: "ui button blue fluid"
+  %script
+    $('.dropdown').dropdown({transition: 'drop'});

@@ -1,7 +1,7 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_ticket, only: [:show, :edit, :update, :destroy, :unlink_table]
+  before_action :set_ticket, only: [:show, :edit, :update, :destroy, :unlink_table, :close_ticket, :unlink_client]
 
   # GET /tickets
   # GET /tickets.json
@@ -39,7 +39,12 @@ class TicketsController < ApplicationController
 
   # GET /tickets/1/edit
   def edit
-    render :layout => request.xhr? ? false : true
+    @clients = Client.all
+    render layout: request.xhr? ? false : true
+  end
+
+  def close_ticket
+    render 'close', layout: request.xhr? ? false : true
   end
 
   # POST /tickets
@@ -63,7 +68,6 @@ class TicketsController < ApplicationController
   def update
     respond_to do |format|
       if @ticket.update(ticket_params)
-        @ticket.table.close!
         format.html { redirect_to @ticket , notice: 'Ticket was successfully updated.' }
         format.json { head :no_content }
       else
@@ -76,8 +80,8 @@ class TicketsController < ApplicationController
   # DELETE /tickets/1
   # DELETE /tickets/1.json
   def destroy
-    if params[:table_id]
-      table = Table.find(params[:table_id])
+    if @ticket.table
+      table = @ticket.table
       table.close!
       url = table_path(table)
     else
@@ -102,30 +106,31 @@ class TicketsController < ApplicationController
 
   def move_to
     @ticket = Ticket.find(params[:id])
-    @table = Table.find(params[:ticket][:table_id])
+    @table  = Table.find(params[:ticket][:table_id])
 
     if @table.open?
       msg = "La mesa ya esta abierta con un ticket"
     else
       old_table = @ticket.table
-      @ticket.update(table_id: @table.id)
-      @table.open!(@ticket)
-      old_table.close! if old_table
+      if @ticket.update(table_id: @table.id)
+        @table.open!(@ticket)
+        old_table.close! if old_table
 
-      msg = "Se movio el ticket a la mesa #{@table.name}"
+        msg = "Se movio el ticket a la mesa #{@table.name}"
+      end
     end
 
     flash[:notice] = msg
-    redirect_to @ticket.table
+    redirect_to @ticket
   end
 
   def close
     if @ticket.has_items?
-      @ticket.close!
+      @ticket.close! if @ticket.fully_delivered?
       redirect_to @ticket
     else
       @ticket.destroy
-      redirect_to tickets_path(q: 'noTable')
+      redirect_to tickets_path
     end
   end
 
@@ -133,8 +138,14 @@ class TicketsController < ApplicationController
     table = @ticket.table
     @ticket.update(table_id: nil)
     table.close! if table
-    redirect_to @ticket.open? ? @ticket : tickets_path
+    redirect_to @ticket
   end
+
+  def unlink_client
+    @ticket.update(client_id: nil)
+    redirect_to @ticket
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ticket
@@ -143,6 +154,6 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:table_id, :shift_id, :date, :total, :payment, :number, :status)
+      params.require(:ticket).permit(:table_id, :client_id, :shift_id, :date, :total, :payment, :number, :status)
     end
 end

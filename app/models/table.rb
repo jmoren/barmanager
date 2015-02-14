@@ -17,7 +17,7 @@ class Table < ActiveRecord::Base
 
   def open!(old_ticket=nil)
     self.update(status: "open")
-    ticket          = old_ticket || self.tickets.new
+    ticket = old_ticket || self.tickets.new(status: "open", date: Time.now)
     if old_ticket.nil?
       ticket.date     = Time.now
       ticket.total    = 0
@@ -26,6 +26,10 @@ class Table < ActiveRecord::Base
     end
   end
 
+  def current_ticket
+    self.tickets.opened.last
+  end
+  
   def close!
     self.update(status: "closed")
   end

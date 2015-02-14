@@ -16,16 +16,18 @@ class Ticket < ActiveRecord::Base
 
   has_many :items, through: :item_tickets
   has_many :promotions, through: :promotion_tickets
-  has_many :ticket_payments
-  
+
   validates :date, :status, :total, presence: true
   validates :total, numericality: true
   validates :status, inclusion: ['open', 'closed']
 
   before_create :set_serial_number
-  before_save :get_total
 
-  scope :without_table, -> { where(table_id: [nil, ""], client_id: [nil, ""])}
+  scope :without_table, -> { where("client_id IS NULL AND table_id IS NULL")}
+  scope :with_table,    -> { where("client_id IS NOT NULL OR table_id IS NOT NULL") }
+
+  scope :closed, -> { where(status: 'closed') }
+  scope :opened, -> { where(status: 'open') }
 
   def formatted_number
     "%0.6d" % self.number
@@ -37,10 +39,8 @@ class Ticket < ActiveRecord::Base
   end
 
   def close!
-    self.update(status: "closed", shift_id: Shift.last_open.id)
-    unless self.table.nil?
-      self.table.close!
-    end
+    self.update(status: "closed", total: self.get_total, shift_id: Shift.last_open.id)
+    self.table.close! if self.table
   end
 
   def open?
@@ -100,13 +100,5 @@ class Ticket < ActiveRecord::Base
     pending_kitchen_items = item_tickets.joins(item: :category).where("categories.kitchen = true").map(&:full_delivered?).include?(false)
 
     !pending_promos && !pending_kitchen_additionals && !pending_kitchen_items
-  end
-
-  def full_paid?
-    self.ticket_payments.sum(:amount) == self.total
-  end
-
-  def payments
-    self.ticket_payments.sum(:amount)
   end
 end

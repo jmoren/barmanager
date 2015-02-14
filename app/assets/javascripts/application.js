@@ -34,11 +34,11 @@ $(document).ready(function(){
 
   $("input[name=code_number]").focus();
 
-  $(".close-table").on("click", function(e){
+  $(".close-ticket").on("click", function(e){
     e.preventDefault();
     id = $(this).data("id");
     $.ajax({
-      url: "/tickets/"+id+"/edit",
+      url: "/tickets/"+id+"/close_ticket",
       type: "GET",
       dataType: "html",
       success: function(data){
@@ -95,6 +95,19 @@ $(document).ready(function(){
     window.location = '/tables/' + $(a.currentTarget).attr('data-code') + '?status=open';
   });
 
+
+  $(".change-client").on("click", function(e){
+    e.preventDefault();
+    id = $(this).data("id");
+    $.ajax({
+      url: "/tickets/"+ id+"/edit",
+      type: "GET",
+      dataType: "html",
+      success: function(data){
+        $("#modal-client").html(data).modal().modal('show');
+      }
+    });
+  });
 
   $(".change-table").on("click", function(e){
     e.preventDefault();

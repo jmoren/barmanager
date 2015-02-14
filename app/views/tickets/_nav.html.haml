@@ -1,0 +1,37 @@
+%h1.ui.header
+  - if ticket.table
+    Mesa
+    = ticket.table.name
+  - if ticket.client
+    = link_to ticket.client, style: "float: right" do
+      Cliente
+      = ticket.client.name
+  - if ticket.client.nil? && ticket.table.nil?
+    Ticket para llevar
+.ui.divider
+.ui.grid
+  .five.wide.column
+    .ui.button.orange.basic{style: "float: left"}
+      %i.icon.tag
+      Ticket
+      = "#{ticket.formatted_number}-#{ticket.created_at.strftime('%y')}"
+  .eight.wide.column
+    - if ticket.open?
+      .ui.buttons{ style: "display: block; width:75%;margin: auto"}
+        = link_to "#", class: "close-ticket ui button icon tooltip", data: { content: "Cerrar ticket", id: ticket.id } do
+          %i.icon.lock
+        = link_to "#", class: "change-table ui icon button tooltip", data: { content: "Cambiar Mesa", id: ticket.id } do
+          %i.icon.refresh
+        = link_to "#", class: "change-client ui button icon tooltip", data: { content: "Cambiar cliente", id: ticket.id }  do
+          %i.icon.user
+        = link_to "#", id: "show-kitchen", class: "ui button icon tooltip", data: { content: "Envia a la cocina", id: ticket.id }  do
+          %i.icon.food
+        = link_to "#", class: "ui button icon", onclick: "window.print();" do
+          %i.icon.print
+    - else
+      = link_to "#", class: "ui button basic blue", onclick: "window.print();", style: "float:left" do
+        %i.icon.print
+        Imprimir
+  .three.wide.column
+    .ui.button.status{class: ticket.status == 'open' ? 'red' : 'green', style: "float:right"}
+      = ticket.status == 'open' ? 'Abierto' : 'Cerrado'
