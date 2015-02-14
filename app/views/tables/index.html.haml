@@ -3,11 +3,12 @@
   %h2.ui.header
     = "Ticket Numero ##{@ticket.try(:number)} - Cambiar Mesa"
 .content
-  - if @ticket.table
-    = link_to unlink_table_ticket_path(@ticket), method: :patch, class: "ui button icon labeled red" do
-      %i.icon.unlink
-      Sacar de la mesa
-    .ui.divider
+  .center
+    - if @ticket.table
+      = link_to unlink_table_ticket_path(@ticket), method: :patch, class: "ui button icon labeled red" do
+        %i.icon.unlink
+        Sacar de la mesa
+      .ui.divider
 
   = form_for @ticket, url: change_ticket_path(@ticket), method: :patch, html: { class: "ui form"} do |f|
 

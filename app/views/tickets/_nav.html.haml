@@ -9,12 +9,13 @@
   - if ticket.client.nil? && ticket.table.nil?
     Ticket para llevar
 .ui.divider.clearing
-.ui.grid
+.ui.grid.controls
   .five.wide.column
-    .ui.button.orange.basic{style: "float: left"}
-      %i.icon.tag
-      Ticket
-      = "#{ticket.formatted_number}-#{ticket.created_at.strftime('%y')}"
+    #ticket-number
+      .ui.button
+        %i.icon.tag
+        Ticket
+        = "#{ticket.formatted_number}-#{ticket.created_at.strftime('%y')}"
   .eight.wide.column
     - if ticket.open?
       .ui.buttons{ style: "display: block; width:75%;margin: auto"}

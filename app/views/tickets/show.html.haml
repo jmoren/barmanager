@@ -89,16 +89,19 @@
                 - if @ticket.open?
                   = link_to ticket_additional_path(@ticket, entry), method: :delete, style: "float: right;margin:0" do
                     %i.icon.trash.red
-    .ticket-total
-      .ui.button.blue
-        Total
-        = number_to_currency @ticket.get_total
+
+    #ticket-total.ui.button
+      Total
+      = number_to_currency @ticket.get_total
+
+    #ticket-date.ui.button{style: "float:right"}
+      = @ticket.created_at.strftime('%d/%m/%Y - %H:%M %p')
     .ui.divider
-    .ticket-message
+    .center.ticket-message
       Gracias por su visita...
 
   .ui.divider.clearing
-  = link_to tickets_path, class: "ui button" do
+  = link_to tickets_path, class: "ui button basic green" do
     %i.icon.arrow.left
     Volver
 #modal-expand_item.ui.modal

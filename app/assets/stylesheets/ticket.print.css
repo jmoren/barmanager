@@ -1,16 +1,16 @@
 @media print {
   div.ui.menu, #open-tables, div.side, div.table-actions, div.ui.divider, div.table-form, i.icon,
-  a.ui.button, div.ui.actions, .ui.popup, h1.ui.header, .popup, .ui.message, .status  {
+  a.ui.button, div.ui.actions, .ui.popup, h1.ui.header, .ui.message, .ui.button.status  {
     display: none !important;
   }
 
   table tr th {
-    margin-right: 0px !important;
+    margin: 0px !important;
     padding: 3px 0px !important;
   }
 
   table, table tr, table tr td, .ui.modal .ui.header, .ui.modal .content {
-    padding: 20px 0px 0px 0px !important;
+    padding: 10px 0px 0px 0px !important;
     border: none !important;
   }
 
@@ -28,28 +28,46 @@
     font-size: 14px;
   }
 
-  div.ui.blue.label, div.ui.orange.label, div.sub.header {
-    color: black !important;
+  #ticket-number .ui.button {
+    color: #000 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding-left: 0 !important;
   }
 
   #additionals h4.ui.header{
-    margin: 10px 0px 0px 0px !important;
-  }
-  #additionals div.card{
-    box-shadow: none !important;
-    border: none !important;
-    margin-left: 0 !important;
-    display: inline-block !important;
-    float: none !important;
-    width: 30% !important;
+    margin: 10px 0px 10px 0px !important;
+    padding: 0 !important;
   }
 
-  div.ticket-total .ui.button{
-    color: black !important;
-    font-size: 20px;
-    margin-left: 0;
-    padding-left: 0;
-    text-align: right !important;
+  #additionals .ui.three.cards {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #additionals div.card, div.card .content{
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 !important;
+    float: none !important;
+    width: 30% !important;
+    padding: 0px !important;
+  }
+
+  #ticket-total.ui.button{
+    font-size: 18px;
+    margin: 20px 0;
+    padding: 8px;
+    background: #fff !important;
+    opacity: 1 !important;
+    border: solid 1px #ccc !important;
+  }
+
+  #ticket-date.ui.button{
+    font-size: 15px;
+    margin: 30px 0px 0px 0px !important;
+    padding: 0;
+    float: right;
   }
 
   div.ticket-message{

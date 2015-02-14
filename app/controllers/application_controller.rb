@@ -12,18 +12,22 @@ class ApplicationController < ActionController::Base
   end
 
   def get_tables
+    return unless current_user
     @closed_tables  = Table.closed.order(id: :desc)
     @wtable_tickets = Ticket.with_table.opened
     @ntable_tickets = Ticket.without_table.opened
   end
 
   def current_shift
+    return unless current_user
     @current_shift = Shift.last_open
   end
 
   def get_categories
+    return unless current_user
     @categories = Category.order(:name)
   end
+
   protected
 
   def configure_permitted_parameters
