@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.2'
 
 # Use mysql as the database for Active Record
-gem 'mysql', group: :development
+gem 'mysql2', group: :development
 
 gem 'pg', group: :production
 
@@ -28,6 +28,8 @@ gem 'jquery-rails'
 gem 'kaminari'
 gem 'devise'
 gem 'cancancan', '~> 1.10'
+
+gem "font-awesome-rails"
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'

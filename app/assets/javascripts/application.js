@@ -153,12 +153,4 @@ $(document).ready(function(){
       }
     });
   });
-
-  $(".toggle-row").on("click", function(e){
-    e.preventDefault();
-    target = $(this).data('target');
-    $(this).find("i").toggleClass("minus");
-    $("#ticket-"+target).toggle();
-
-  })
 });

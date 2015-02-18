@@ -1,49 +1,71 @@
 %h2.ui.header.left.floated
   %i.icon.signal
   Estadisticas
-- if params[:date]
-  .ui.header.right.floated
-    = link_to "Ver todas", statistics_path, class: "ui button teal"
-
 .ui.divider.clearing
 
 = form_tag statistics_path, method: :get, class: "ui form" do
-  .ui.left.icon.input
-    %i.icon.calendar
-    %input{name: "date", value: params[:date], class: "datepicker", type: "text", autocomplete: "off", placeholder: "Seleccione una fecha"}
 
-- unless params[:date].nil?
-  .ui.message.center.blue
-    Datos para el
-    %b= params[:date]
+  .ui.grid
+    .seven.wide.column.field
+      .ui.left.icon.input
+        %i.icon.calendar
+        %input{name: "dateFrom", value: params[:dateFrom], class: "datepicker", type: "text", autocomplete: "off", placeholder: "Seleccione una fecha desde"}
+    .seven.wide.column.field
+      .ui.left.icon.input
+        %i.icon.calendar
+        %input{name: "dateTo", value: params[:dateTo], class: "datepicker", type: "text", autocomplete: "off", placeholder: "Seleccione una fecha hasta"}
+    .two.wide.column.field
+      %button.ui.button.green{type: "submit"}
+        Procesar
 
-.ui.grid.statistics
-  %h2 Tickets y Facturacion
-  .eleven.wide.column
-    .ui.segment
-      .statistic.red
-        .value.center
-          = number_to_currency @total
-        .label.center
-          Total Facturado
-  .five.wide.column
-    .ui.segment
-      .statistic
-        .value
-          = @tickets.size
-        .label
-          Tickets totales
 
-.ui.divider
+- if params[:dateFrom] && params[:dateTo]
+  - unless params[:date].nil?
+    .ui.message.center.blue
+      Datos para el
+      %b= params[:date]
 
-- unless @by_items.empty?
   .ui.grid.statistics
-    %h2 Ventas por Item
-    - @by_items.each do |key, value|
-      .eight.wide.column
-        .ui.segment
-          .statistic
-            .value
-              = value
-            .label
-              = key
+    %h2 Tickets y Facturacion
+    .eleven.wide.column
+      .ui.segment
+        .statistic.red
+          .value.center
+            = number_to_currency @total
+          .label.center
+            Total Facturado
+    .five.wide.column
+      .ui.segment
+        .statistic
+          .value
+            = @tickets.size
+          .label
+            Tickets totales
+  .ui.divider
+
+  - unless @expenses.empty?
+    .ui.grid.statistics
+      %h2 Gastos por Proveedor
+      - @expenses.each do |supplier, total|
+        .eight.wide.column
+          .ui.segment
+            .statistic
+              .value
+                = number_to_currency total
+              .label
+                = supplier.nil? ? 'Gastos sin proveedor' : supplier['name']
+
+
+  .ui.divider
+
+  - unless @by_items.empty?
+    .ui.grid.statistics
+      %h2 Ventas por Item
+      - @by_items.sort{|a,b| b[1]<=>a[1]}.each do |key, value|
+        .eight.wide.column
+          .ui.segment
+            .statistic
+              .value
+                = value
+              .label
+                = key

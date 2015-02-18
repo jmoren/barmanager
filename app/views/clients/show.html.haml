@@ -26,7 +26,6 @@
     %th Fecha
     %th Total
     %th Estado
-    %th
   %tbody
     - @client.tickets.each do |ticket|
       %tr
@@ -38,9 +37,6 @@
           = number_to_currency ticket.get_total
         %td
           = ticket.status == 'closed' ? 'Cerrado' : 'Abierto'
-        %td.center
-          = link_to "#", data: { target: ticket.id }, class: "toggle-row ui button circular basic orange icon mini" do
-            %i.icon.plus
 
 
 %h4.ui.header
