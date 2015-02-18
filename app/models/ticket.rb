@@ -65,14 +65,14 @@ class Ticket < ActiveRecord::Base
   def grouped_item_tickets
     self.item_tickets.joins(:item)
       .group(:item_id)
-      .select("sum(item_tickets.quantity) as quantity, sum(item_tickets.sub_total) as sub_total, item_id,  items.id")
+      .select("sum(item_tickets.quantity) as quantity, sum(item_tickets.sub_total) as sub_total, item_id")
       .references(:item)
   end
 
   def grouped_promotion_tickets
     self.promotion_tickets.joins(:promotion)
       .group(:promotion_id)
-      .select("sum(promotion_tickets.quantity) as quantity, sum(promotion_tickets.subtotal) as subtotal, promotion_id, promotions.id")
+      .select("sum(promotion_tickets.quantity) as quantity, sum(promotion_tickets.subtotal) as subtotal, promotion_id")
       .references(:promotion)
   end
 
