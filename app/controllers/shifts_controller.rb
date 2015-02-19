@@ -12,9 +12,11 @@ class ShiftsController < ApplicationController
   # GET /shifts/1
   # GET /shifts/1.json
   def show
-    @total_tickets  = @shift.total_tickets
-    @total_expenses = @shift.total_expenses
+    @total_tickets     = @shift.total_tickets
+    @total_expenses    = @shift.total_expenses
     @total_extractions = @shift.total_extractions
+    @total_pending     = @shift.total_pending - @shift.total_payments
+    @total_payments    = @shift.total_payments
     @by_items = @shift.count_items
   end
 
@@ -38,6 +40,8 @@ class ShiftsController < ApplicationController
     @total_tickets  = @shift.total_tickets
     @total_expenses = @shift.total_expenses
     @total_extractions = @shift.total_extractions
+    @total_pending = @shift.total_pending
+    @total_payments = @shift.total_payments
     @by_items = @shift.count_items
     @shift.add_closed_data
     url = current_user.admin? ? shifts_path : home_index_path

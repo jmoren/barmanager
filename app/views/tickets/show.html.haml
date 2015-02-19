@@ -53,7 +53,7 @@
               %td.center.aligned= number_to_currency entry.sub_total
               %td.left.aligned{style: "vertical-align: top"}
                 - if @ticket.open?
-                  = link_to increase_ticket_item_ticket_path(@ticket, entry), method: :put do
+                  = link_to increase_ticket_item_ticket_path(@ticket, entry.item), method: :put do
                     %i.icon.circular.small.plus.green
                   = link_to "#", data: {ticket_id: @ticket.id, item_id: entry.item.id, type: 'item' }, class: "expand-item-row" do
                     %i.icon.circular.small.expand.red
@@ -70,10 +70,11 @@
               %td{style: "vertical-align: top"}= number_to_currency entry.promotion.price
               %td.center.aligned{style: "vertical-align: top"}= number_to_currency entry.subtotal
               %td
-                = link_to increase_ticket_promotion_ticket_path(@ticket, entry), method: :put do
-                  %i.icon.circular.small.plus.green
-                = link_to "#", data: {ticket_id: @ticket.id, promo_id: entry.promotion.id, type: 'promotion' }, class: "expand-item-row" do
-                  %i.icon.circular.small.expand.red
+                - if @ticket.open?
+                  = link_to increase_ticket_promotion_ticket_path(@ticket, entry.promotion), method: :put do
+                    %i.icon.circular.small.plus.green
+                  = link_to "#", data: {ticket_id: @ticket.id, promo_id: entry.promotion.id, type: 'promotion' }, class: "expand-item-row" do
+                    %i.icon.circular.small.expand.red
 
     .ui.divider
     #additionals

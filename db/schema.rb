@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150212004433) do
+ActiveRecord::Schema.define(version: 20150218231034) do
 
   create_table "additionals", force: true do |t|
     t.string   "description"
@@ -158,6 +158,8 @@ ActiveRecord::Schema.define(version: 20150212004433) do
     t.float    "closing_cash"
     t.float    "opening_cash"
     t.integer  "user_id"
+    t.float    "pending",      default: 0.0
+    t.float    "payments",     default: 0.0
   end
 
   add_index "shifts", ["user_id"], name: "index_shifts_on_user_id", using: :btree
@@ -183,9 +185,11 @@ ActiveRecord::Schema.define(version: 20150212004433) do
     t.float    "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "shift_id"
   end
 
   add_index "ticket_payments", ["client_id"], name: "index_ticket_payments_on_client_id", using: :btree
+  add_index "ticket_payments", ["shift_id"], name: "index_ticket_payments_on_shift_id", using: :btree
 
   create_table "tickets", force: true do |t|
     t.integer  "table_id"

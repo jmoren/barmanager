@@ -93,12 +93,14 @@
                 .default.text Seleccione Mesa
                 .menu{:tabindex => "-1"}
                   - @closed_tables.each do |table|
-                    .item.table-option{"data-code" => table.id, "data-value" => table.id}
-                      = table.name
-              - if @ticket.try(:table) || @table
-                = render @ticket.try(:table) || @table
+                    - unless table.new_record?
+                      .item.table-option{"data-code" => table.id, "data-value" => table.id}
+                        = table.name
+              - if @ticket.try(:table)
+                = render @ticket.try(:table)
               - @closed_tables.each do |table|
-                = render table unless @table.try(:id) == table.id
+                - unless table.new_record?
+                  = render table unless @table.try(:id) == table.id
 
         .panel{:class => "#{current_user.nil? ? 'signin' : nil}"}
           .segment.ui
