@@ -1,37 +1,34 @@
 .ui.header
+  - if @current_ticket
+    .ui.label.orange{style: "float:right"}
+      %i.icon.tag
+      = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
   = @current_ticket.table.nil? ? "Para llevar" : "Mesa #{@current_ticket.table.name}"
 
-  - if @current_ticket
-    .ui.header.right.floated
-      .ui.label.orange{style: "float:right"}
-        %i.icon.tag
-        = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
 .clearfix
 .content
   %table.ui.celled.structured.table
     %thead
       %tr
-        %th.center.aligned Hora
+        %th Hora
         %th Pedido
     %tbody
       - @kitchen_items.each do |ki|
         - unless ki.nil? || ki.full_delivered?
           %tr
-            %td.center.aligned= ki.created_at.strftime('%H:%M %p')
+            %td= ki.created_at.strftime('%H:%M %p')
             %td
               .ui.divided.selection.list
                 - if ki.class.name == "ItemTicket"
-                  %p
-                    .ui.horizontal.label
-                      = ki.quantity
-                    = ki.item.description
+                  .ui.horizontal.label
+                    = ki.quantity
+                  = ki.item.description
                 - else
                   - ki.promotion_ticket_items.each do |promo_ticket_item|
                     - if promo_ticket_item.promotion_item.item.category.kitchen?
-                      %p
-                        .ui.horizontal.label
-                          = promo_ticket_item.promotion_item.quantity * ki.quantity
-                        = promo_ticket_item.promotion_item.item.description
+                      .ui.horizontal.label
+                        = promo_ticket_item.promotion_item.quantity * ki.quantity
+                      = promo_ticket_item.promotion_item.item.description
 
   - @additionals.each do |entry|
     .card

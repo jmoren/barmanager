@@ -1,6 +1,7 @@
 @media print {
   div.ui.menu, #open-tables, div.side, div.table-actions, div.ui.divider, div.table-form, i.icon,
-  a.ui.button, div.ui.actions, .ui.popup, h1.ui.header, .ui.message, .ui.button.status  {
+  a.ui.button, div.ui.actions, .ui.popup, h1.ui.header, .ui.message, .ui.button.status,
+  td.hiddable, th.hiddable {
     display: none !important;
   }
 
@@ -9,7 +10,7 @@
     padding: 3px 0px !important;
   }
 
-  table, table tr, table tr td, .ui.modal .ui.header, .ui.modal .content {
+  table, table tr, table tr td, table tr th, .ui.modal .ui.header, .ui.modal .content {
     padding: 10px 0px 0px 0px !important;
     border: none !important;
   }
@@ -80,10 +81,19 @@
     font-size: 14px;
   }
 
-  h4.ui.header.right.floated {
+  ui.header.right.floated {
     font-size: 12px !important;
     float: left !important;
     margin-left: 10px !important;
+    float: right;
+  }
+
+  .ui.label.orange, #ticket-number div.ui.button {
+    color: black !important;
+  }
+
+  .five.wide.column, #ticket-number .ui.button {
+    width: 150px !important;
   }
 
 }

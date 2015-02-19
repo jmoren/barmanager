@@ -30,28 +30,28 @@
 
     %table.table.ui#tickets
       %thead
-        %th
-        %th Codigo
+        %th.hiddable
+        %th.hiddable Codigo
         %th Descripcion
-        %th Cantidad
+        %th.hiddable Cantidad
         %th Precio
         %th.center.aligned Sub Total
-        %th
+        %th.hiddable
 
       %tbody
         - @ticket.grouped_item_tickets.each do |entry|
           - unless entry.new_record?
             %tr
-              %td.left.aligned{style: "vertical-align: top"}
+              %td.hiddable.left.aligned{style: "vertical-align: top"}
                 - if @ticket.open?
                   = link_to destroy_all_ticket_item_tickets_path(@ticket, item_id: entry.item_id), method: :delete do
                     %i.icon.remove.circle.outline.red
-              %td{style: "vertical-align: top"}= entry.item.code
+              %td.hiddable{style: "vertical-align: top"}= entry.item.code
               %td= entry.item.description
-              %td= entry.quantity
+              %td.hiddable= entry.quantity
               %td= number_to_currency entry.item.price
               %td.center.aligned= number_to_currency entry.sub_total
-              %td.left.aligned{style: "vertical-align: top"}
+              %td.hiddable.left.aligned{style: "vertical-align: top"}
                 - if @ticket.open?
                   = link_to increase_ticket_item_ticket_path(@ticket, entry.item), method: :put do
                     %i.icon.circular.small.plus.green
