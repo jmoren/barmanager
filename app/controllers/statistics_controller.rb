@@ -3,8 +3,8 @@ class StatisticsController < ApplicationController
   layout "admin"
   def index
     if params[:dateFrom] && params[:dateTo]
-      from_date = Date.parse(params[:dateFrom])
-      to_date = Date.parse(params[:dateTo])
+      from_date = Date.parse(params[:dateFrom]).beginning_of_day
+      to_date = Date.parse(params[:dateTo]).end_of_day
       @tickets  = Ticket.where(created_at: from_date..to_date).includes(item_tickets: :item).references(item_tickets: :item)
       @total    = @tickets.sum(:total)
       item_tickets = ItemTicket.includes(:item).where(ticket_id: @tickets.map(&:id))
