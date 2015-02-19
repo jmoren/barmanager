@@ -3,7 +3,7 @@
 .ui.header.right.floated
   = link_to new_supplier_path, class: "ui button teal" do
     %i.icon.plus
-    Agregar Proveedot
+    Agregar Proveedor
 
 .ui.divider.clearing
 
@@ -24,5 +24,3 @@
             %i.icon.edit
           = link_to supplier_path(supplier), method: :delete, :data => { :confirm => 'Seguro desea eliminar?' } do
             %i.icon.trash
-
-

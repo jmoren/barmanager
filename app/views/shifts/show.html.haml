@@ -33,13 +33,19 @@
         %td= number_to_currency @total_expenses
       %tr
         %td Caja final:
-        %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses)
+        %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses - @total_pending + @total_payments)
       %tr
         %td Extracciones
         %td= number_to_currency @total_extractions
       %tr
+        %td Tickets sin pagar
+        %td= number_to_currency -@total_pending
+      %tr
+        %td Deudas de clientes (pagos)
+        %td= number_to_currency @total_payments
+      %tr
         %td Caja inicial proximo turno:
-        %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses - @total_extractions)
+        %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses - @total_extractions - @total_pending + @total_payments)
 
 %h2.ui.header
   Gastos

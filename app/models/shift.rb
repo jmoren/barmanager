@@ -3,6 +3,7 @@ class Shift < ActiveRecord::Base
   has_many :tickets
   has_many :expenses, as: :shift_or_user
   has_many :extractions
+  has_many :ticket_payments
 
   validates :opening_cash, presence: true
   validates :opening_cash, numericality: true, on: :create
@@ -33,6 +34,14 @@ class Shift < ActiveRecord::Base
     tickets.sum(:total).to_f
   end
 
+  def total_pending
+    tickets.where("client_id IS NOT NULL").sum(:total).to_f
+  end
+
+  def total_payments
+    ticket_payments.sum(:amount)
+  end
+
   def count_items
     it_tickets = ItemTicket.where(ticket_id: self.tickets.map(&:id))
     by_items = {}
@@ -49,7 +58,7 @@ class Shift < ActiveRecord::Base
   end
 
   def add_closed_data
-    self.closing_cash = self.total_tickets - self.total_expenses + self.opening_cash
+    self.closing_cash = total_tickets - total_expenses + opening_cash - total_pending + total_payments
     self.close = DateTime.now
   end
 
