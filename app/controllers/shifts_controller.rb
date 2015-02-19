@@ -15,7 +15,7 @@ class ShiftsController < ApplicationController
     @total_tickets     = @shift.total_tickets
     @total_expenses    = @shift.total_expenses
     @total_extractions = @shift.total_extractions
-    @total_pending     = @shift.total_pending - @shift.total_payments
+    @total_pending     = @shift.total_pending
     @total_payments    = @shift.total_payments
     @by_items = @shift.count_items
   end

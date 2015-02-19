@@ -30,6 +30,6 @@ class TicketPaymentsController < ApplicationController
     end
 
     def ticket_payment_params
-      params.require(:ticket_payment).permit(:client_id, :amount)
+      params.require(:ticket_payment).permit(:client_id, :amount).merge(shift_id: Shift.last_open.id)
     end
 end
