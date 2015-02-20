@@ -19,8 +19,9 @@
   .eight.wide.column
     - if ticket.open?
       .ui.buttons{ style: "display: block; width:75%;margin: auto"}
-        = link_to "#", class: "close-ticket ui button icon tooltip", data: { content: "Cerrar ticket", id: ticket.id } do
-          %i.icon.lock
+        - if ticket.fully_delivered?
+          = link_to "#", class: "close-ticket ui button icon tooltip", data: { content: "Cerrar ticket", id: ticket.id } do
+            %i.icon.lock
         = link_to "#", class: "change-table ui icon button tooltip", data: { content: "Cambiar Mesa", id: ticket.id } do
           %i.icon.refresh
         = link_to "#", class: "change-client ui button icon tooltip", data: { content: "Cambiar cliente", id: ticket.id }  do

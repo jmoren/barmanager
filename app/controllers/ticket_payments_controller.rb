@@ -7,6 +7,8 @@ class TicketPaymentsController < ApplicationController
   def create
     @ticket_payment = @client.ticket_payments.new(ticket_payment_params)
     @ticket_payment.save
+    @client.doubt -= @ticket_payment.amount
+    @client.save
     redirect_to @client
   end
 
@@ -16,6 +18,8 @@ class TicketPaymentsController < ApplicationController
   end
 
   def destroy
+    @client.doubt += @ticket_payment.amount
+    @client.save
     @ticket_payment.destroy
     redirect_to @client
   end

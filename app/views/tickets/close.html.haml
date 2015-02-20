@@ -52,18 +52,27 @@
               %td= number_to_currency a.amount
               %td= number_to_currency a.amount
     .ui.divider
-    .two.fields
+    .four.fields
       .field{style: "text-align: right"}
         - unless @ticket.has_items?
           = link_to ticket_path(@ticket, table_id: @ticket.table_id), method: :delete, class: "ui button red" do
             %i.icon.remove
             Borrar
+      .field
+        - if @ticket.client
+          .ui.toggle.checkbox
+            = f.check_box :credit
+          = f.label :credit, "Fiado"
 
       .field
         - if @ticket.has_items? && @current_shift
           %button.ui.button.green.icon.labeled{ type: "submit"}
             %i.icon.check
             Guardar
+      .field
         = link_to "#", class: "ui button labeled icon close" do
           %i.icon.remove
           Cancelar
+
+:javascript
+  $('.checkbox').checkbox();

@@ -25,9 +25,10 @@
     %th Numero
     %th Fecha
     %th Total
+    %th Fiado
     %th Estado
   %tbody
-    - @client.tickets.each do |ticket|
+    - @client.tickets.order(created_at: :desc).each do |ticket|
       %tr
         %td
           = link_to "##{ticket.formatted_number}", ticket
@@ -35,6 +36,9 @@
           = ticket.created_at.strftime("%d/%m/%Y")
         %td
           = number_to_currency ticket.get_total
+        %td
+          - if ticket.credit
+            %i.icon.check
         %td
           = ticket.status == 'closed' ? 'Cerrado' : 'Abierto'
 

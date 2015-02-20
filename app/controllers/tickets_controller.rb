@@ -126,7 +126,7 @@ class TicketsController < ApplicationController
 
   def close
     if @ticket.has_items?
-      @ticket.close! if @ticket.fully_delivered?
+      @ticket.close!(params[:ticket][:credit])
       redirect_to @ticket
     else
       @ticket.destroy
@@ -154,6 +154,6 @@ class TicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def ticket_params
-      params.require(:ticket).permit(:table_id, :client_id, :shift_id, :date, :total, :payment, :number, :status)
+      params.require(:ticket).permit(:table_id, :client_id, :shift_id, :date, :total, :payment, :number, :status, :credit)
     end
 end
