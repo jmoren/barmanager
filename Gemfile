@@ -7,6 +7,7 @@ gem 'rails', '4.0.2'
 gem 'mysql2', group: :development
 
 gem 'pg', group: :production
+gem 'rails_12factor', group: :production
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
