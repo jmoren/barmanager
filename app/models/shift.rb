@@ -35,7 +35,7 @@ class Shift < ActiveRecord::Base
   end
 
   def total_pending
-    tickets.where("client_id IS NOT NULL").sum(:total).to_f
+    tickets.where(credit: true).sum(:total).to_f
   end
 
   def total_payments

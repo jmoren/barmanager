@@ -38,13 +38,18 @@ class Ticket < ActiveRecord::Base
     self.number = next_number
   end
 
-  def close!
-    self.update(status: "closed", total: self.get_total, shift_id: Shift.last_open.id)
-    self.table.close! if self.table
-  end
-
   def open?
     self.status == "open"
+  end
+
+  def close!(credit_param)
+    self.update(status: "closed", total: self.get_total, shift_id: Shift.last_open.id, credit: credit_param)
+    self.table.close! if self.table
+
+    if self.credit && self.client
+      self.client.doubt += self.total
+      self.client.save
+    end
   end
 
   def has_items?
