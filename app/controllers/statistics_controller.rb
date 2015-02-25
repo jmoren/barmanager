@@ -17,7 +17,7 @@ class StatisticsController < ApplicationController
         end
       end
 
-      @expenses = Expense.where(created_at: from_date..to_date).group(:supplier).sum(:amount)
+      @expenses = Expense.where(date: from_date..to_date).group(:supplier).sum(:amount)
 
     end
   end

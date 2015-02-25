@@ -11,7 +11,7 @@ class DailyCashesController < ApplicationController
     @last_closed_daily_cash = DailyCash.where(date: @daily_cash.date - 1.day).first || DailyCash.new(total: 0)
     @shifts = Shift.joins(:user).where('shifts.created_at BETWEEN ? AND ?', @daily_cash.date.beginning_of_day, @daily_cash.date.end_of_day)
     @total_shifts = @shifts.sum(&:total_tickets)
-    @users_expenses = Expense.where('expenses.shift_or_user_type = ? AND expenses.created_at BETWEEN ? AND ?', "User", @daily_cash.date.beginning_of_day, @daily_cash.date.end_of_day)
+    @users_expenses = Expense.where('expenses.shift_or_user_type = ? AND expenses.date = ?', "User", @daily_cash.date)
     @total_expenses = @users_expenses.sum(:amount)
     @open_shift_count = @shifts.select { |sh| sh.is_open? }.count
 
@@ -27,7 +27,7 @@ class DailyCashesController < ApplicationController
       @daily_cash = DailyCash.find_or_create_by(date: date)
       @shifts = Shift.joins(:user).where('shifts.open BETWEEN ? AND ?', date.beginning_of_day, date.end_of_day)
       @total_shifts = @shifts.sum(&:total_tickets)
-      @users_expenses = Expense.where('expenses.shift_or_user_type = ? AND expenses.created_at BETWEEN ? AND ?', "User", date.beginning_of_day, date.end_of_day)
+      @users_expenses = Expense.where('expenses.shift_or_user_type = ? AND expenses.date = ?', "User", date)
       @total_expenses = @users_expenses.sum(:amount)
       @daily_cash.total = @shifts.sum(&:total_extractions)
       @daily_cash.total_expenses = @total_expenses

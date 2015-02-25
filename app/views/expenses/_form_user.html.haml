@@ -1,6 +1,7 @@
-= form_for Expense.new, html: { class: "ui form"} do |f|
+= form_for Expense.new(date: date), html: { class: "ui form"} do |f|
   .ui.grid
     .five.wide.column.field
+      = f.hidden_field :date
       = f.hidden_field :shift_or_user_type, value: "User"
       = f.text_field :description, placeholder: "Agregar un gasto"
     .three.wide.column.field

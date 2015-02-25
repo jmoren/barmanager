@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150220183335) do
+ActiveRecord::Schema.define(version: 20150225154446) do
 
   create_table "additionals", force: true do |t|
     t.string   "description"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20150220183335) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "supplier_id"
+    t.date     "date"
   end
 
   add_index "expenses", ["shift_or_user_id"], name: "index_expenses_on_shift_or_user_id", using: :btree

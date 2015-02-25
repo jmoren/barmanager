@@ -39,6 +39,6 @@ class User < ActiveRecord::Base
   end
 
   def monthly_expenses(date)
-    expenses.where("created_at between ? and ?", date.beginning_of_month, date.end_of_month)
+    expenses.where("date between ? and ?", date.beginning_of_month, date.end_of_month)
   end
 end
