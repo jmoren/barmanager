@@ -77,15 +77,15 @@
                   - @wtable_tickets.each do |ticket|
                     %p
                       - if ticket.table && !ticket.client
-                        = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
+                        = link_to ticket, class: "ui #{'basic active' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
                           %i.icon.food
                           = ticket.table.name
                       - elsif ticket.client && !ticket.table
-                        = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button fluid" do
+                        = link_to ticket, class: "ui #{'basic active' unless @ticket.try(:id) == ticket.id} button fluid" do
                           %i.icon.food
                           = ticket.client.name
                       - elsif ticket.client && ticket.table
-                        = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
+                        = link_to ticket, class: "ui #{'basic active' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
                           %i.icon.food
                           = ticket.table.name
                           \-
