@@ -1,39 +1,25 @@
-%i.close.icon
-.header
-  %h2.ui.header
-    = "Ticket Numero ##{@ticket.try(:number)} - Cambiar Mesa"
-.content
-  .center
-    - if @ticket.table
-      = link_to unlink_table_ticket_path(@ticket), method: :patch, class: "ui button icon labeled red" do
-        %i.icon.unlink
-        Sacar de la mesa
-      .ui.divider
+%h2.ui.header.left.floated
+  Messas
+.ui.header.right.floated
+  = link_to new_table_path, class: "ui button teal" do
+    %i.icon.plus
+    Agregar Mesa
 
-  = form_for @ticket, url: change_ticket_path(@ticket), method: :patch, html: { class: "ui form"} do |f|
+.ui.divider.clearing
 
-    .two.fields
-      .field
-        .ui.message.small
-          = "Mover Mesa a la"
-      .field
-        .ui.search.selection.dropdown.large
-          = f.hidden_field :table_id
-          %i.dropdown.icon
-          .default.text Seleccionar
-          .menu
-            - @tables.each do |table|
-              .item{ data: {value: table.id}}
-                = table.name
-    .two.fields
-      .field
-        .ui.button.close.icon.labeled.fluid
-          %i.icon.remove
-          Cancelar
-      .field
-        %button.ui.button.icon.labeled.fluid.blue{type:"submit"}
-          %i.icon.check
-          Mover
-
-  %script
-    $('.dropdown').dropdown({transition: 'drop'});
+%table.ui.table
+  %thead
+    %th description
+    %th Color
+    %th
+  %tbody
+    - @tables.each do |table|
+      %tr
+        %td= table.description.titleize
+        %td
+          %i.icon.circle{class: "#{table.color}"}
+        %td
+          = link_to edit_table_path(table) do
+            %i.icon.edit
+          = link_to table_path(table), method: :delete do
+            %i.icon.trash

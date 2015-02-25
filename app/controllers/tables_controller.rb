@@ -6,10 +6,14 @@ class TablesController < ApplicationController
   # GET /tables
   # GET /tables.json
   def index
+    @tables = Table.order(description: :desc)
+  end
+
+  def change
     if params[:ticket_id]
       @ticket = Ticket.find(params[:ticket_id])
       @tables = Table.where(status: "closed")
-      render 'index', layout: false
+      render 'change', layout: false
     end
   end
 

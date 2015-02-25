@@ -49,6 +49,11 @@
 
 %h2.ui.header
   Gastos
+.ui.warning.message
+  .header
+    Es una Gasto si:
+  = "- Si la plata sale de la caja del turno para pagar gastos del bar (ej: proveedores, mozas, etc)"
+
 - if @shift.is_open?
   = render partial: '/expenses/form_shift', locals: { shift_or_user: @shift }
 
@@ -73,6 +78,12 @@
 
 %h2.ui.header
   Extracciones
+.ui.warning.message
+  .header
+    Es una extraccion si:
+  = "- La plata sale de la caja del turno para un vale personal (Marcar como vale)"
+  %br
+  = "- La plata sale para hacer el cierre de turno y llevarla a casa (Elegir el usuario que retira la plata)"
 - if @shift.is_open?
   = render partial: '/extractions/form', locals: { shift: @shift }
 

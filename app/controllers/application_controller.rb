@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   def get_tables
     return unless current_user
     @closed_tables  = Table.closed.order(id: :desc)
+    @tables = Table.order(id: :desc)
     @wtable_tickets = Ticket.with_table.opened
     @ntable_tickets = Ticket.without_table.opened
   end

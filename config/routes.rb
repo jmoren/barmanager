@@ -41,6 +41,9 @@ BarManager::Application.routes.draw do
   resources :items
 
   resources :tables do
+    collection do
+      get :change
+    end
     member do
       put :open
       put :close

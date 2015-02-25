@@ -40,48 +40,21 @@
           .ui.message.error{:style => "margin: 10px;"}
             = alert
         - if current_user
-          #open-tables
-            .side
-              %h4.ui.header Turno actual
-              - if @current_shift
-                .two.ui.buttons
-                  = link_to @current_shift, class: "ui button blue" do
-                    %i.icon.idea
-                    Ver
-                  = link_to close_shift_path(@current_shift), method: :put, class: "ui button" do
-                    %i.icon.lock
-                    Cerrar
-              - else
-                = link_to new_shift_path, class: "ui button blue fluid" do
-                  %i.icon.unlock
-                  Abrir turno
-            .panel
-              %h4.ui.header Mesas abiertas
-              .ui.stackable.three.column.grid
-                - @wtable_tickets.each do |ticket|
-                  .column
-                    - if ticket.table && !ticket.client
-                      = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
-                        %i.icon.food
-                        = ticket.table.name
-                    - elsif ticket.client && !ticket.table
-                      = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button fluid" do
-                        %i.icon.food
-                        = ticket.client.name
-                    - elsif ticket.client && ticket.table
-                      = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
-                        %i.icon.food
-                        = ticket.table.name
-                        \-
-                        = ticket.client.name
-
-                - @ntable_tickets.each do |ticket|
-                  .column
-                    = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button fluid" do
-                      %i.icon.send
-                      = "Para llevar ##{ticket.number}"
-
           .side
+            %h4.ui.header Turno actual
+            - if @current_shift
+              .two.ui.buttons
+                = link_to @current_shift, class: "ui button blue" do
+                  %i.icon.idea
+                  Ver
+                = link_to close_shift_path(@current_shift), method: :put, class: "ui button" do
+                  %i.icon.lock
+                  Cerrar
+            - else
+              = link_to new_shift_path, class: "ui button blue fluid" do
+                %i.icon.unlock
+                Abrir turno
+            .ui.divider
             = link_to new_ticket_path, class: "ui basic active fluid button teal" do
               %i.icon.send
               Ticket para llevar
@@ -90,17 +63,38 @@
                 %input#table_id{:name => "table[table_id]", :type => "hidden"}/
                 %i.dropdown.icon{:tabindex => "-1"}
                 %input.search.table-search{:tabindex => "0"}/
-                .default.text Seleccione Mesa
+                .default.text Seleccionar Mesa
                 .menu{:tabindex => "-1"}
-                  - @closed_tables.each do |table|
+                  - @tables.each do |table|
                     - unless table.new_record?
                       .item.table-option{"data-code" => table.id, "data-value" => table.id}
                         = table.name
-              - if @ticket.try(:table)
-                = render @ticket.try(:table)
-              - @closed_tables.each do |table|
-                - unless table.new_record?
-                  = render table unless @table.try(:id) == table.id
+
+
+              %h4.ui.header Mesas abiertas
+              .ui.stackable.one.column.grid
+                .column
+                  - @wtable_tickets.each do |ticket|
+                    %p
+                      - if ticket.table && !ticket.client
+                        = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
+                          %i.icon.food
+                          = ticket.table.name
+                      - elsif ticket.client && !ticket.table
+                        = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button fluid" do
+                          %i.icon.food
+                          = ticket.client.name
+                      - elsif ticket.client && ticket.table
+                        = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button #{ticket.table.color} fluid" do
+                          %i.icon.food
+                          = ticket.table.name
+                          \-
+                          = ticket.client.name
+
+                - @ntable_tickets.each do |ticket|
+                  = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button fluid" do
+                    %i.icon.send
+                    = "Para llevar ##{ticket.number}"
 
         .panel{:class => "#{current_user.nil? ? 'signin' : nil}"}
           .segment.ui

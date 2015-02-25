@@ -44,9 +44,15 @@
           (Gastos fuera del turno)
         %td= number_to_currency @total_expenses
 
-- if !@daily_cash.close && @daily_cash.date == Date.today
+- if !@daily_cash.close
   %h2.ui.header
     Gastos extras
+  .ui.warning.message
+    .header
+      Es un gasto extra Si:
+    = "- La plata sale del acumulado en casa para pagar gastos del Bar (ej: mayorista, sistema, etc)"
+    %br
+    = "- LOS VALES HECHOS CON LA PLATA DEL ACUMULADO EN CASA NO PASAN POR EL SISTEMA. NO SON GASTOS EXTRAS"
   = render partial: '/expenses/form_user'
 
 

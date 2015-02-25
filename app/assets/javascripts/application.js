@@ -113,7 +113,7 @@ $(document).ready(function(){
     e.preventDefault();
     id = $(this).data("id");
     $.ajax({
-      url: "/tables?ticket_id="+ id,
+      url: "/tables/change?ticket_id="+ id,
       type: "GET",
       dataType: "html",
       success: function(data){

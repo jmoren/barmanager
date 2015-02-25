@@ -1,0 +1,39 @@
+%i.close.icon
+.header
+  %h2.ui.header
+    = "Ticket Numero ##{@ticket.try(:number)} - Cambiar Mesa"
+.content
+  .center
+    - if @ticket.table
+      = link_to unlink_table_ticket_path(@ticket), method: :patch, class: "ui button icon labeled red" do
+        %i.icon.unlink
+        Sacar de la mesa
+      .ui.divider
+
+  = form_for @ticket, url: change_ticket_path(@ticket), method: :patch, html: { class: "ui form"} do |f|
+
+    .two.fields
+      .field
+        .ui.message.small
+          = "Mover Mesa a la"
+      .field
+        .ui.search.selection.dropdown.large
+          = f.hidden_field :table_id
+          %i.dropdown.icon
+          .default.text Seleccionar
+          .menu
+            - @tables.each do |table|
+              .item{ data: {value: table.id}}
+                = table.name
+    .two.fields
+      .field
+        .ui.button.close.icon.labeled.fluid
+          %i.icon.remove
+          Cancelar
+      .field
+        %button.ui.button.icon.labeled.fluid.blue{type:"submit"}
+          %i.icon.check
+          Mover
+
+  %script
+    $('.dropdown').dropdown({transition: 'drop'});
