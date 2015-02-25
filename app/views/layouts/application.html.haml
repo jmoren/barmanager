@@ -91,10 +91,11 @@
                           \-
                           = ticket.client.name
 
-                - @ntable_tickets.each do |ticket|
-                  = link_to ticket, class: "ui #{'basic' unless @ticket.try(:id) == ticket.id} button fluid" do
-                    %i.icon.send
-                    = "Para llevar ##{ticket.number}"
+                  - @ntable_tickets.each do |ticket|
+                    %p
+                      = link_to ticket, class: "ui #{'basic active' unless @ticket.try(:id) == ticket.id} button  teal fluid" do
+                        %i.icon.send
+                        = "Para llevar ##{ticket.number}"
 
         .panel{:class => "#{current_user.nil? ? 'signin' : nil}"}
           .segment.ui
