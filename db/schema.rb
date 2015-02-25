@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 20150225154446) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "personal"
+    t.boolean  "personal",    default: false
   end
 
   add_index "extractions", ["shift_id"], name: "index_extractions_on_shift_id", using: :btree
