@@ -5,4 +5,8 @@ class PromotionTicketItem < ActiveRecord::Base
   def delivered?
     self.delivered == (self.promotion_item.quantity * self.promotion_ticket.quantity)
   end
+
+  def pending
+    (self.promotion_item.quantity * self.promotion_ticket.quantity) - self.delivered
+  end
 end

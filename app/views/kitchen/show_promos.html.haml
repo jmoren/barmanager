@@ -2,7 +2,7 @@
 .header
   %h2.ui.left.floated.header
     Mesa
-    = @table
+    = @table.name
   %h2.ui.right.floated.header
     Ticket Nro
     = @current_ticket.formatted_number
@@ -33,9 +33,12 @@
                         %span.price
                           = "Total #{(prod.promotion_item.quantity * pt.quantity)} - Entregado: #{prod.delivered}"
                           - unless prod.delivered?
-                            = link_to increase_delivered_ticket_promotion_ticket_path(@current_ticket, pt, prod_id: prod.id),
+                            = link_to increase_delivered_ticket_promotion_ticket_path(@current_ticket, pt, prod_id: prod.id, quantity: 1),
                               method: :put, style: "float: right" do
                               %i.icon.plus.circle
+                            = link_to increase_delivered_ticket_promotion_ticket_path(@current_ticket, pt, prod_id: prod.id, quantity: prod.pending),
+                              method: :put, style: "float: right" do
+                              %i.icon.checkmark.circle
           %td.center.aligned= pt.quantity
           %td.center.aligned
             - if pt.full_delivered?

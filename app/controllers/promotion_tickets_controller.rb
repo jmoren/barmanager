@@ -16,7 +16,7 @@ class PromotionTicketsController < ApplicationController
   def increase_delivered
     prom_tick_item = @promotion_ticket.promotion_ticket_items.find(params[:prod_id])
     if prom_tick_item.delivered < prom_tick_item.promotion_item.quantity * @promotion_ticket.quantity
-      prom_tick_item.delivered += 1
+      prom_tick_item.delivered += params[:quantity].to_i
       prom_tick_item.save
     end
     redirect_to :back
