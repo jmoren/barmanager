@@ -1,5 +1,5 @@
 class ShiftsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:create]
   before_action :set_shift, only: [:show, :edit, :update, :destroy]
   layout "admin"
 
@@ -59,10 +59,9 @@ class ShiftsController < ApplicationController
   # POST /shifts
   # POST /shifts.json
   def create
-    oc = params[:opening_cash] ? params[:opening_cash] : 0
-    @shift = Shift.new(opening_cash: oc)
-    @shift.open = DateTime.now
-    @shift.user = current_user
+    params.require(:shift).permit!
+    oc = params[:shift][:opening_cash] ? params[:shift][:opening_cash] : 0
+    @shift = Shift.new(opening_cash: oc, open: DateTime.now, user: current_user)
     url = current_user.admin? ? @shift : home_index_path
     respond_to do |format|
       if @shift.save
