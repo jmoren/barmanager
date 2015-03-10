@@ -4,7 +4,8 @@ class Shift < ActiveRecord::Base
   has_many :expenses, as: :shift_or_user
   has_many :extractions
   has_many :ticket_payments
-
+  has_many :supplier_payments
+  
   validates :opening_cash, presence: true
   validates :opening_cash, numericality: true, on: :create
   validates :closing_cash, numericality: true, on: :update

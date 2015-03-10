@@ -9,6 +9,11 @@ class SuppliersController < ApplicationController
   end
 
   def show
+    @total_payments   = @supplier.expenses.sum(:amount)
+    tickets = @supplier.supplier_tickets
+    @total_tickets    = tickets.sum(:amount)
+    @supplier_tickets = tickets.page params[:page]
+
     respond_with(@supplier)
   end
 

@@ -1,0 +1,25 @@
+%h1 Listing supplier_tickets
+
+%table
+  %thead
+    %tr
+      %th Amount
+      %th Supplier
+      %th Shift
+      %th
+      %th
+      %th
+      
+  %tbody
+    - @supplier_tickets.each do |supplier_ticket|
+      %tr
+        %td= supplier_ticket.amount
+        %td= supplier_ticket.supplier
+        %td= supplier_ticket.shift
+        %td= link_to 'Show', supplier_ticket
+        %td= link_to 'Edit', edit_supplier_ticket_path(supplier_ticket)
+        %td= link_to 'Destroy', supplier_ticket, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Supplier ticket', new_supplier_ticket_path
