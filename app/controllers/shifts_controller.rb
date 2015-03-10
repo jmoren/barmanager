@@ -1,5 +1,5 @@
 class ShiftsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource except: [:create]
   before_action :set_shift, only: [:show, :edit, :update, :destroy]
   layout "admin"
 
@@ -59,7 +59,7 @@ class ShiftsController < ApplicationController
   # POST /shifts
   # POST /shifts.json
   def create
-    @shift = Shift.new(shift_params)
+     @shift = Shift.new(shift_params)
     @shift.open = DateTime.now
     @shift.user = current_user
     url = current_user.admin? ? @shift : home_index_path
@@ -90,7 +90,7 @@ class ShiftsController < ApplicationController
         h[:opening_cash] = h[:opening_cash] || 0
       end
     end
-    
+
     # Use callbacks to share common setup or constraints between actions.
     def set_shift
       @shift = Shift.includes(:user).find(params[:id])

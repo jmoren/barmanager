@@ -62,6 +62,7 @@
     %th{style: "width:35%"} Descripcion
     %th Proveedor
     %th.center.aligned Monto
+    %th
   %tbody
     - @shift.expenses.each do |expense|
       - unless expense.new_record?
@@ -69,7 +70,11 @@
           %td= expense.description
           %td= expense.supplier.try(:name)
           %td.center.aligned= number_to_currency expense.amount
+          %td.center.aligned
+            = link_to expense_path(expense), method: :delete do
+              %i.icon.trash
     %tr
+      %td
       %td
       %td
       %td.center.aligned
@@ -92,6 +97,7 @@
     %th{style: "width:65%"} Descripcion
     %th Usuario
     %th.center.aligned Monto
+    %th
   %tbody
     - @shift.extractions.each do |extraction|
       - unless extraction.new_record?
@@ -99,7 +105,11 @@
           %td= extraction.description
           %td= extraction.user.try(:username)
           %td.center.aligned= number_to_currency extraction.amount
+          %td.center.aligned
+            = link_to shift_extraction_path(@shift, extraction), method: :delete do
+              %i.icon.trash
     %tr
+      %td
       %td
       %td
       %td.center.aligned

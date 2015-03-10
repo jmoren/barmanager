@@ -9,13 +9,19 @@ class ExtractionsController < ApplicationController
     redirect_to :back
   end
 
-  def destroy
+  def destroy3
     if current_user.admin?
       @user = User.find(params[:user_id])
     else
       @user = current_user
     end
     @extraction = @user.extractions.find(params[:id])
+    @extraction.destroy
+    redirect_to :back
+  end
+
+  def destroy
+    @extraction = Extraction.find(params[:id])
     @extraction.destroy
     redirect_to :back
   end
