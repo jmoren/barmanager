@@ -1,12 +1,14 @@
 BarManager::Application.routes.draw do
 
+  devise_for :users
+
   resources :clients do
     resources :ticket_payments
   end
 
-  resources :suppliers
-
-  devise_for :users
+  resources :suppliers do
+    resources :supplier_tickets
+  end
 
   resources :promotions do
     resources :promotion_items
@@ -57,12 +59,12 @@ BarManager::Application.routes.draw do
     patch :close, on: :member, as: :close
     get   :close_ticket, on: :member
     patch :deliver_all_kitchen, on: :member, as: :deliver_all_kitchen
+    resources :additionals
     resources :item_tickets do
       put :increase, on: :member
       put :deliver, on: :member
       delete :destroy_all, on: :collection
     end
-    resources :additionals
     resources :promotion_tickets do
       put :increase_delivered, on: :member
       put :increase, on: :member
@@ -75,6 +77,7 @@ BarManager::Application.routes.draw do
       get :monthly_detail
     end
   end
+
   get 'kitchen', to: 'kitchen#index'
   get 'kitchen/:ticket_id/show/:item_id/:type', to: 'kitchen#show'
   get 'kitchen/:ticket_id/print_table', as: 'print_table', to: 'kitchen#print_table'

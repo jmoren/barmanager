@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225154446) do
+ActiveRecord::Schema.define(version: 20150310153306) do
 
   create_table "additionals", force: true do |t|
     t.string   "description"
@@ -165,6 +165,30 @@ ActiveRecord::Schema.define(version: 20150225154446) do
   end
 
   add_index "shifts", ["user_id"], name: "index_shifts_on_user_id", using: :btree
+
+  create_table "supplier_payments", force: true do |t|
+    t.integer  "supplier_id"
+    t.float    "amount"
+    t.integer  "shift_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "supplier_payments", ["shift_id"], name: "index_supplier_payments_on_shift_id", using: :btree
+  add_index "supplier_payments", ["supplier_id"], name: "index_supplier_payments_on_supplier_id", using: :btree
+
+  create_table "supplier_tickets", force: true do |t|
+    t.float    "amount"
+    t.integer  "supplier_id"
+    t.integer  "shift_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "description"
+    t.integer  "code_number"
+  end
+
+  add_index "supplier_tickets", ["shift_id"], name: "index_supplier_tickets_on_shift_id", using: :btree
+  add_index "supplier_tickets", ["supplier_id"], name: "index_supplier_tickets_on_supplier_id", using: :btree
 
   create_table "suppliers", force: true do |t|
     t.string   "name"

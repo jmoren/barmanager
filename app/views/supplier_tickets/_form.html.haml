@@ -1,0 +1,12 @@
+%h5{ style: "margin-top: 10px"} Agregar Factura
+= form_for [@supplier, @supplier.supplier_tickets.new], html: { class: "ui form"} do |f|
+  .ui.grid
+    .three.wide.column.field{ style: "padding: 10px 0px 10px 10px"}
+      = f.number_field :code_number, placeholder: "Codigo"
+    .eight.wide.column.field{ style: "padding: 10px 0px 10px 10px"}
+      = f.text_field :description, placeholder: "Agregar descripcion"
+    .three.wide.column.field{ style: "padding: 10px 0px 10px 10px"}
+      = f.text_field :amount, placeholder: "Total $"
+    .two.wide.column.field{ style: "padding: 10px 0px 10px 10px"}
+      %button.ui.button.blue.icon{type: "submit"}
+        %i.icon.plus

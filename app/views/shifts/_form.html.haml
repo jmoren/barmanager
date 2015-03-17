@@ -14,21 +14,20 @@
 
 = form_for @shift, html: { class: "ui form"} do |f|
   .ui.grid
-    .two.wide.column
+    .six.wide.column
       .ui.label
         %i.icon.calendar
         %b
           = Time.now.strftime('%d/%m/%Y')
-    .two.wide.column
       .ui.label
         %i.icon.time
         %b
           = Time.now.strftime('%H:%M %p')
-    .six.wide.column
-      .ui.form
-        .inline.field
-          = f.label :opening_cash, "El turno se deberia abrir con"
-          = f.text_field :opening_cash, value: @shift.opening_cash
-    .four.wide.column
+  .ui.divider
+  %h4 El turno deberia abrirse con
+  .inline.fields
+    .field
+      = f.text_field :opening_cash, value: @shift.opening_cash
+    .field
       %button.ui.button.blue{type:"submit"}
-        Guardar
+        Abrir

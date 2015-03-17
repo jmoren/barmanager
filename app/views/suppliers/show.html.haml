@@ -10,6 +10,50 @@
   %b Telefono:
   = @supplier.phone
 
+
+%h3 Cuenta Corriente
+.ui.divider
+= render partial: 'supplier_tickets/form'
+.ui.divider
+.ui.grid.statistics
+
+  .sixteen.wide.column
+    .ui.segment
+      .statistic.green
+        .value.center
+          = number_to_currency (@total_payments - @total_tickets)
+        .label.center
+          Balance
+  .eight.wide.column
+    .ui.segment
+      .statistic.red
+        .value.center
+          = number_to_currency @total_payments
+        .label.center
+          Total Pagado
+  .eight.wide.column
+    .ui.segment
+      .statistic
+        .value
+          = number_to_currency @total_tickets
+        .label
+          Total Facturas
+
+%h3 Facturas
+%table.ui.table
+  %thead
+    %th Numero
+    %th Descripcion
+    %th Monto
+  %tbody
+    - @supplier_tickets.each do |ticket|
+      - unless ticket.new_record?
+        %tr
+          %td= ticket.code_number
+          %td= ticket.description
+          %td= number_to_currency ticket.amount
+= paginate @supplier_tickets
+
 .ui.divider
 = link_to 'Editar', edit_supplier_path(@supplier), class: "ui button orange"
 = link_to 'Atras', suppliers_path, class: "ui button"
