@@ -2,7 +2,7 @@
 .header
   %h2.ui.left.floated.header
     Mesa
-    = @table.name
+    = @table.try(:name) || "Para llevar"
   %h2.ui.right.floated.header
     Ticket Nro
     = @current_ticket.formatted_number

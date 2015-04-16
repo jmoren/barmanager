@@ -1,6 +1,6 @@
 @media print {
   div.ui.menu, #open-tables, div.side, div.table-actions, div.ui.divider, div.table-form, i.icon,
-  a.ui.button, div.ui.actions, .ui.popup, h1.ui.header, .ui.message, .ui.button.status,
+  a.ui.button, div.ui.actions, .ui.popup, .ui.message, .ui.button.status,
   td.hiddable, th.hiddable {
     display: none !important;
   }
