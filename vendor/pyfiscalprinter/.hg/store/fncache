@@ -1,0 +1,15 @@
+data/setup.py.i
+data/fiscalGeneric.py.i
+data/ejemplo.php.i
+data/controlador.py.i
+data/.gitignore.i
+data/README.md.i
+data/epsonFiscalDriver.py.i
+data/agente.py.i
+data/hasarPrinter.py.i
+data/test.py.i
+data/epsonFiscal.py.i
+data/LICENSE.i
+data/epsonFiscalDriver_service.py.i
+data/__init__.py.i
+data/README.i
