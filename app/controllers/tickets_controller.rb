@@ -1,7 +1,9 @@
+require 'rubypython'
+
 class TicketsController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_ticket, only: [:print, :show, :edit, :update, :destroy, :unlink_table, :close_ticket, :unlink_client]
+  before_action :set_ticket, only: [:print, :show, :edit, :update, :destroy, :unlink_table, :close_ticket, :unlink_client, :payment_form]
 
   def print
     params.require(:ticket_type)
@@ -30,9 +32,9 @@ class TicketsController < ApplicationController
       conn.addPayment(payment_desc, payment)
 
       conn.closeDocument.rubify
-      #return success code.
+      render text: 'Enviado'
     else
-      # return error message.
+      render :payment_form
     end
 
     RubyPython.stop
@@ -178,6 +180,10 @@ class TicketsController < ApplicationController
   def unlink_client
     @ticket.update(client_id: nil)
     redirect_to @ticket
+  end
+
+  def payment_form
+    render layout: false
   end
 
   private

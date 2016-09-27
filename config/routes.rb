@@ -54,6 +54,7 @@ BarManager::Application.routes.draw do
 
   resources :tickets do
     post :print, on: :member, as: :print
+    get   :payment_form, on: :member
     patch :move_to, on: :member, as: :change
     patch :unlink_table, on: :member, as: :unlink_table
     patch :unlink_client, on: :member, as: :unlink_client

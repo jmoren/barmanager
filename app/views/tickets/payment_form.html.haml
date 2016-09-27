@@ -1,0 +1,78 @@
+%i.close.icon
+.header
+  %h2.ui.left.floated.header
+    Ticket
+    = "%0.6d" % @ticket.number
+  %h2.ui.right.floated.header
+    = l @ticket.created_at, format: "%d/%m/%Y - %H:%M %p"
+  .clearfix
+
+.content
+  = form_tag print_ticket_path(@ticket), { method: :post, id: "fiscal-printer", class: "ui form" } do |f|
+    .three.fields
+      .field
+        %label Tipo de Factura
+        .ui.search.selection.dropdown.combo
+          %i.dropdown.icon
+          %input{ type: 'hidden', name: 'ticket_type', value: 'C' }
+          .default.text Tipo de Factura
+          .menu
+            .item{ data: { value: 'A' } } Factura A
+            .item{ data: { value: 'B' } } Factura B
+            .item{ data: { value: 'C' } } Factura C
+      .field
+        %label Tipo IVA
+        .ui.search.selection.dropdown.combo
+          %i.dropdown.icon
+          %input{ type: 'hidden', name: 'iva_type', value: '5' }
+          .default.text  
+          .menu
+            .item{ data: { value: '1' } } Responsable inscripto
+            .item{ data: { value: '2' } } Responsable no inscripto
+            .item{ data: { value: '3' } } No responsableExento
+            .item{ data: { value: '4' } } Exento
+            .item{ data: { value: '5' } } Consumidor final
+            .item{ data: { value: '6' } } Responsable Monotributo
+            .item{ data: { value: '7' } } No categorizado
+            .item{ data: { value: '12' } } Pequeño contribuyente
+            .item{ data: { value: '13' } } Monotributista eventual
+            .item{ data: { value: '14' } } Pequeño contribuyente eventual
+      .field
+        %label Iva
+        .ui.search.selection.dropdown.combo
+          %i.dropdown.icon
+          %input{ type: 'hidden', name: 'iva', value: '21.0' }
+          .default.text IVA
+          .menu
+            .item{ data: { value: '10.5' } } 10.5 %
+            .item{ data: { value: '21.0' } } 21 % 
+    .ui.divider
+    .two.fields
+      .field
+        %label Nombre y Apellido
+        %input{ type: 'text', name: 'customer_name', placeholder: 'Nombre completo'}
+      .field
+        %label Direccion
+        %input{ type: 'text', name: 'customer_address', placeholder: 'Direccion'}
+    .two.fields
+      .field
+        %label Tipo de Documento
+        .ui.search.selection.dropdown.combo
+          %i.dropdown.icon
+          %input{ type: 'hidden', name: 'customer_doc_type' }
+          .default.text Tipo Documento
+          .menu
+            .item{ data: { value: 'C' } } CUIT
+            .item{ data: { value: '0' } } LE
+            .item{ data: { value: '1' } } LC
+            .item{ data: { value: '2' } } DNI
+            .item{ data: { value: '3' } } Pasaporte
+            .item{ data: { value: '4' } } CE
+            .item{ data: { value: '5' } } S/C
+      .field
+        %label Numero
+        %input{ type: 'text', name: 'customer_doc_nbr'}
+    .field
+      = submit_tag 'Enviar', class: 'ui button orange'
+:javascript
+  $('.dropdown').dropdown();

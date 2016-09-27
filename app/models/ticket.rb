@@ -53,7 +53,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def has_items?
-    items.size > 0 || promotions.size > 0 || additionals.size > 0
+    items.count > 0 || promotions.size > 0 || additionals.size > 0
   end
 
   def get_total

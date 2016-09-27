@@ -16,7 +16,7 @@
       = f.text_field :night_price, placeholder: "Precio de noche"
     .field
       = f.label :code, "Codigo"
-      = f.number_field :code, placeholder: "Codigo sugerido #{@item.id.nil? ? Item.last.id + 1 : @item.code}"
+      = f.number_field :code, placeholder: "Codigo sugerido #{@item.id.nil? ? Item.last.try(:id).to_i + 1 : @item.code}"
     .field
       = f.label :favourite, "Favorito"
       .ui.toggle.checkbox

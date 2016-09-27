@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150310153306) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "additionals", force: true do |t|
     t.string   "description"
     t.float    "amount"
@@ -165,17 +168,6 @@ ActiveRecord::Schema.define(version: 20150310153306) do
   end
 
   add_index "shifts", ["user_id"], name: "index_shifts_on_user_id", using: :btree
-
-  create_table "supplier_payments", force: true do |t|
-    t.integer  "supplier_id"
-    t.float    "amount"
-    t.integer  "shift_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "supplier_payments", ["shift_id"], name: "index_supplier_payments_on_shift_id", using: :btree
-  add_index "supplier_payments", ["supplier_id"], name: "index_supplier_payments_on_supplier_id", using: :btree
 
   create_table "supplier_tickets", force: true do |t|
     t.float    "amount"

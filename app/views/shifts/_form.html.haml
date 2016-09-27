@@ -26,11 +26,10 @@
     %i.icon.money.green
     = f.number_field :opening_cash, value: @shift.opening_cash
 
-  = f.submit "Guardar", class: "ui button"
-.ui.divider
+  .ui.divider
 
-.ui.grid
-  .two.wide.column
-    =# link_to "Abrir", shifts_path(@shift.id, opening_cash: @shift.opening_cash), method: :post, class: "ui button green"
-  .two.wide.column
-    = link_to "Cancelar", shifts_path, class: "ui button"
+  .ui.grid
+    .two.wide.column
+      = f.submit "Guardar", class: "ui button"
+    .two.wide.column
+      = link_to "Cancelar", shifts_path, class: "ui button"
