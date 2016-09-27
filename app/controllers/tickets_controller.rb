@@ -1,8 +1,42 @@
 class TicketsController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_ticket, only: [:show, :edit, :update, :destroy, :unlink_table, :close_ticket, :unlink_client]
+  before_action :set_ticket, only: [:print, :show, :edit, :update, :destroy, :unlink_table, :close_ticket, :unlink_client]
 
+  def print
+    params.require(:ticket_type)
+    params.require(:id)
+
+    iva = params[:iva] || 21.00
+    discount = params[:discount] || 0
+    discount_desc = params[:discount_desc] || ""
+    payment_desc = params[:payment_desc] || "Cierre Ticket"
+    payment = params[:payment] || 0
+
+    RubyPython.start
+    epson = RubyPython.import("pyfiscalprinter.epsonFiscal")
+    conn = epson.EpsonPrinter.new("epson", "tm-220-af", "COM1")
+
+    unless(conn.nil?)
+      conn.open.openBillTicket(params[:ticket_type],
+        params[:customer_name], params[:customer_address],
+        params[:customer_doc_nbr], params[:customer_doc_type], params[:iva_type])
+
+      @ticket.item_tickets.each do |it|
+        item = it.item
+        conn.addItem(item.description, it.quantity, item.price, iva, discount, discount_desc)
+      end
+
+      conn.addPayment(payment_desc, payment)
+
+      conn.closeDocument.rubify
+      #return success code.
+    else
+      # return error message.
+    end
+
+    RubyPython.stop
+  end
   # GET /tickets
   # GET /tickets.json
   def index
