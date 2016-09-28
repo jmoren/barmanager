@@ -15,30 +15,36 @@ class TicketsController < ApplicationController
     payment_desc = params[:payment_desc] || "Cierre Ticket"
     payment = params[:payment] || 0
 
-    RubyPython.start
-    epson = RubyPython.import("pyfiscalprinter.epsonFiscal")
-    conn = epson.EpsonPrinter.new("epson", "tm-220-af", "COM1")
+    begin
+      config = YAML.load_file(Rails.root, 'config', 'printer.yml')
+      RubyPython.start
+      epson = RubyPython.import("pyfiscalprinter.controllador")
+      conn = epson.EpsonPrinter.new(config[:brand], config[:model], config[:port])
 
-    unless(conn.nil?)
-      conn.open.openBillTicket(params[:ticket_type],
-        params[:customer_name], params[:customer_address],
-        params[:customer_doc_nbr], params[:customer_doc_type], params[:iva_type])
+      unless(conn.nil?)
+        conn.openBillTicket(params[:ticket_type],
+          params[:customer_name], params[:customer_address],
+          params[:customer_doc_nbr], params[:customer_doc_type], params[:iva_type])
 
-      @ticket.item_tickets.each do |it|
-        item = it.item
-        conn.addItem(item.description, it.quantity, item.price, iva, discount, discount_desc)
+        @ticket.item_tickets.each do |it|
+          item = it.item
+          conn.addItem(item.description, it.quantity, item.price, iva, discount, discount_desc)
+        end
+
+        conn.addPayment(payment_desc, payment)
+
+        conn.closeDocument.rubify
+        render text: 'Enviado'
+      else
+        render :payment_form
       end
-
-      conn.addPayment(payment_desc, payment)
-
-      conn.closeDocument.rubify
-      render text: 'Enviado'
-    else
+      RubyPython.stop
+    rescue => ex
+      RubyPython.stop
       render :payment_form
     end
-
-    RubyPython.stop
   end
+
   # GET /tickets
   # GET /tickets.json
   def index
