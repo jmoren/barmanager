@@ -170,7 +170,8 @@ class EpsonPrinter(PrinterInterface):
             docType = self.docTypeNames[docType]
         self._type = type
         if self.model == "epsonlx300+":
-            parameters = [isCreditNote and "N" or "F", # Por ahora no soporto ND, que sería "D"
+            parameters = [
+                isCreditNote and "N" or "F", # Por ahora no soporto ND, que sería "D"
                 "C",
                 type, # Tipo de FC (A/B/C)
                 "1",   # Copias - Ignorado
@@ -193,7 +194,8 @@ class EpsonPrinter(PrinterInterface):
                 "C", # No somos una farmacia
                 ]
         else:
-            parameters = [isCreditNote and "M" or "T", # Ticket NC o Factura
+           parameters = [
+                isCreditNote and "M" or "T", # Ticket NC o Factura
                 "C",  # Tipo de Salida - Ignorado
                 type, # Tipo de FC (A/B/C)
                 "1",   # Copias - Ignorado

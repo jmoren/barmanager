@@ -5,27 +5,39 @@ class TicketsController < ApplicationController
 
   before_action :set_ticket, only: [:print, :show, :edit, :update, :destroy, :unlink_table, :close_ticket, :unlink_client, :payment_form]
 
+  def close_day_pritner
+    RubyPython.start
+    epson = RubyPython.import("pyfiscalprinter.controlador")
+    conn = epson.EpsonPrinter.new("COM2")
+    
+    unless conn.nil?
+      conn.dailyClose('Z')
+    end    
+  end
+
   def print
     params.require(:ticket_type)
     params.require(:id)
 
-    iva = params[:iva] || 21.00
-    discount = params[:discount] || 0
-    discount_desc = params[:discount_desc] || ""
-    payment_desc = params[:payment_desc] || "Cierre Ticket"
-    payment = params[:payment] || 0
+    iva           = (params[:iva] || 21.00).to_f
+    discount      = (params[:discount] || 0).to_f
+    discount_desc =  params[:discount_desc] || ""
+    payment_desc  =  params[:payment_desc] || "Cierre Ticket"
+    payment       = (params[:payment] || @ticket.get_total).to_f
 
     begin
-      config = YAML.load_file(Rails.root, 'config', 'printer.yml')
+      config = YAML.load_file("#{Rails.root}/config/printer.yml")
+      data = config["fiscal"].symbolize_keys!
+      
       RubyPython.start
-      epson = RubyPython.import("pyfiscalprinter.controllador")
-      conn = epson.EpsonPrinter.new(config[:brand], config[:model], config[:port])
-
-      unless(conn.nil?)
-        conn.openBillTicket(params[:ticket_type],
-          params[:customer_name], params[:customer_address],
-          params[:customer_doc_nbr], params[:customer_doc_type], params[:iva_type])
-
+      epson = RubyPython.import("pyfiscalprinter.controlador")
+      conn = epson.EpsonPrinter.new("COM2")
+      binding.pry
+      unless conn.nil?
+        res = conn.openBillTicket(params[:ticket_type],
+          params[:customer_name] || "***", params[:customer_address] || "***",
+          params[:customer_doc_nbr] || "***", params[:customer_doc_type] || "****", params[:iva_type])
+        
         @ticket.item_tickets.each do |it|
           item = it.item
           conn.addItem(item.description, it.quantity, item.price, iva, discount, discount_desc)
@@ -34,14 +46,21 @@ class TicketsController < ApplicationController
         conn.addPayment(payment_desc, payment)
 
         conn.closeDocument.rubify
-        render text: 'Enviado'
+        conn.close
+        RubyPython.stop
+
+        render :show, notice: "Se envio a la impresora"
       else
-        render :payment_form
+        RubyPython.stop
+        @ticket.errors.add(:impresora, "No se pudo conectar a la impresora")
+        render :show
       end
-      RubyPython.stop
+
     rescue => ex
+      conn.close unless conn.nil?
       RubyPython.stop
-      render :payment_form
+      @ticket.errors.add(:impresora, ex.message)
+      render :show
     end
   end
 

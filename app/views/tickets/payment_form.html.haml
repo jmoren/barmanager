@@ -24,19 +24,18 @@
         %label Tipo IVA
         .ui.search.selection.dropdown.combo
           %i.dropdown.icon
-          %input{ type: 'hidden', name: 'iva_type', value: '5' }
+          %input{ type: 'hidden', name: 'iva_type', value: 'F' }
           .default.text  
           .menu
-            .item{ data: { value: '1' } } Responsable inscripto
-            .item{ data: { value: '2' } } Responsable no inscripto
-            .item{ data: { value: '3' } } No responsableExento
-            .item{ data: { value: '4' } } Exento
-            .item{ data: { value: '5' } } Consumidor final
-            .item{ data: { value: '6' } } Responsable Monotributo
-            .item{ data: { value: '7' } } No categorizado
-            .item{ data: { value: '12' } } Pequeño contribuyente
-            .item{ data: { value: '13' } } Monotributista eventual
-            .item{ data: { value: '14' } } Pequeño contribuyente eventual
+            .item{ data: { value: 'I' } } Responsable inscripto
+            .item{ data: { value: 'N' } } Responsable no inscripto
+            .item{ data: { value: 'E' } } Exento
+            .item{ data: { value: 'A' } } No Responsable
+            .item{ data: { value: 'M' } } Responsable Monotributo
+            .item{ data: { value: 'T' } } No categorizado
+            .item{ data: { value: 'V' } } Pequeño contribuyente
+            .item{ data: { value: 'S' } } Monotributista social
+            .item{ data: { value: 'C' } } Consumidor final
       .field
         %label Iva
         .ui.search.selection.dropdown.combo

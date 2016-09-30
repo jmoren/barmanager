@@ -1,4 +1,6 @@
 fiscal:
-  brand: "epson"
-  model: "tm-220-af"
-  port: "COM1"
+  brand: 'epson'
+  model: 'tm-220-af'
+  port: 'COM1'
+python:
+  path: 'C:\Python27\python.exe'

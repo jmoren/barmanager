@@ -4,6 +4,13 @@
     - if !@ticket.fully_delivered?
       .ui.message.warning
         No se puede cerrar la mesa, hay items no entregados.
+
+    - if @ticket.errors.any?
+      .ui.message.negative
+        %ul.list
+          - @ticket.errors.full_messages.each do |msg|
+            %li= msg
+
     .ui.divider
 
     - if @ticket.open?
