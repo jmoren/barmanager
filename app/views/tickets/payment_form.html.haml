@@ -8,24 +8,25 @@
   .clearfix
 
 .content
-  = form_tag print_ticket_path(@ticket), { method: :post, id: "fiscal-printer", class: "ui form" } do |f|
+  = form_tag fiscal_print_path, { method: :post, id: "fiscal-printer", class: "ui form" } do |f|
+
+    %input{ type: 'hidden', name: 'ticket_id', value: @ticket.id }
     .three.fields
       .field
         %label Tipo de Factura
         .ui.search.selection.dropdown.combo
           %i.dropdown.icon
-          %input{ type: 'hidden', name: 'ticket_type', value: 'C' }
+          %input{ type: 'hidden', name: 'payment[ticket_type]', value: 'B' }
           .default.text Tipo de Factura
           .menu
             .item{ data: { value: 'A' } } Factura A
             .item{ data: { value: 'B' } } Factura B
-            .item{ data: { value: 'C' } } Factura C
       .field
         %label Tipo IVA
         .ui.search.selection.dropdown.combo
           %i.dropdown.icon
-          %input{ type: 'hidden', name: 'iva_type', value: 'F' }
-          .default.text  
+          %input{ type: 'hidden', name: 'payment[iva_type]', value: 'C' }
+          .default.text
           .menu
             .item{ data: { value: 'I' } } Responsable inscripto
             .item{ data: { value: 'N' } } Responsable no inscripto
@@ -40,25 +41,25 @@
         %label Iva
         .ui.search.selection.dropdown.combo
           %i.dropdown.icon
-          %input{ type: 'hidden', name: 'iva', value: '21.0' }
+          %input{ type: 'hidden', name: 'payment[iva]', value: '21.0' }
           .default.text IVA
           .menu
             .item{ data: { value: '10.5' } } 10.5 %
-            .item{ data: { value: '21.0' } } 21 % 
+            .item{ data: { value: '21.0' } } 21 %
     .ui.divider
     .two.fields
       .field
         %label Nombre y Apellido
-        %input{ type: 'text', name: 'customer_name', placeholder: 'Nombre completo'}
+        %input{ type: 'text', name: 'payment[customer_name]', placeholder: 'Nombre completo'}
       .field
         %label Direccion
-        %input{ type: 'text', name: 'customer_address', placeholder: 'Direccion'}
+        %input{ type: 'text', name: 'payment[customer_address]', placeholder: 'Direccion'}
     .two.fields
       .field
         %label Tipo de Documento
         .ui.search.selection.dropdown.combo
           %i.dropdown.icon
-          %input{ type: 'hidden', name: 'customer_doc_type' }
+          %input{ type: 'hidden', name: 'payment[customer_doc_type]' }
           .default.text Tipo Documento
           .menu
             .item{ data: { value: 'C' } } CUIT
@@ -70,8 +71,9 @@
             .item{ data: { value: '5' } } S/C
       .field
         %label Numero
-        %input{ type: 'text', name: 'customer_doc_nbr'}
+        %input{ type: 'text', name: 'payment[customer_doc_nbr]'}
     .field
       = submit_tag 'Enviar', class: 'ui button orange'
+
 :javascript
   $('.dropdown').dropdown();

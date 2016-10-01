@@ -5,65 +5,6 @@ class TicketsController < ApplicationController
 
   before_action :set_ticket, only: [:print, :show, :edit, :update, :destroy, :unlink_table, :close_ticket, :unlink_client, :payment_form]
 
-  def close_day_pritner
-    RubyPython.start
-    epson = RubyPython.import("pyfiscalprinter.controlador")
-    conn = epson.EpsonPrinter.new("COM2")
-    
-    unless conn.nil?
-      conn.dailyClose('Z')
-    end    
-  end
-
-  def print
-    params.require(:ticket_type)
-    params.require(:id)
-
-    iva           = (params[:iva] || 21.00).to_f
-    discount      = (params[:discount] || 0).to_f
-    discount_desc =  params[:discount_desc] || ""
-    payment_desc  =  params[:payment_desc] || "Cierre Ticket"
-    payment       = (params[:payment] || @ticket.get_total).to_f
-
-    begin
-      config = YAML.load_file("#{Rails.root}/config/printer.yml")
-      data = config["fiscal"].symbolize_keys!
-      
-      RubyPython.start
-      epson = RubyPython.import("pyfiscalprinter.controlador")
-      conn = epson.EpsonPrinter.new("COM2")
-      binding.pry
-      unless conn.nil?
-        res = conn.openBillTicket(params[:ticket_type],
-          params[:customer_name] || "***", params[:customer_address] || "***",
-          params[:customer_doc_nbr] || "***", params[:customer_doc_type] || "****", params[:iva_type])
-        
-        @ticket.item_tickets.each do |it|
-          item = it.item
-          conn.addItem(item.description, it.quantity, item.price, iva, discount, discount_desc)
-        end
-
-        conn.addPayment(payment_desc, payment)
-
-        conn.closeDocument.rubify
-        conn.close
-        RubyPython.stop
-
-        render :show, notice: "Se envio a la impresora"
-      else
-        RubyPython.stop
-        @ticket.errors.add(:impresora, "No se pudo conectar a la impresora")
-        render :show
-      end
-
-    rescue => ex
-      conn.close unless conn.nil?
-      RubyPython.stop
-      @ticket.errors.add(:impresora, ex.message)
-      render :show
-    end
-  end
-
   # GET /tickets
   # GET /tickets.json
   def index

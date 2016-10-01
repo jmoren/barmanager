@@ -5,12 +5,6 @@
       .ui.message.warning
         No se puede cerrar la mesa, hay items no entregados.
 
-    - if @ticket.errors.any?
-      .ui.message.negative
-        %ul.list
-          - @ticket.errors.full_messages.each do |msg|
-            %li= msg
-
     .ui.divider
 
     - if @ticket.open?
@@ -110,7 +104,7 @@
   = link_to tickets_path, class: "ui button basic green" do
     %i.icon.arrow.left
     Volver
-    
+
 #modal-expand_item.ui.modal
 #modal-ticket.ui.modal
 #modal-table.ui.modal.small

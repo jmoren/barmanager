@@ -53,7 +53,6 @@ BarManager::Application.routes.draw do
   end
 
   resources :tickets do
-    post :print, on: :member, as: :print
     get   :payment_form, on: :member
     patch :move_to, on: :member, as: :change
     patch :unlink_table, on: :member, as: :unlink_table
@@ -79,6 +78,10 @@ BarManager::Application.routes.draw do
       get :monthly_detail
     end
   end
+
+  get  '/fiscal_printer/print' => 'fiscal_printer#printer_form', as: 'fiscal_printer_form'
+  post '/fiscal_printer/print' => 'fiscal_printer#print', as: :fiscal_print
+  post '/fiscal_printer/close' => 'fiscal_printer#close_day', as: :fiscal_close_day
 
   get 'kitchen', to: 'kitchen#index'
   get 'kitchen/:ticket_id/show/:item_id/:type', to: 'kitchen#show'
