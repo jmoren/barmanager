@@ -27,3 +27,6 @@
             - if shift.is_open?
               = link_to close_shift_path(shift), method: :put, class: "tooltip ui button mini red icon", data: { content: "Cerrar", variation: "inverted"} do
                 %i.icon.lock
+            - if !shift.fiscal_printed?
+              = link_to fiscal_close_shift_path(shift_id: shift.id), method: :post, class: "tooltip ui button mini red icon", data: { content: "Cierre fiscal de turno", variation: "inverted", confirm: 'Estas seguro?'} do
+                %i.icon.lock

@@ -82,6 +82,7 @@ BarManager::Application.routes.draw do
   get  '/fiscal_printer/print' => 'fiscal_printer#printer_form', as: 'fiscal_printer_form'
   post '/fiscal_printer/print' => 'fiscal_printer#print', as: :fiscal_print
   post '/fiscal_printer/close' => 'fiscal_printer#close_day', as: :fiscal_close_day
+  post '/fiscal_printer/close_shift' => 'fiscal_printer#close_shift', as: :fiscal_close_shift
 
   get 'kitchen', to: 'kitchen#index'
   get 'kitchen/:ticket_id/show/:item_id/:type', to: 'kitchen#show'

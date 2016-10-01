@@ -18,6 +18,9 @@
     = link_to close_daily_cash_path(@daily_cash), method: :put, class: "ui button orange" do
       %i.icon.lock
       Cerrar
+  = link_to fiscal_close_day_path, method: 'post', class: 'ui button red', data: { confirm: 'Estas seguro de cerrar el dia fiscal?'} do
+    %i.icon.lock
+    Cierre fiscal
 
 .ui.divider.clearing
 - if current_user.admin?

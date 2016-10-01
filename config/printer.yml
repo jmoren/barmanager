@@ -1,4 +1,4 @@
 fiscal:
   brand: 'epson'
   model: 'tm-220-af'
-  port: 'COM2'
+  port: 'COM1'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150310153306) do
+ActiveRecord::Schema.define(version: 20161001175353) do
 
   create_table "additionals", force: true do |t|
     t.string   "description"
@@ -160,8 +160,9 @@ ActiveRecord::Schema.define(version: 20150310153306) do
     t.float    "closing_cash"
     t.float    "opening_cash"
     t.integer  "user_id"
-    t.float    "pending",      default: 0.0
-    t.float    "payments",     default: 0.0
+    t.float    "pending",        default: 0.0
+    t.float    "payments",       default: 0.0
+    t.boolean  "fiscal_printed", default: false
   end
 
   add_index "shifts", ["user_id"], name: "index_shifts_on_user_id"

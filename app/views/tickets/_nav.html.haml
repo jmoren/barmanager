@@ -36,6 +36,7 @@
         Imprimir
       = link_to "#", id: "payment-form", class: "ui button basic blue tooltip", data: { content: "Impresora Fiscal", id: ticket.id }  do
         %i.icon.print
+        Ticket Fiscal
   .three.wide.column
     .ui.button.status{class: ticket.status == 'open' ? 'red' : 'green', style: "float:right"}
       = ticket.status == 'open' ? 'Abierto' : 'Cerrado'

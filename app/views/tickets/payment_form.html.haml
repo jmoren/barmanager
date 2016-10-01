@@ -14,7 +14,7 @@
     .three.fields
       .field
         %label Tipo de Factura
-        .ui.search.selection.dropdown.combo
+        .ui.search.selection.combo.dropdown.select-dropdown#ticket-type
           %i.dropdown.icon
           %input{ type: 'hidden', name: 'payment[ticket_type]', value: 'B' }
           .default.text Tipo de Factura
@@ -23,7 +23,7 @@
             .item{ data: { value: 'B' } } Factura B
       .field
         %label Tipo IVA
-        .ui.search.selection.dropdown.combo
+        .ui.search.selection.dropdown.select-dropdown.combo#iva-type
           %i.dropdown.icon
           %input{ type: 'hidden', name: 'payment[iva_type]', value: 'C' }
           .default.text
@@ -36,10 +36,10 @@
             .item{ data: { value: 'T' } } No categorizado
             .item{ data: { value: 'V' } } Pequeño contribuyente
             .item{ data: { value: 'S' } } Monotributista social
-            .item{ data: { value: 'C' } } Consumidor final
+            .item{ data: { value: 'F' } } Consumidor final
       .field
         %label Iva
-        .ui.search.selection.dropdown.combo
+        .ui.search.selection.dropdown.select-dropdown.combo
           %i.dropdown.icon
           %input{ type: 'hidden', name: 'payment[iva]', value: '21.0' }
           .default.text IVA
@@ -57,7 +57,7 @@
     .two.fields
       .field
         %label Tipo de Documento
-        .ui.search.selection.dropdown.combo
+        .ui.search.selection.dropdown.select-dropdown.combo
           %i.dropdown.icon
           %input{ type: 'hidden', name: 'payment[customer_doc_type]' }
           .default.text Tipo Documento
@@ -77,3 +77,11 @@
 
 :javascript
   $('.dropdown').dropdown();
+
+  $('#ticket-type').dropdown('setting', 'onChange', function(text, value){
+    if(text === 'A'){
+      console.log(text);
+      $('#iva-type').dropdown('set selected', 'I').addClass('disabled')
+    }else
+      $('#iva-type').removeClass('disabled')
+  });

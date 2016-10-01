@@ -2,7 +2,7 @@ class FiscalPrinter
 
   attr_accessor :ticket_type, :errors, :iva, :iva_type, :discount, :total, :discount_desc, :payment_desc, :ticket, :config, :customer
 
-  def initalize
+  def initialize
     @config =  YAML.load_file("#{Rails.root}/config/printer.yml")["fiscal"].symbolize_keys!
   end
 
@@ -19,8 +19,28 @@ class FiscalPrinter
       unless conn.nil?
         conn.dailyClose('Z')
       end
+
+      conn.close
     rescue => e
-      puts e.message
+      conn.close if conn
+      self.errors = e.message
+    end
+    RubyPython.stop
+  end
+
+  def close_shift
+    RubyPython.start
+    begin
+      conn = create_connection
+
+      unless conn.nil?
+        conn.dailyClose('X')
+      end
+      
+      conn.close
+    rescue => e
+      conn.close if conn
+      self.errors = e.message
     end
     RubyPython.stop
   end
@@ -58,6 +78,7 @@ class FiscalPrinter
       conn.closeDocument.rubify
       conn.close
     rescue => ex
+      conn.close if conn
       self.errors = ex.message
     end
 

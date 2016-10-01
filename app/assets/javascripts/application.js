@@ -166,4 +166,8 @@ $(document).ready(function(){
       }
     });
   });
+
+  $("#ticket-type").on('change', function(){
+    console.log($(this).val());
+  });
 });

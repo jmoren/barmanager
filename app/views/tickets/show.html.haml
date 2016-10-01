@@ -83,16 +83,22 @@
       %h4.ui.header
         Adicionales
       .ui.three.cards
-        - @ticket.additionals.each do |entry|
-          - unless entry.new_record?
-            .card
-              .content
-                .header= entry.description
-                = number_to_currency entry.amount
-                - if @ticket.open?
-                  = link_to ticket_additional_path(@ticket, entry), method: :delete, style: "float: right;margin:0" do
-                    %i.icon.trash.red
+        - if @ticket.additionals.empty?
+          .card
+            .content
+              No hay adicionales
+        - else
+          - @ticket.additionals.each do |entry|
+            - unless entry.new_record?
+              .card
+                .content
+                  .header= entry.description
+                  = number_to_currency entry.amount
+                  - if @ticket.open?
+                    = link_to ticket_additional_path(@ticket, entry), method: :delete, style: "float: right;margin:0" do
+                      %i.icon.trash.red
 
+    .ui.divider
     #ticket-total.ui.button
       Total
       = number_to_currency @ticket.get_total
