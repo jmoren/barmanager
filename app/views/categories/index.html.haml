@@ -14,11 +14,11 @@
         .ui.content
           = link_to category, class: "header" do
             %i.icon.angle.right
-            = category.name
+            = category.try(:name)
         .extra.content
           .ui.label
             %i.icon.cube
-            = category.items.size
+            = category.items.count
             Items
           .right.floated{style: "margin-top: 5px"}
             = link_to category, method: :delete do

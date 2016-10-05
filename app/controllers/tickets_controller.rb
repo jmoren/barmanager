@@ -1,7 +1,9 @@
+require 'rubypython'
+
 class TicketsController < ApplicationController
   load_and_authorize_resource
 
-  before_action :set_ticket, only: [:show, :edit, :update, :destroy, :unlink_table, :close_ticket, :unlink_client]
+  before_action :set_ticket, only: [:print, :show, :edit, :update, :destroy, :unlink_table, :close_ticket, :unlink_client, :payment_form]
 
   # GET /tickets
   # GET /tickets.json
@@ -144,6 +146,10 @@ class TicketsController < ApplicationController
   def unlink_client
     @ticket.update(client_id: nil)
     redirect_to @ticket
+  end
+
+  def payment_form
+    render layout: false
   end
 
   private

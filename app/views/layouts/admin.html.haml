@@ -33,8 +33,8 @@
     .pusher
       = render partial: '/layouts/nav'
       .main.container
-        - if alert
-          .ui.message.error{:style => "margin: 10px;"}
-            = alert
+        - flash.each do |name, msg|
+          = content_tag :div, msg, class: "ui message #{name.to_s == 'alert' ? 'error' : 'green'}"
+        
         .segment.ui
           = yield

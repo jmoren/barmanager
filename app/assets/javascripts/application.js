@@ -153,4 +153,21 @@ $(document).ready(function(){
       }
     });
   });
+
+  $("#payment-form").on("click", function(e){
+    e.preventDefault();
+    id = $(this).data("id");
+    $.ajax({
+      url: "/tickets/"+ id+"/payment_form",
+      type: "GET",
+      dataType: "html",
+      success: function(data){
+        $("#modal-payment-form").html(data).modal().modal('show');
+      }
+    });
+  });
+
+  $("#ticket-type").on('change', function(){
+    console.log($(this).val());
+  });
 });

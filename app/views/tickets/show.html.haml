@@ -4,6 +4,7 @@
     - if !@ticket.fully_delivered?
       .ui.message.warning
         No se puede cerrar la mesa, hay items no entregados.
+
     .ui.divider
 
     - if @ticket.open?
@@ -82,16 +83,22 @@
       %h4.ui.header
         Adicionales
       .ui.three.cards
-        - @ticket.additionals.each do |entry|
-          - unless entry.new_record?
-            .card
-              .content
-                .header= entry.description
-                = number_to_currency entry.amount
-                - if @ticket.open?
-                  = link_to ticket_additional_path(@ticket, entry), method: :delete, style: "float: right;margin:0" do
-                    %i.icon.trash.red
+        - if @ticket.additionals.empty?
+          .card
+            .content
+              No hay adicionales
+        - else
+          - @ticket.additionals.each do |entry|
+            - unless entry.new_record?
+              .card
+                .content
+                  .header= entry.description
+                  = number_to_currency entry.amount
+                  - if @ticket.open?
+                    = link_to ticket_additional_path(@ticket, entry), method: :delete, style: "float: right;margin:0" do
+                      %i.icon.trash.red
 
+    .ui.divider
     #ticket-total.ui.button
       Total
       = number_to_currency @ticket.get_total
@@ -103,8 +110,10 @@
   = link_to tickets_path, class: "ui button basic green" do
     %i.icon.arrow.left
     Volver
+
 #modal-expand_item.ui.modal
 #modal-ticket.ui.modal
 #modal-table.ui.modal.small
 #modal-kitchen.ui.modal
 #modal-client.ui.modal.small
+#modal-payment-form.ui.modal

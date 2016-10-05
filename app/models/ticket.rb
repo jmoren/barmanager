@@ -53,7 +53,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def has_items?
-    items.size > 0 || promotions.size > 0 || additionals.size > 0
+    items.count > 0 || promotions.size > 0 || additionals.size > 0
   end
 
   def get_total
@@ -102,7 +102,7 @@ class Ticket < ActiveRecord::Base
   def fully_delivered?
     pending_promos = promotion_tickets.map(&:full_delivered?).include?(false)
     pending_kitchen_additionals = additionals.where(kitchen: true).map(&:full_delivered?).include?(false)
-    pending_kitchen_items = item_tickets.joins(item: :category).where("categories.kitchen = true").map(&:full_delivered?).include?(false)
+    pending_kitchen_items = item_tickets.joins(item: :category).where(categories: { kitchen: true }).map(&:full_delivered?).include?(false)
 
     !pending_promos && !pending_kitchen_additionals && !pending_kitchen_items
   end

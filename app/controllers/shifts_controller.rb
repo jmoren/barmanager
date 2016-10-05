@@ -59,9 +59,9 @@ class ShiftsController < ApplicationController
   # POST /shifts
   # POST /shifts.json
   def create
-    params.require(:shift).permit!
-    oc = params[:shift][:opening_cash] ? params[:shift][:opening_cash] : 0
-    @shift = Shift.new(opening_cash: oc, open: DateTime.now, user: current_user)
+     @shift = Shift.new(shift_params)
+    @shift.open = DateTime.now
+    @shift.user = current_user
     url = current_user.admin? ? @shift : home_index_path
     respond_to do |format|
       if @shift.save
@@ -85,6 +85,12 @@ class ShiftsController < ApplicationController
   end
 
   private
+    def shift_params
+      params.require(:shift).permit(:opening_cash).tap do |h|
+        h[:opening_cash] = h[:opening_cash] || 0
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_shift
       @shift = Shift.includes(:user).find(params[:id])

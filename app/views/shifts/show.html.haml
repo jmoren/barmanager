@@ -142,20 +142,20 @@
             .ui.button
               = number_to_currency @total_tickets
 
-- unless @by_items.empty?
-  .ui.grid.statistics
-    %h2 Ventas por Item
-    - @by_items.each do |key, value|
-      .eight.wide.column
-        .ui.segment
-          .statistic
-            .value
-              = value[:total]
-            .label.center
-              = "Total #{key} - #{number_to_currency value[:subtotal]}"
+  %h2 Ventas por Item
+  - unless @by_items.empty?
+    .ui.grid.statistics
+      - @by_items.each do |key, value|
+        .four.wide.column
+          .ui.segment
+            .statistic
+              .value
+                = value[:total]
+              .label.center
+                = "Total #{key} - #{number_to_currency value[:subtotal]}"
 
-.ui.divider
-
+  %br
+  .ui.divider
 .center
   = link_to current_user.admin? ? shifts_path : :back, class: "ui button" do
     %i.icon.arrow.left
