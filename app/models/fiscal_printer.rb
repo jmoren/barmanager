@@ -36,7 +36,7 @@ class FiscalPrinter
       unless conn.nil?
         conn.dailyClose('X')
       end
-      
+
       conn.close
     rescue => e
       conn.close if conn
@@ -71,6 +71,15 @@ class FiscalPrinter
       ticket.item_tickets.each do |it|
         item = it.item
         conn.addItem(item.description, it.quantity, item.price, iva, discount, discount_desc)
+      end
+
+      ticket.promotion_tickets.each do |pt|
+        promotion = pt.item
+        conn.addItem(promotion.description, pt.quantity, promotion.price, iva, discount, discount_desc)
+      end
+
+      ticket.additionals.each do |a|
+        conn.addItem(a.description, 1, a.amount, iva, discount, discount_desc)
       end
 
       conn.addPayment(payment_desc, total)
