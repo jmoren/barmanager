@@ -109,6 +109,18 @@ $(document).ready(function(){
     });
   });
 
+  $(document).on("keypress", function(e) {
+    var menu_items = $("#ticket-entry a");
+    if ( e.ctrlKey && ( e.which === 49 ) )
+      $(menu_items[0]).click();
+    else if ( e.ctrlKey && ( e.which === 50 ) )
+      $(menu_items[1]).click();
+    else if ( e.ctrlKey && ( e.which === 51 ) )
+      $(menu_items[2]).click();
+
+    $(".tab.active form").find("input[type=text]")[0].focus();
+  });
+
   $(".change-table").on("click", function(e){
     e.preventDefault();
     id = $(this).data("id");
