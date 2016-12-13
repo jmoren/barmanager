@@ -109,7 +109,7 @@ $(document).ready(function(){
     });
   });
 
-  $(document).on("keypress", function(e) {
+  $(document).on("keydown", function(e) {
     var menu_items = $("#ticket-entry a");
     if ( e.ctrlKey && ( e.which === 49 ) )
       $(menu_items[0]).click();

@@ -68,9 +68,7 @@
                   - @tables.each do |table|
                     - unless table.new_record?
                       .item.table-option{"data-code" => table.id, "data-value" => table.id}
-                        = table.name
-
-
+                        = table.name 
               %h4.ui.header Mesas abiertas
               .ui.stackable.one.column.grid
                 .column
