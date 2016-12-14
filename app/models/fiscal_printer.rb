@@ -74,8 +74,8 @@ class FiscalPrinter
       end
 
       ticket.promotion_tickets.each do |pt|
-        promotion = pt.item
-        conn.addItem(promotion.description, pt.quantity, promotion.price, iva, discount, discount_desc)
+        pr = pt.promotion
+        conn.addItem(pr.description, pt.quantity, pr.price, iva, discount, discount_desc)
       end
 
       ticket.additionals.each do |a|
