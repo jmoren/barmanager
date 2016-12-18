@@ -1,6 +1,11 @@
 %h2.ui.header
   Clientes
 .ui.header.right.floated
+  = form_tag clients_path, :method => :get do
+    .ui.left.input
+      = text_field_tag "name", "", placeholder: "Nombre del cliente"
+    = submit_tag "Buscar", class: "ui button blue"
+    = link_to 'Limpiar', clients_path, class: "ui button green"
   = paginate @clients
 
 %table.ui.table

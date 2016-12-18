@@ -4,7 +4,11 @@ class ClientsController < ApplicationController
   respond_to :html
 
   def index
-    @clients = Client.all.page params[:page]
+    if params[:name]
+      @clients = Client.where("LOWER(name) LIKE ?" , "%#{params[:name].downcase}%").page params[:page]
+    else
+      @clients = Client.all.page params[:page]
+    end
     render layout: request.xhr? ? false : 'admin'
   end
 
