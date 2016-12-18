@@ -9,7 +9,7 @@ class ItemsController < ApplicationController
       @item = Item.where("code = ?", params[:code]).first
       render json: { id: @item.try(:id) }
     else
-      @items = Item.all
+      @items = Item.all.page params[:page]
     end
   end
 

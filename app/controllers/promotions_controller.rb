@@ -9,7 +9,7 @@ class PromotionsController < ApplicationController
       @promotion = Promotion.where(code: params[:code]).first
       render json: { id: @promotion.try(:id) }
     else
-      @promotions = Promotion.all
+      @promotions = Promotion.all.page params[:page]
     end
   end
 

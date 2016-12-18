@@ -4,8 +4,10 @@
   = link_to new_item_path, class: "ui button teal" do
     %i.icon.plus
     Agregar Item
+  = paginate @items
 
 .ui.divider.clearing
+
 
 %table.ui.table
   %thead

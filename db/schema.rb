@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161001175353) do
+ActiveRecord::Schema.define(version: 20161218223258) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "additionals", force: true do |t|
     t.string   "description"
@@ -23,7 +26,7 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.datetime "updated_at"
   end
 
-  add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id"
+  add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id", using: :btree
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -59,8 +62,8 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.date     "date"
   end
 
-  add_index "expenses", ["shift_or_user_id"], name: "index_expenses_on_shift_or_user_id"
-  add_index "expenses", ["supplier_id"], name: "index_expenses_on_supplier_id"
+  add_index "expenses", ["shift_or_user_id"], name: "index_expenses_on_shift_or_user_id", using: :btree
+  add_index "expenses", ["supplier_id"], name: "index_expenses_on_supplier_id", using: :btree
 
   create_table "extractions", force: true do |t|
     t.integer  "amount"
@@ -72,8 +75,8 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.boolean  "personal",    default: false
   end
 
-  add_index "extractions", ["shift_id"], name: "index_extractions_on_shift_id"
-  add_index "extractions", ["user_id"], name: "index_extractions_on_user_id"
+  add_index "extractions", ["shift_id"], name: "index_extractions_on_shift_id", using: :btree
+  add_index "extractions", ["user_id"], name: "index_extractions_on_user_id", using: :btree
 
   create_table "item_tickets", force: true do |t|
     t.integer  "ticket_id"
@@ -84,6 +87,9 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.datetime "updated_at"
     t.boolean  "delivered",  default: false
   end
+
+  add_index "item_tickets", ["item_id"], name: "index_item_tickets_on_item_id", using: :btree
+  add_index "item_tickets", ["ticket_id"], name: "index_item_tickets_on_ticket_id", using: :btree
 
   create_table "items", force: true do |t|
     t.string   "description"
@@ -96,7 +102,7 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.boolean  "favourite",   default: false
   end
 
-  add_index "items", ["code"], name: "index_items_on_code", unique: true
+  add_index "items", ["code"], name: "index_items_on_code", unique: true, using: :btree
 
   create_table "monthly_cashes", force: true do |t|
     t.float    "total"
@@ -129,7 +135,7 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.integer "delivered",           default: 0
   end
 
-  add_index "promotion_ticket_items", ["promotion_item_id"], name: "index_promotion_ticket_items_on_promotion_item_id"
+  add_index "promotion_ticket_items", ["promotion_item_id"], name: "index_promotion_ticket_items_on_promotion_item_id", using: :btree
 
   create_table "promotion_tickets", force: true do |t|
     t.integer  "ticket_id"
@@ -150,7 +156,7 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.boolean  "favourite",   default: false
   end
 
-  add_index "promotions", ["code"], name: "index_promotions_on_code", unique: true
+  add_index "promotions", ["code"], name: "index_promotions_on_code", unique: true, using: :btree
 
   create_table "shifts", force: true do |t|
     t.datetime "open"
@@ -165,7 +171,7 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.boolean  "fiscal_printed", default: false
   end
 
-  add_index "shifts", ["user_id"], name: "index_shifts_on_user_id"
+  add_index "shifts", ["user_id"], name: "index_shifts_on_user_id", using: :btree
 
   create_table "supplier_tickets", force: true do |t|
     t.float    "amount"
@@ -177,8 +183,8 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.integer  "code_number"
   end
 
-  add_index "supplier_tickets", ["shift_id"], name: "index_supplier_tickets_on_shift_id"
-  add_index "supplier_tickets", ["supplier_id"], name: "index_supplier_tickets_on_supplier_id"
+  add_index "supplier_tickets", ["shift_id"], name: "index_supplier_tickets_on_shift_id", using: :btree
+  add_index "supplier_tickets", ["supplier_id"], name: "index_supplier_tickets_on_supplier_id", using: :btree
 
   create_table "suppliers", force: true do |t|
     t.string   "name"
@@ -204,8 +210,8 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.integer  "shift_id"
   end
 
-  add_index "ticket_payments", ["client_id"], name: "index_ticket_payments_on_client_id"
-  add_index "ticket_payments", ["shift_id"], name: "index_ticket_payments_on_shift_id"
+  add_index "ticket_payments", ["client_id"], name: "index_ticket_payments_on_client_id", using: :btree
+  add_index "ticket_payments", ["shift_id"], name: "index_ticket_payments_on_shift_id", using: :btree
 
   create_table "tickets", force: true do |t|
     t.integer  "table_id"
@@ -221,8 +227,8 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.boolean  "credit",     default: false
   end
 
-  add_index "tickets", ["client_id"], name: "index_tickets_on_client_id"
-  add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id"
+  add_index "tickets", ["client_id"], name: "index_tickets_on_client_id", using: :btree
+  add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false
@@ -241,8 +247,8 @@ ActiveRecord::Schema.define(version: 20161001175353) do
     t.string   "username"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  add_index "users", ["username"], name: "index_users_on_username", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
 end
