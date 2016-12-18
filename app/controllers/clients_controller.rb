@@ -4,7 +4,7 @@ class ClientsController < ApplicationController
   respond_to :html
 
   def index
-    @clients = Client.all
+    @clients = Client.all.page params[:page]
     render layout: request.xhr? ? false : 'admin'
   end
 
@@ -35,7 +35,7 @@ class ClientsController < ApplicationController
     @client.destroy
     respond_with(@client)
   end
-  
+
   private
     def set_client
       @client = Client.find(params[:id])
