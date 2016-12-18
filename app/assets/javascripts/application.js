@@ -123,6 +123,9 @@ $(document).ready(function(){
       $(menu_items[2]).click();
       $(".tab.active form").find("input[type=text]")[0].focus();
     }
+    else if ( e.ctrlKey && ( e.which === 66 ) ) {
+      $("div.combo.tables").find("input.search.table-search")[0].focus();
+    }
   });
 
   $(".change-table").on("click", function(e){
