@@ -22,5 +22,6 @@ module BarManager
       html_tag
     }
     config.time_zone = "America/Argentina/Buenos_Aires"
+    config.encoding = "utf-8"
   end
 end
