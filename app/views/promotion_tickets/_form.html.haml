@@ -1,38 +1,37 @@
 %h4.ui.header Agregar Promo
-= form_for [ticket, ticket.promotion_tickets.new], html: { class: "form ui promotion-form"} do |f|
-  .ui.grid
+= form_tag "/tickets/#{ticket.id}/promotion_tickets/bulk", method: :post, class: "form ui promotion-form" do
+  .ui.grid.form.promos
     .four.wide.column.field
       .ui.left.icon.input
         %i.icon.search
-        %input{type: "text", name: "code_number", placeholder: "Cod", focus: true, autocomplete: "off"}
+        %input{type: "text", class: "code_number", placeholder: "Cod", focus: true, autocomplete: "off", value: nil}
     .four.wide.column.field
-      = f.number_field :quantity, placeholder: "Cant", min: "1"
+      = number_field_tag "promo_ticket[][quantity]", nil, placeholder: "Cant", min: "1"
     .eight.wide.column.field
       .ui.fluid.search.selection.dropdown.combo
-        = f.hidden_field :promotion_id
+        = hidden_field_tag "promo_ticket[][promo_id]", nil, class: "hidden_id"
         %i.dropdown.icon
-        .default.text Seleccione Item
+        .default.text Seleccione Promo
         .menu
           - Promotion.all.each do |promo|
             .item{ data: { value: promo.id, code: promo.code } }
               = promo.description
-
+      %input{type: "submit", style: "display: none"}
   .ui.red.message.promo-code{style: "display:none"}
     No se encontro ninguna promocion
 
-
 :javascript
-  $(document).ready(function(){
-
+  function initPromoTicketForm(){
     $('.promotion-form .dropdown').dropdown({
       onChange: function (val,text,elm) {
-        $('.promotion-form input[name=code_number]').val(elm.attr('data-code'));
-        $("#promotion_ticket_promotion_id").val(val);
+        var row = $(elm).parent().parent().parent().parent();
+        row.find('input.code_number').val(elm.attr('data-code'));
       }
     });
 
-    $(".promotion-form input[name=code_number]").on("keyup", function(){
-      val = $(this).val();
+    $(".promotion-form input.code_number").on("blur", function(){
+      var val = $(this).val(),
+        row = $(this).parent().parent().parent();
       if(val.length >= 1){
         $.ajax({
           url: "/promotions?code=" + val,
@@ -40,25 +39,18 @@
           method: "GET",
           success: function(res){
             if(res.id !== null){
-              $(".promotion-form .dropdown").dropdown("set selected", res.id);
-              $("#promotion_ticket_promotion_id").val(res.id);
-              $(".promo-code").hide();
+              row.find("input.hidden_id").val(res.id);
+              row.find(".dropdown.combo").dropdown("set selected", res.id);
+              row.find(".promo-code").hide();
             }else{
-              $(".promo-code").show();
+              row.find(".promo-code").show();
             }
           }
         })
       }
     });
+  }
 
-    $('.promotion-form').form({
-      item_id: {
-        identifier: 'promotion_ticket_promotion_id',
-        rules: [{ type   : 'empty' }]
-      },
-      quantity: {
-        identifier: 'promotion_ticket_quantity',
-        rules: [{ type   : 'empty' }, { type: 'not[0]' }]
-      }
-    });
-  })
+  $(document).ready(function(){
+    initPromoTicketForm();
+  });

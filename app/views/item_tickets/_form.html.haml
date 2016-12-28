@@ -1,38 +1,37 @@
 %h4.ui.header Agregar Items
-= form_for [ticket, ticket.item_tickets.new], html: { class: "form ui item-form"} do |f|
-  .ui.grid
+= form_tag "/tickets/#{ticket.id}/item_tickets/bulk", method: :post, class: "form ui item-form" do
+  .ui.grid.form.items
     .four.wide.column.field
       .ui.left.icon.input
         %i.icon.search
-        %input{type: "text", name: "code_number", placeholder: "Cod", focus: true, autocomplete: "off"}
+        %input{type: "text", class: "code_number", placeholder: "Cod", focus: true, autocomplete: "off", value: nil }
     .four.wide.column.field
-      = f.number_field :quantity, placeholder: "Cant", min: "1"
+      = number_field_tag "item_ticket[][quantity]", nil, placeholder: "Cant", min: "1"
     .eight.wide.column.field
       .ui.fluid.search.selection.dropdown.combo
-        = f.hidden_field :item_id
+        = hidden_field_tag "item_ticket[][item_id]", nil, class: "hidden_id"
         %i.dropdown.icon
         .default.text Seleccione Item
         .menu
           - Item.all.each do |item|
             .item{ data: { value: item.id, code: item.code } }
               = item.description
-
+      %input{type: "submit", style: "display: none"}
   .ui.red.message.item-code{style: "display:none"}
     No se encontro ningun item
 
 :javascript
-  $(document).ready(function(){
-
+  function initItemTicketForm(){
     $('.item-form .dropdown').dropdown({
       onChange: function (val,text,elm) {
-        $('.item-form input[name=code_number]').val(elm.attr('data-code'));
-        $("#item_ticket_item_id").val(val);
+        var row = $(elm).parent().parent().parent().parent();
+        row.find('input.code_number').val(elm.attr('data-code'));
       }
     });
 
-    $(".item-form input[name=code_number]").on("keyup", function(){
-      var val = $(this).val();
-      console.log(val.length);
+    $(".item-form input.code_number").on("blur", function(){
+      var val = $(this).val(),
+        row = $(this).parent().parent().parent();
       if(val.length >= 1){
         $.ajax({
           url: "/items?code=" + val,
@@ -40,29 +39,18 @@
           method: "GET",
           success: function(res){
             if(res.id !== null){
-              $(".item-form .dropdown").dropdown("set selected", res.id);
-              $("#item_ticket_item_id").val(res.id);
-              $(".item-code").hide();
+              row.find("input.hidden_id").val(res.id);
+              row.find(".dropdown.combo").dropdown("set selected", res.id);
+              row.find(".item-code").hide();
             }else{
-              $(".item-code").show();
+              row.find(".item-code").show();
             }
           }
         })
       }
     });
+  }
 
-    $('.item-form').form({
-      item_id: {
-        identifier: 'item_ticket_item_id',
-        rules: [{ type   : 'empty' }]
-      },
-      quantity: {
-        identifier: 'item_ticket_quantity',
-        rules: [{ type   : 'empty' }, { type: 'not[0]' }]
-      }
-    },{
-      onError: function() {
-        $('#item_ticket_quantity').focus();
-      }
-    })
-  })
+  $(document).ready(function(){
+    initItemTicketForm();
+  });

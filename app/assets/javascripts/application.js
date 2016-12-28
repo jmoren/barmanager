@@ -114,6 +114,18 @@ $(document).ready(function(){
     else if ( e.ctrlKey && ( e.which === 66 ) ) {
       $("div.combo.tables").find("input.search.table-search")[0].focus();
     }
+    else if ( e.which === 43) {
+      var key = $("a.item.active").text().trim().toLowerCase(),
+        clone = $($("div.ui.grid.form." + key)[0]).clone();
+      clone.find("input").val("");
+
+      $("div.tab.active form").append(clone);
+
+      if (key === "items")
+        initItemTicketForm();
+      else if (key === "promos")
+        initPromoTicketForm();
+    }
   });
 
   $(".change-table").on("click", function(e){

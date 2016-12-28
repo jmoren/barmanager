@@ -65,11 +65,13 @@ BarManager::Application.routes.draw do
       put :increase, on: :member
       put :deliver, on: :member
       delete :destroy_all, on: :collection
+      post :bulk, on: :collection
     end
     resources :promotion_tickets do
       put :increase_delivered, on: :member
       put :increase, on: :member
       delete :destroy_all, on: :collection
+      post :bulk, on: :collection
     end
   end
 

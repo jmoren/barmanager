@@ -8,6 +8,14 @@ class ItemTicketsController < ApplicationController
     redirect_to @ticket
   end
 
+  def bulk
+    params[:item_ticket].each do |it|
+      @ticket.item_tickets.new(item_id: it["item_id"], quantity: it["quantity"])
+    end
+    @ticket.save
+    redirect_to @ticket
+  end
+
   def destroy
     @item_ticket.destroy
     redirect_to @ticket

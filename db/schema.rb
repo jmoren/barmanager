@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161218223258) do
+ActiveRecord::Schema.define(version: 20161219000158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -201,6 +201,10 @@ ActiveRecord::Schema.define(version: 20161218223258) do
     t.string   "description"
     t.string   "color",       default: ""
   end
+
+  add_index "tables", ["description"], name: "index_tables_on_description", using: :btree
+  add_index "tables", ["id"], name: "index_tables_on_id", using: :btree
+  add_index "tables", ["status"], name: "index_tables_on_status", using: :btree
 
   create_table "ticket_payments", force: true do |t|
     t.integer  "client_id"

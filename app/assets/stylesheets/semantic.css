@@ -26777,10 +26777,6 @@ a.ui.card:hover,
       Items
 ---------------*/
 
-.ui.items {
-  margin: 1.5em 0em;
-}
-
 .ui.items:first-child {
   margin-top: 0em !important;
 }
