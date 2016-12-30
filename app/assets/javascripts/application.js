@@ -114,17 +114,22 @@ $(document).ready(function(){
     else if ( e.ctrlKey && ( e.which === 66 ) ) {
       $("div.combo.tables").find("input.search.table-search")[0].focus();
     }
-    else if ( e.which === 43) {
+    else if ( e.which === 107) {
       var key = $("a.item.active").text().trim().toLowerCase(),
         clone = $($("div.ui.grid.form." + key)[0]).clone();
       clone.find("input").val("");
 
       $("div.tab.active form").append(clone);
+      var rows = $("div.ui.grid.form." + key);
+      $(rows[rows.length-1]).find("input.code_number").val("");
+      $(rows[rows.length-1]).find("input.code_number").focus();	
 
       if (key === "items")
         initItemTicketForm();
       else if (key === "promos")
         initPromoTicketForm();
+
+      return false;
     }
   });
 

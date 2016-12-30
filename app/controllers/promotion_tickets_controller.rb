@@ -10,7 +10,7 @@ class PromotionTicketsController < ApplicationController
 
     def bulk
     params[:promo_ticket].each do |it|
-      @ticket.promotion_tickets.new(promotion_id: it["promo_id"], quantity: it["quantity"])
+      @ticket.promotion_tickets.new(promotion_id: it["promo_id"], quantity: it["quantity"]) unless it["promo_id"].empty? || it["quantity"].empty?
     end
     @ticket.save
     redirect_to @ticket

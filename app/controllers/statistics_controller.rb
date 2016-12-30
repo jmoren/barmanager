@@ -5,7 +5,7 @@ class StatisticsController < ApplicationController
     if params[:dateFrom] && params[:dateTo]
       from_date = Date.parse(params[:dateFrom]).beginning_of_day
       to_date = Date.parse(params[:dateTo]).end_of_day
-      @tickets  = Ticket.where(created_at: from_date..to_date).includes(item_tickets: :item).references(item_tickets: :item)
+      @tickets  = Ticket.where(created_at: from_date..to_date)
       @total    = @tickets.sum(:total)
       item_tickets = ItemTicket.includes(:item).where(ticket_id: @tickets.map(&:id))
       @by_items = {}
