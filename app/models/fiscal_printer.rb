@@ -88,7 +88,17 @@ class FiscalPrinter
       conn.close
     rescue => ex
       conn.close if conn
-      self.errors = ex.message
+      puts "******************************************"
+      puts "******* ERROR IMP FISCAL *****************"
+      puts "******************************************"
+      puts "******************************************"
+      puts "************#{ex.message}*****************"
+      puts "******************************************"
+      begin
+        self.errors = ex.message.encode!('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '')
+      rescue Encoding::UndefinedConversionError
+        self.errors = "Error con la impresora fiscal. Mensaje no reconocido. Revisar Logs"
+      end
     end
 
     RubyPython.stop
