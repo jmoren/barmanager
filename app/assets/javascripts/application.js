@@ -114,6 +114,9 @@ $(document).ready(function(){
     else if ( e.ctrlKey && ( e.which === 66 ) ) {
       $("div.combo.tables").find("input.search.table-search")[0].focus();
     }
+    else if ( e.ctrlKey && ( e.which === 48 ) ) {
+      $("div.controls").find("a#show-kitchen")[0].click();
+    }
     else if ( e.which === 107) {
       var key = $("a.item.active").text().trim().toLowerCase(),
         clone = $($("div.ui.grid.form." + key)[0]).clone();
