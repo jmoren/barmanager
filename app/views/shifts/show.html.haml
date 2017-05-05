@@ -1,6 +1,10 @@
 %h2.ui.header.left.floated
   %i.icon.remove.bookmark{style: "font-size:25px"}
   = @shift.open.strftime('%d/%m/%Y - %H:%M %p')
+%h2.ui.header.right.floated
+  = link_to current_user.admin? ? shifts_path : :back, class: "ui button right" do
+    %i.icon.arrow.left
+    Volver
 .ui.header.right.floated
   - if @current_shift && @current_shift.id == @shift.id
     .ui.button.green
@@ -11,14 +15,25 @@
 
 .ui.divider.clearing
 - if current_user.admin? || !@shift.is_open?
-  .ui.message.center{class: @shift.is_open? ? 'negative' : 'positive'}
-    %div
-      %b= number_to_currency @total_tickets
-    %small
-      - if @shift.is_open?
-        PARCIAL VENTAS
-      - else
-        TOTAL VENDIDO
+  - if @shift.is_open?
+    .ui.segment.red
+      .ui.statistic.green.large
+        .value= number_to_currency @total_tickets
+        .label TOTAL VENDIDO
+  - else
+    .ui.left.floated.segment
+      .ui.statistic.green.large
+        .value= number_to_currency @total_tickets
+        .label PARCIAL VENTAS
+
+    .ui.right.floated.segment{ style: "margin-right: 0em;"}
+      .ui.statistic.red
+        .value= number_to_currency @total_cash
+        .label VENTA EFECTIVO
+      .ui.statistic.teal
+        .value= number_to_currency @total_ccard
+        .label VENTA TARJETA
+
 
   %table.ui.table
     %tbody
@@ -39,7 +54,13 @@
         %td= number_to_currency @total_extractions
       %tr
         %td Tickets sin pagar
-        %td= number_to_currency -@total_pending
+        %td= number_to_currency @total_pending
+      %tr
+        %td Tickets Efectivo
+        %td= number_to_currency @total_cash
+      %tr
+        %td Tickets Tarjeta (credito/debito)
+        %td= number_to_currency @total_ccard
       %tr
         %td Deudas de clientes (pagos)
         %td= number_to_currency @total_payments
@@ -125,20 +146,22 @@
   - else
     %table.ui.table
       %thead
-        %th{style: "width:15%"} Num
-        %th{style: "width:30%"} Mesa
+        %th{style: "width:20%"} Num
+        %th{style: "width:20%"} Mesa
         %th{style: "width:20%"} Estado
-        %th.center.aligned Total
+        %th{style: "width:20%"} Pago
+        %th.left.aligned{style: "width:20%"} Total
       %tbody
         - @shift.tickets.each do |ticket|
           %tr
             %td= ticket.formatted_number
             %td= ticket.table.try(:name) || 'Para llevar'
             %td= ticket.status == 'closed' ? '<i class="icon lock"></i> Cerrado'.html_safe : '<i class="icon unlock"></i> Abierto'.html_safe
-            %td.center.aligned= number_to_currency ticket.total
+            %td= ticket.payment == 1 ? 'Tarjeta' : 'Efectivo'
+            %td.left.aligned= number_to_currency ticket.total
         %tr
-          %td{colspan: 3}
-          %td.center.aligned
+          %td{colspan: 4}
+          %td.left.aligned
             .ui.button
               = number_to_currency @total_tickets
 

@@ -128,7 +128,7 @@ class TicketsController < ApplicationController
 
   def close
     if @ticket.has_items?
-      @ticket.close!(params[:ticket][:credit])
+      @ticket.close!(params[:ticket][:credit], params[:ticket][:payment])
       redirect_to @ticket
     else
       @ticket.destroy

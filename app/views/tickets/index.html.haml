@@ -23,6 +23,7 @@
       %th Fecha
       %th Total
       %th Estado
+      %th Pago
       %th
 
     %tbody
@@ -41,6 +42,13 @@
           %td= number_to_currency ticket.total
           %td= ticket.status == 'closed' ? "Cerrado" : "Abierto"
           %td
+            - if ticket.payment == 1
+              %i.credit.card.alternative.icon
+              Tarjeta
+            - else
+              %i.money.icon
+              Efectivo
+          %td
             - if ticket.open?
               = link_to ticket, class: "ui button icon mini circular basic orange" do
                 %i.icon.external.arrow.right
@@ -53,4 +61,5 @@
             - else
               = link_to ticket, class: "ui button icon mini circular basic orange" do
                 %i.icon.external.arrow.right
+
   = paginate @tickets

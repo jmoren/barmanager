@@ -5,7 +5,7 @@ class Shift < ActiveRecord::Base
   has_many :extractions
   has_many :ticket_payments
   has_many :supplier_payments
-  
+
   validates :opening_cash, presence: true
   validates :opening_cash, numericality: true, on: :create
   validates :closing_cash, numericality: true, on: :update
@@ -35,8 +35,18 @@ class Shift < ActiveRecord::Base
     tickets.sum(:total).to_f
   end
 
+  def total_cash
+    tickets.cash.sum(:total).to_f
+  end
+
+  def total_ccard
+    tickets.ccard.sum(:total).to_f
+  end
+
   def total_pending
-    tickets.where(credit: true).sum(:total).to_f
+    val = tickets.where(credit: true).sum(:total).to_f
+    sign = val > 0 ? -1 : 1
+    val * sign
   end
 
   def total_payments

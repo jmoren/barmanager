@@ -1,10 +1,10 @@
 class Ticket < ActiveRecord::Base
   paginates_per 5
 
-  PAYMENT_TYPE= [
-    [1, "Tarjeta de credito"],
-    [2, "Efectivo"]
-  ].freeze
+  PAYMENT_TYPE= {
+    ccard: { value: 1, title: "Tarjeta de credito" },
+    cash:  { value: 2, title: "Efectivo" }
+  }.freeze
 
   belongs_to :table
   belongs_to :shift
@@ -28,6 +28,8 @@ class Ticket < ActiveRecord::Base
 
   scope :closed, -> { where(status: 'closed') }
   scope :opened, -> { where(status: 'open') }
+  scope :cash,   -> { where("payment = ? AND credit = ?", PAYMENT_TYPE[:cash][:value], false)}
+  scope :ccard,  -> { where("payment = ? AND credit = ?", PAYMENT_TYPE[:ccard][:value], false)}
 
   def formatted_number
     "%0.6d" % self.number
@@ -35,6 +37,7 @@ class Ticket < ActiveRecord::Base
 
   def set_serial_number
     next_number = Ticket.last.nil? ? '1' : Ticket.last.number + 1
+    self.credit = false
     self.number = next_number
   end
 
@@ -42,8 +45,8 @@ class Ticket < ActiveRecord::Base
     self.status == "open"
   end
 
-  def close!(credit_param)
-    self.update(status: "closed", total: self.get_total, shift_id: Shift.last_open.id, credit: credit_param)
+  def close!(credit_param, payment_param = 2)
+    self.update(status: "closed", total: self.get_total, shift_id: Shift.last_open.id, credit: credit_param, payment: payment_param)
     self.table.close! if self.table
 
     if self.credit && self.client

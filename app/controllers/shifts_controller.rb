@@ -13,6 +13,8 @@ class ShiftsController < ApplicationController
   # GET /shifts/1.json
   def show
     @total_tickets     = @shift.total_tickets
+    @total_cash        = @shift.total_cash
+    @total_ccard       = @shift.total_ccard
     @total_expenses    = @shift.total_expenses
     @total_extractions = @shift.total_extractions
     @total_pending     = @shift.total_pending

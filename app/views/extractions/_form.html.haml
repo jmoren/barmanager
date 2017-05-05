@@ -13,9 +13,9 @@
               .item{ data: { value: user.id} }
                 = user.username
     .two.wide.column.field
-      = f.label :personal, "Vale"
-      .ui.toggle.checkbox
+      .ui.toggle.checkbox{ style: "margin: 10px;"}
         = f.check_box :personal
+        = f.label :personal, "Vale"
     .three.wide.column.field
       = f.text_field :amount, placeholder: "Valor $"
     .two.wide.column.field
