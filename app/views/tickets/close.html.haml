@@ -61,13 +61,13 @@
           = f.label :credit, "Fiado"
       - else
         .field
-          .ui.toggle.checkbox
+          .ui.radio.checkbox
             = f.radio_button :payment, 1
             %label
               Tarjeta (debito/credito)
         .field
-          .ui.toggle.checkbox
-            = f.radio_button :payment, 2
+          .ui.radio.checkbox
+            = f.radio_button :payment, 2, checked: true
             %label
               Efectivo
 
@@ -91,3 +91,4 @@
 
 :javascript
   $('.checkbox').checkbox();
+  $('.ui.radio.checkbox').checkbox();
