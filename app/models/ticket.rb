@@ -28,8 +28,8 @@ class Ticket < ActiveRecord::Base
 
   scope :closed, -> { where(status: 'closed') }
   scope :opened, -> { where(status: 'open') }
-  scope :cash,   -> { where("payment = ? AND credit = ?", PAYMENT_TYPE[:cash][:value], false)}
-  scope :ccard,  -> { where("payment = ? AND credit = ?", PAYMENT_TYPE[:ccard][:value], false)}
+  scope :cash,   -> { where("payment = ? AND (credit = ? OR credit IS NULL)", PAYMENT_TYPE[:cash][:value], false)}
+  scope :ccard,  -> { where("payment = ? AND (credit = ? OR credit IS NULL)", PAYMENT_TYPE[:ccard][:value], false)}
 
   def formatted_number
     "%0.6d" % self.number
