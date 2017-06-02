@@ -41,32 +41,38 @@
         %td Cierre:
         %td= @shift.close.nil? ? "No dispobible" : "#{l @shift.close, format: '%d/%m/%Y - %H:%M %p'}"
       %tr
+        %td Total de retiros
+        %td= number_to_currency @total_extractions.to_f
+      %tr
+        %td Total de gastos diarios 
+        %td= number_to_currency @total_expenses.to_f
+      %tr
+        %td Total de Tarjetas (credito/debito)
+        %td= number_to_currency @total_ccard.to_f
+      %tr
+        %td Tickets sin pagar
+        %td= number_to_currency @total_pending.to_f
+      %tr
+        %td Suma de Gastos
+        %td= number_to_currency (@total_extractions.to_f + @total_expenses.to_f + @total_ccard.to_f - @total_pending.to_f)
+      %tr
+        %td Total de ventas
+        %td= number_to_currency @total_tickets.to_f
+      %tr
         %td Caja inicial:
         %td= number_to_currency @shift.opening_cash.to_f
       %tr
-        %td Gastos
-        %td= number_to_currency @total_expenses
+        %td Pagos Cuenta Corriente
+        %td= number_to_currency @total_payments.to_f
       %tr
-        %td Caja final:
-        %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses - @total_pending + @total_payments)
+        %td Subtotal de efectivo:
+        %td= number_to_currency @shift.opening_cash.to_f + @total_tickets.to_f + @total_payments.to_f
       %tr
-        %td Extracciones
-        %td= number_to_currency @total_extractions
+        %td Suma de Gastos
+        %td= number_to_currency (@total_extractions.to_f + @total_expenses.to_f + @total_ccard.to_f - @total_pending.to_f)
       %tr
-        %td Tickets sin pagar
-        %td= number_to_currency @total_pending
-      %tr
-        %td Tickets Efectivo
-        %td= number_to_currency @total_cash
-      %tr
-        %td Tickets Tarjeta (credito/debito)
-        %td= number_to_currency @total_ccard
-      %tr
-        %td Deudas de clientes (pagos)
-        %td= number_to_currency @total_payments
-      %tr
-        %td Caja inicial proximo turno:
-        %td= number_to_currency (@shift.opening_cash.to_f + @total_tickets - @total_expenses - @total_extractions - @total_pending + @total_payments)
+        %td Total Real (Caja inicial proximo turno)
+        %td= number_to_currency ((@shift.opening_cash.to_f + @total_tickets.to_f + @total_payments.to_f) - (@total_extractions.to_f + @total_expenses.to_f + @total_ccard.to_f - @total_pending.to_f)) 
 
 %h2.ui.header
   Gastos
