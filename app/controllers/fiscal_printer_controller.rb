@@ -35,7 +35,7 @@ class FiscalPrinterController < ApplicationController
     shift = Shift.find(params[:shift_id])
     resp  = ""
     printer = FiscalPrinter.new
-    printer.close_shift
+    #printer.close_shift
 
     if printer.errors
       resp = { alert: "Error con la impresora: #{printer.errors}" }

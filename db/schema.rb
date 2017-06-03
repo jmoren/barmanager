@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161219000158) do
+ActiveRecord::Schema.define(version: 20170603154638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "additionals", force: true do |t|
+  create_table "additionals", force: :cascade do |t|
     t.string   "description"
     t.float    "amount"
     t.integer  "ticket_id"
@@ -28,21 +28,23 @@ ActiveRecord::Schema.define(version: 20161219000158) do
 
   add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id", using: :btree
 
-  create_table "categories", force: true do |t|
+  create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "kitchen",    default: false
   end
 
-  create_table "clients", force: true do |t|
+  create_table "clients", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "doubt",      default: 0.0
   end
 
-  create_table "daily_cashes", force: true do |t|
+  add_index "clients", ["name"], name: "index_clients_on_name", using: :btree
+
+  create_table "daily_cashes", force: :cascade do |t|
     t.integer  "total"
     t.boolean  "close",          default: false
     t.datetime "created_at"
@@ -51,7 +53,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
     t.float    "total_expenses"
   end
 
-  create_table "expenses", force: true do |t|
+  create_table "expenses", force: :cascade do |t|
     t.string   "description"
     t.float    "amount"
     t.integer  "shift_or_user_id"
@@ -65,7 +67,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
   add_index "expenses", ["shift_or_user_id"], name: "index_expenses_on_shift_or_user_id", using: :btree
   add_index "expenses", ["supplier_id"], name: "index_expenses_on_supplier_id", using: :btree
 
-  create_table "extractions", force: true do |t|
+  create_table "extractions", force: :cascade do |t|
     t.integer  "amount"
     t.string   "description"
     t.integer  "shift_id"
@@ -78,7 +80,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
   add_index "extractions", ["shift_id"], name: "index_extractions_on_shift_id", using: :btree
   add_index "extractions", ["user_id"], name: "index_extractions_on_user_id", using: :btree
 
-  create_table "item_tickets", force: true do |t|
+  create_table "item_tickets", force: :cascade do |t|
     t.integer  "ticket_id"
     t.integer  "item_id"
     t.integer  "quantity"
@@ -91,7 +93,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
   add_index "item_tickets", ["item_id"], name: "index_item_tickets_on_item_id", using: :btree
   add_index "item_tickets", ["ticket_id"], name: "index_item_tickets_on_ticket_id", using: :btree
 
-  create_table "items", force: true do |t|
+  create_table "items", force: :cascade do |t|
     t.string   "description"
     t.float    "day_price"
     t.integer  "category_id"
@@ -104,7 +106,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
 
   add_index "items", ["code"], name: "index_items_on_code", unique: true, using: :btree
 
-  create_table "monthly_cashes", force: true do |t|
+  create_table "monthly_cashes", force: :cascade do |t|
     t.float    "total"
     t.boolean  "close"
     t.date     "date"
@@ -113,7 +115,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
     t.float    "total_expenses"
   end
 
-  create_table "organizations", force: true do |t|
+  create_table "organizations", force: :cascade do |t|
     t.string   "name"
     t.string   "address"
     t.string   "phone"
@@ -121,7 +123,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
     t.datetime "updated_at"
   end
 
-  create_table "promotion_items", force: true do |t|
+  create_table "promotion_items", force: :cascade do |t|
     t.integer  "item_id"
     t.integer  "promotion_id"
     t.integer  "quantity"
@@ -129,7 +131,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
     t.datetime "updated_at"
   end
 
-  create_table "promotion_ticket_items", force: true do |t|
+  create_table "promotion_ticket_items", force: :cascade do |t|
     t.integer "promotion_ticket_id"
     t.integer "promotion_item_id"
     t.integer "delivered",           default: 0
@@ -137,7 +139,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
 
   add_index "promotion_ticket_items", ["promotion_item_id"], name: "index_promotion_ticket_items_on_promotion_item_id", using: :btree
 
-  create_table "promotion_tickets", force: true do |t|
+  create_table "promotion_tickets", force: :cascade do |t|
     t.integer  "ticket_id"
     t.integer  "promotion_id"
     t.integer  "quantity"
@@ -146,7 +148,10 @@ ActiveRecord::Schema.define(version: 20161219000158) do
     t.datetime "updated_at"
   end
 
-  create_table "promotions", force: true do |t|
+  add_index "promotion_tickets", ["promotion_id"], name: "index_promotion_tickets_on_promotion_id", using: :btree
+  add_index "promotion_tickets", ["ticket_id"], name: "index_promotion_tickets_on_ticket_id", using: :btree
+
+  create_table "promotions", force: :cascade do |t|
     t.string   "description"
     t.float    "day_price"
     t.datetime "created_at"
@@ -158,7 +163,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
 
   add_index "promotions", ["code"], name: "index_promotions_on_code", unique: true, using: :btree
 
-  create_table "shifts", force: true do |t|
+  create_table "shifts", force: :cascade do |t|
     t.datetime "open"
     t.datetime "close"
     t.datetime "created_at"
@@ -173,7 +178,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
 
   add_index "shifts", ["user_id"], name: "index_shifts_on_user_id", using: :btree
 
-  create_table "supplier_tickets", force: true do |t|
+  create_table "supplier_tickets", force: :cascade do |t|
     t.float    "amount"
     t.integer  "supplier_id"
     t.integer  "shift_id"
@@ -186,7 +191,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
   add_index "supplier_tickets", ["shift_id"], name: "index_supplier_tickets_on_shift_id", using: :btree
   add_index "supplier_tickets", ["supplier_id"], name: "index_supplier_tickets_on_supplier_id", using: :btree
 
-  create_table "suppliers", force: true do |t|
+  create_table "suppliers", force: :cascade do |t|
     t.string   "name"
     t.string   "address"
     t.string   "phone"
@@ -194,7 +199,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
     t.datetime "updated_at"
   end
 
-  create_table "tables", force: true do |t|
+  create_table "tables", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "status"
@@ -206,7 +211,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
   add_index "tables", ["id"], name: "index_tables_on_id", using: :btree
   add_index "tables", ["status"], name: "index_tables_on_status", using: :btree
 
-  create_table "ticket_payments", force: true do |t|
+  create_table "ticket_payments", force: :cascade do |t|
     t.integer  "client_id"
     t.float    "amount"
     t.datetime "created_at"
@@ -217,7 +222,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
   add_index "ticket_payments", ["client_id"], name: "index_ticket_payments_on_client_id", using: :btree
   add_index "ticket_payments", ["shift_id"], name: "index_ticket_payments_on_shift_id", using: :btree
 
-  create_table "tickets", force: true do |t|
+  create_table "tickets", force: :cascade do |t|
     t.integer  "table_id"
     t.datetime "date"
     t.float    "total"
@@ -234,7 +239,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
   add_index "tickets", ["client_id"], name: "index_tickets_on_client_id", using: :btree
   add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
@@ -249,6 +254,7 @@ ActiveRecord::Schema.define(version: 20161219000158) do
     t.datetime "updated_at"
     t.boolean  "admin",                  default: false
     t.string   "username"
+    t.string   "role"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

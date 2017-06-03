@@ -23,7 +23,7 @@
     Cierre fiscal
 
 .ui.divider.clearing
-- if current_user.admin?
+- if current_user.is_admin?
   .ui.message.center{class: 'negative'}
     %div
       %b= number_to_currency @total_shifts
@@ -87,7 +87,7 @@
         .ui.button
           = "-#{number_to_currency @total_expenses}"
 
-- if current_user.admin?
+- if current_user.is_admin?
   %h2.ui.header
     Turnos
   - if @shifts.empty?

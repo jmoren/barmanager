@@ -24,7 +24,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    puts "Params: #{params}"
     @user = User.find(params[:id])
     if @user.update(user_params)
       redirect_to users_path
@@ -52,6 +51,6 @@ class UsersController < ApplicationController
 
 private
   def user_params
-    params.require(:user).permit(:email, :admin, :username, :password, :password_confirmation)
+    params.require(:user).permit(:email, :role, :username, :password, :password_confirmation)
   end
 end

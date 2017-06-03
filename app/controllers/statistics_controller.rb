@@ -24,6 +24,6 @@ class StatisticsController < ApplicationController
 
   private
   def authorize_admin
-    redirect_to home_index_path, alert: "No tenes permisos" unless current_user.admin?
+    redirect_to home_index_path, alert: "No tenes permisos" unless current_user.is_admin?
   end
 end

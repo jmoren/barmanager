@@ -1,7 +1,7 @@
 class ExtractionsController < ApplicationController
   def create
     @extraction = Extraction.new(extractions_params)
-    if !current_user.admin?
+    if !current_user.is_admin?
       @extraction.user_id = current_user.id
     end
     @extraction.shift_id = current_shift.id
@@ -10,7 +10,7 @@ class ExtractionsController < ApplicationController
   end
 
   def destroy3
-    if current_user.admin?
+    if current_user.is_admin?
       @user = User.find(params[:user_id])
     else
       @user = current_user

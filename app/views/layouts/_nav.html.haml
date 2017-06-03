@@ -14,12 +14,14 @@
             Mesas
           = link_to categories_path, class: "item" do
             Categorias
-          = link_to users_path, class: "item" do
-            Usuarios
+          - if current_user.is_admin?
+            = link_to users_path, class: "item" do
+              Usuarios
           = link_to suppliers_path, class: "item" do
             Proveedores
-          = link_to statistics_path, class: "item" do
-            Estadisticas
+          - if current_user.is_admin?
+            = link_to statistics_path, class: "item" do
+              Estadisticas
 
       = link_to clients_path, class: "item" do
         %i.icon.users
@@ -30,7 +32,7 @@
       = link_to shifts_path, class: "item" do
         %i.icon.time
         Turnos
-      - if current_user.admin?
+      - if current_user.is_admin?
         = link_to daily_cashes_path, class: "item" do
           %i.icon.lock
           Cierres Diario
@@ -45,7 +47,8 @@
             .menu
               = link_to close_day_path, class: "item" do
                 Cerrar dia
-              = link_to close_month_monthly_cashes_path, class: "item" do
-                Cerrar mes
+              - if current_user.is_admin?
+                = link_to close_month_monthly_cashes_path, class: "item" do
+                  Cerrar mes
               = link_to destroy_user_session_path, method: :delete, class: "item" do
                 Salir

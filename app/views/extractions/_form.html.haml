@@ -2,7 +2,7 @@
   .ui.grid
     .six.wide.column.field
       = f.text_field :description, placeholder: "Agregar un Extraccion"
-    - if current_user.admin?
+    - if current_user.is_admin?
       .three.wide.column.field
         .ui.fluid.search.selection.dropdown.combo
           = f.hidden_field :user_id

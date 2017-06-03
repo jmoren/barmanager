@@ -2,7 +2,7 @@
   %i.icon.remove.bookmark{style: "font-size:25px"}
   = @shift.open.strftime('%d/%m/%Y - %H:%M %p')
 %h2.ui.header.right.floated
-  = link_to current_user.admin? ? shifts_path : :back, class: "ui button right" do
+  = link_to current_user.is_admin? ? shifts_path : :back, class: "ui button right" do
     %i.icon.arrow.left
     Volver
 .ui.header.right.floated
@@ -14,7 +14,7 @@
       Cerrar
 
 .ui.divider.clearing
-- if current_user.admin? || !@shift.is_open?
+- if current_user.is_admin? || !@shift.is_open?
   - if @shift.is_open?
     .ui.segment.red
       .ui.statistic.green.large
@@ -44,7 +44,7 @@
         %td Total de retiros
         %td= number_to_currency @total_extractions.to_f
       %tr
-        %td Total de gastos diarios 
+        %td Total de gastos diarios
         %td= number_to_currency @total_expenses.to_f
       %tr
         %td Total de Tarjetas (credito/debito)
@@ -72,7 +72,7 @@
         %td= number_to_currency (@total_extractions.to_f + @total_expenses.to_f + @total_ccard.to_f - @total_pending.to_f)
       %tr
         %td Total Real (Caja inicial proximo turno)
-        %td= number_to_currency ((@shift.opening_cash.to_f + @total_tickets.to_f + @total_payments.to_f) - (@total_extractions.to_f + @total_expenses.to_f + @total_ccard.to_f - @total_pending.to_f)) 
+        %td= number_to_currency ((@shift.opening_cash.to_f + @total_tickets.to_f + @total_payments.to_f) - (@total_extractions.to_f + @total_expenses.to_f + @total_ccard.to_f - @total_pending.to_f))
 
 %h2.ui.header
   Gastos
@@ -143,7 +143,7 @@
         .ui.button
           = "-#{number_to_currency @total_extractions}"
 
-- if current_user.admin? || !@shift.is_open?
+- if current_user.is_admin? || !@shift.is_open?
   %h2.ui.header
     Tickets
   - if @shift.tickets.empty?
@@ -186,7 +186,7 @@
   %br
   .ui.divider
 .center
-  = link_to current_user.admin? ? shifts_path : :back, class: "ui button" do
+  = link_to current_user.is_admin? ? shifts_path : :back, class: "ui button" do
     %i.icon.arrow.left
     Volver
 

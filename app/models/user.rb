@@ -41,4 +41,12 @@ class User < ActiveRecord::Base
   def monthly_expenses(date)
     expenses.where("date between ? and ?", date.beginning_of_month, date.end_of_month)
   end
+
+  def is_admin?
+    role.downcase == "admin"
+  end
+
+  def is_manager?
+    role.downcase == "manager"
+  end
 end

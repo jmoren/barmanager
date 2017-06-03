@@ -1,5 +1,5 @@
 .ui.header
-  = @table.nil? ? "Para llevar" : "Mesa #{@table.name}"
+  ="Pendientes de Cocina"
 
   - if @current_ticket
     .ui.header.right.floated
@@ -12,20 +12,22 @@
     %thead
       %tr
         %th.center.aligned Mesa
-        %th.center.aligned Hora
+        %th.center.aligned Pendiente hace
         %th Pedido
         %th En cocina
+        %th Retirar
     %tbody
       - @kitchen_items.each do |ki|
         - unless ki.nil? || ki.full_delivered?
           %tr
             %td.center.aligned= ki.ticket.table.try(:name) || "Para llevar"
-            %td.center.aligned= ki.created_at.strftime('%H:%M %p')
+            %td.center.aligned
+              %span{ class: (Time.at((Time.now - ki.created_at).to_i.abs).utc.strftime "%M").to_i > 10 ? "ui button red" : "ui button green"}= Time.at((Time.now - ki.created_at).to_i.abs).utc.strftime "%H:%M:%S"
             %td
               .ui.divided.selection.list
                 - if ki.class.name == "ItemTicket"
                   %p
-                    .ui.horizontal.label
+                    .ui.horizontal.label.blue.big
                       = ki.quantity
                     = ki.item.description
                 - else
@@ -40,6 +42,9 @@
                 %i.icon.checkmark.box.big-icon
               - else
                 %i.icon.wait.orange.big-icon
+            %td
+              = link_to "#", class: "ui button icon tooltip deliver-kitchen", data: { content: "Retirar pedido", id: ki.ticket.id }  do
+                %i.icon.food
 
       - @additionals.each do |ad|
         %tr
@@ -64,3 +69,35 @@
     = link_to "#", class: "ui button labeled icon close" do
       %i.icon.cancel
       Cancelar
+
+:javascript
+  setInterval(function(){ location.reload(); }, 10000);
+
+  $(".deliver-kitchen").on("click", function(el){
+    var ticketId = $(el.target).attr("data-id");
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    console.log(ticketId);
+    $.ajax({
+      url: "/tickets/"+ticketId+"/deliver_all_kitchen",
+      type: "patch",
+      dataType: "json",
+      success: function(data) {
+        location.reload();
+        return true;
+      },
+      error: function(a,b,c){
+        alert("Hubo un error enviando el ticket a imprimir.");
+        return false;
+      }
+    });
+  });

@@ -2,6 +2,12 @@
   = "#{@user.new_record? ? 'Crear' : 'Editar' }"
   usuario
 
+- if @user.errors.any?
+  .ui.message.negative
+    %ul.list
+      - @user.errors.full_messages.each do |msg|
+        %li= msg
+
 .ui.divider
 = form_for @user, html: { class: "ui form" } do |f|
   .field
@@ -10,7 +16,7 @@
   .field
     = f.label "Email"
     = f.text_field :email, placeholder: "Ingresar el email"
-  - if current_user.admin? || @user.new_record?
+  - if current_user.is_admin? || @user.new_record?
     .field
       = f.label "Password"
       = f.password_field :password, placeholder: "Ingresar el password"
@@ -19,9 +25,22 @@
       = f.password_field :password_confirmation, placeholder: "Reingresar el password"
 
   .field
-    .ui.toggle.checkbox
-      = f.check_box :admin
-      = f.label "El usuario es Admin?"
+    = f.label "Role"
+    .ui.fluid.search.selection.dropdown.combo
+      = f.hidden_field :role
+      %i.dropdown.icon
+      .default.text Role
+      .menu
+        .item{ data: { value: 'admin'} }
+          = "Admin"
+        .item{ data: { value: 'manager'} }
+          = "Encargad@"
+        .item{ data: { value: 'user'} }
+          = "Usuari@"
   .field
     %button.ui.button.blue{type: "submit"}
       Guardar
+
+
+:javascript
+  $('.dropdown').dropdown();

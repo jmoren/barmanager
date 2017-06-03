@@ -21,7 +21,7 @@
         %td= shift.close.nil? ? '-----' : shift.close.strftime('%d/%m/%Y - %H:%M %p')
         %td= shift.user.try(:username)
         %td
-          - if current_user.admin? || shift.user.username == current_user.username
+          - if current_user.is_admin? || shift.user.username == current_user.username
             = link_to shift, class: "ui button mini icon tooltip", data: { content: "Ver detalles", variation: "inverted"} do
               %i.icon.search
             - if shift.is_open?
