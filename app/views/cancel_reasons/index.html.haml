@@ -1,0 +1,22 @@
+%h2.ui.header
+  Razones
+
+%table.ui.table
+  %thead
+    %tr
+      %th Razon
+      %th
+      %th
+      %th
+
+  %tbody
+    - @cancel_reasons.each do |cancel_reason|
+      %tr
+        %td= cancel_reason.text
+        %td= link_to 'Ver', cancel_reason
+        %td= link_to 'Editar', edit_cancel_reason_path(cancel_reason)
+        %td= link_to 'Eliminar', cancel_reason, :method => :delete, :data => { :confirm => 'Estas seguro de eliminar esta razon?' }
+
+%br
+
+= link_to 'Agregar', new_cancel_reason_path

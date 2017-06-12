@@ -1,0 +1,2 @@
+module CancelReasonsHelper
+end

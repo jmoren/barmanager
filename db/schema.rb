@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170603154638) do
+ActiveRecord::Schema.define(version: 20170610064414) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,12 @@ ActiveRecord::Schema.define(version: 20170603154638) do
   end
 
   add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id", using: :btree
+
+  create_table "cancel_reasons", force: :cascade do |t|
+    t.string   "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -87,9 +93,13 @@ ActiveRecord::Schema.define(version: 20170603154638) do
     t.float    "sub_total"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "delivered",  default: false
+    t.boolean  "delivered",        default: false
+    t.datetime "deleted_at"
+    t.integer  "cancel_reason_id"
   end
 
+  add_index "item_tickets", ["cancel_reason_id"], name: "index_item_tickets_on_cancel_reason_id", using: :btree
+  add_index "item_tickets", ["deleted_at"], name: "index_item_tickets_on_deleted_at", using: :btree
   add_index "item_tickets", ["item_id"], name: "index_item_tickets_on_item_id", using: :btree
   add_index "item_tickets", ["ticket_id"], name: "index_item_tickets_on_ticket_id", using: :btree
 
@@ -261,4 +271,5 @@ ActiveRecord::Schema.define(version: 20170603154638) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "item_tickets", "cancel_reasons"
 end

@@ -28,6 +28,31 @@
             - else
               %i.icon.wait.orange.big-icon
           %td.center.aligned
+            = it.id
             -unless it.delivered
-              = link_to ticket_item_ticket_path(@current_ticket, it), method: :delete, class: "ui button red icon" do
+              = link_to "#", data: {ticket_id: @current_ticket.id, item_ticket_id: it.id, type: 'item_tickets'}, class: "ui button red icon delete-item" do
                 %i.trash.icon
+
+:javascript
+  $(document).ready(function(){
+    $(".delete-item").on("click", function(e){
+      e.preventDefault();
+      var ticket_id = $(this).data("ticket-id");
+      var type = $(this).data("type");
+      var item_id = type === "promotion" ? $(this).data("promo-id") : $(this).data("item-ticket-id");
+
+      $.ajax({
+        url: "/tickets/"+ticket_id+"/"+type+"/" + item_id + "/delete",
+        type: "GET",
+        dataType: "html",
+        success: function(data){
+          $("#modal-delete-item").html(data).modal('setting', {
+            onApprove: function() {
+              location.reload();
+              return true;
+            }
+          }).modal('show');
+        }
+      });
+    });
+  });

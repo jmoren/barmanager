@@ -125,7 +125,7 @@ $(document).ready(function(){
       $("div.tab.active form").append(clone);
       var rows = $("div.ui.grid.form." + key);
       $(rows[rows.length-1]).find("input.code_number").val("");
-      $(rows[rows.length-1]).find("input.code_number").focus();	
+      $(rows[rows.length-1]).find("input.code_number").focus();
 
       if (key === "items")
         initItemTicketForm();
@@ -160,7 +160,6 @@ $(document).ready(function(){
     $menu.sidebar('toggle');
     event.preventDefault();
   });
-
 
   $(".expand-item-row").on("click", function(e){
     e.preventDefault();

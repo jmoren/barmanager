@@ -36,6 +36,9 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    acts_as_paranoid (0.5.0)
+      activerecord (>= 4.0, < 5.1)
+      activesupport (>= 4.0, < 5.1)
     arel (6.0.3)
     bcrypt (3.1.11)
     bcrypt (3.1.11-x86-mingw32)
@@ -195,6 +198,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  acts_as_paranoid (~> 0.5.0)
   cancancan (~> 1.10)
   coffee-rails (~> 4.0.0)
   devise
@@ -221,4 +225,4 @@ RUBY VERSION
    ruby 2.3.3p222
 
 BUNDLED WITH
-   1.13.7
+   1.15.1

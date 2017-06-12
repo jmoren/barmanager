@@ -31,6 +31,7 @@ gem 'rubypython'
 gem 'ffi'
 gem 'kaminari'
 gem 'puma'
+gem 'acts_as_paranoid', '~> 0.5.0'
 
 group :production do
   gem 'mysql2'

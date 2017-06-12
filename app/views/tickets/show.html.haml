@@ -44,8 +44,8 @@
           - unless entry.new_record?
             %tr
               %td.hiddable.left.aligned{style: "vertical-align: top"}
-                - if @ticket.open?
-                  = link_to destroy_all_ticket_item_tickets_path(@ticket, item_id: entry.item_id), method: :delete do
+                - if @ticket.open? && current_user.is_admin?
+                  = link_to "#", data: {ticket_id: @ticket.id, item_id: entry.item_id, type: 'item_tickets'}, class: "delete-item-row" do
                     %i.icon.remove.circle.outline.red
               %td.hiddable{style: "vertical-align: top"}= entry.item.code
               %td= entry.item.description
@@ -63,7 +63,7 @@
           - unless entry.new_record?
             %tr
               %td.left.aligned{style: "vertical-align: top"}
-                - if @ticket.open?
+                - if @ticket.open? && current_user.is_admin?
                   = link_to destroy_all_ticket_promotion_tickets_path(@ticket, promotion_id: entry.promotion_id), method: :delete do
                     %i.icon.remove.circle.outline.red
               %td{style: "vertical-align: top"}= entry.promotion.code
@@ -117,3 +117,28 @@
 #modal-kitchen.ui.modal
 #modal-client.ui.modal.small
 #modal-payment-form.ui.modal
+#modal-delete-item.ui.modal
+
+:javascript
+  $(document).ready(function(){
+    $(".delete-item-row").on("click", function(e){
+      e.preventDefault();
+      var ticket_id = $(this).data("ticket-id");
+      var type = $(this).data("type");
+      var item_id = type === "promotion" ? $(this).data("promo-id") : $(this).data("item-id");
+
+      $.ajax({
+        url: "/tickets/"+ticket_id+"/"+type+"/" + item_id + "/delete?quantity=all",
+        type: "GET",
+        dataType: "html",
+        success: function(data){
+          $("#modal-delete-item").html(data).modal('setting', {
+            onApprove: function() {
+              location.reload();
+              return true;
+            }
+          }).modal('show');
+        }
+      });
+    });
+  });

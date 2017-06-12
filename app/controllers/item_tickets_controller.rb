@@ -16,8 +16,19 @@ class ItemTicketsController < ApplicationController
     redirect_to @ticket
   end
 
+  def delete
+    @url = params[:quantity] == "all" ? ticket_destroy_all_ticket_item_tickets_path : ticket_item_ticket_path
+    render :delete, layout: false
+  end
+
   def destroy
-    @item_ticket.destroy
+    reason_id = params.require(:cancel_reason_id)
+
+    ActiveRecord::Base.transaction do
+      @item_ticket.update(cancel_reason_id: reason_id)
+      @item_ticket.destroy
+    end
+
     redirect_to @ticket
   end
 
@@ -27,7 +38,12 @@ class ItemTicketsController < ApplicationController
   end
 
   def destroy_all
-    @ticket.item_tickets.where(item_id: params[:item_id]).destroy_all
+    reason_id = params.require(:cancel_reason_id)
+    items = @ticket.item_tickets.where(item_id: params[:id])
+    ActiveRecord::Base.transaction do
+      items.update_all(cancel_reason_id: reason_id)
+      items.destroy_all
+    end
     redirect_to @ticket
   end
 

@@ -1,5 +1,6 @@
 BarManager::Application.routes.draw do
 
+  resources :cancel_reasons
   devise_for :users
 
   resources :clients do
@@ -61,13 +62,15 @@ BarManager::Application.routes.draw do
     get   :close_ticket, on: :member
     patch :deliver_all_kitchen, on: :member, as: :deliver_all_kitchen
     resources :additionals
+    delete '/items/:id' => 'item_tickets#destroy_all', as: :destroy_all_ticket_item_tickets
     resources :item_tickets do
       put :increase, on: :member
       put :deliver, on: :member
-      delete :destroy_all, on: :collection
+      get :delete, on: :member
       post :bulk, on: :collection
     end
     resources :promotion_tickets do
+      get :delete, on: :member
       put :increase_delivered, on: :member
       put :increase, on: :member
       delete :destroy_all, on: :collection

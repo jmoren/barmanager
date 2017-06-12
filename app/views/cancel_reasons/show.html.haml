@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Texto:
+  = @cancel_reason.text
+
+= link_to 'Editar', edit_cancel_reason_path(@cancel_reason)
+\|
+= link_to 'Volver', cancel_reasons_path

@@ -20,6 +20,9 @@
           = link_to suppliers_path, class: "item" do
             Proveedores
           - if current_user.is_admin?
+            = link_to cancel_reasons_path, class: "item" do
+              Razones para cancelar
+          - if current_user.is_admin?
             = link_to statistics_path, class: "item" do
               Estadisticas
 
