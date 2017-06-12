@@ -91,7 +91,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def promotion_tickets_to_kitchen
-    self.promotion_tickets
+    self.promotion_tickets.with_deleted
         .joins([{promotion: {items: :category}}, :promotion_ticket_items])
         .where("categories.kitchen = ?", true)
         .order("promotion_tickets.created_at desc")

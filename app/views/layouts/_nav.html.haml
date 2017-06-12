@@ -25,13 +25,15 @@
           - if current_user.is_admin?
             = link_to statistics_path, class: "item" do
               Estadisticas
-
       = link_to clients_path, class: "item" do
         %i.icon.users
         Clientes
       = link_to tickets_path, class: "item" do
         %i.icon.file
         Tickets
+      = link_to kitchen_path, class: "item" do
+        %i.icon.food
+        Cocina
       = link_to shifts_path, class: "item" do
         %i.icon.time
         Turnos

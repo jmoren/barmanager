@@ -1,6 +1,6 @@
 class PromotionTicketsController < ApplicationController
   before_action :set_ticket
-  before_action :set_promotion_ticket, only: [:destroy, :increase_delivered, :decrease]
+  before_action :set_promotion_ticket, only: [:destroy, :increase_delivered, :decrease, :deliver]
 
   def create
     @promotion_ticket = @ticket.promotion_tickets.new(promotion_ticket_params)
@@ -38,6 +38,12 @@ class PromotionTicketsController < ApplicationController
       prom_tick_item.delivered += params[:quantity].to_i
       prom_tick_item.save
     end
+    redirect_to :back
+  end
+
+  def deliver
+    @promotion_ticket.deliver_all_kitchen
+
     redirect_to :back
   end
 

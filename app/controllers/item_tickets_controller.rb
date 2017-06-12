@@ -63,7 +63,7 @@ class ItemTicketsController < ApplicationController
     end
 
     def set_item_ticket
-      @item_ticket = ItemTicket.find(params[:id])
+      @item_ticket = ItemTicket.with_deleted.find(params[:id])
     end
 
     def item_ticket_params

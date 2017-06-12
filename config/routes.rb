@@ -66,16 +66,17 @@ BarManager::Application.routes.draw do
     delete '/items/:id' => 'item_tickets#destroy_all', as: :destroy_all_ticket_item_tickets
     delete '/promos/:id' => 'promotion_tickets#destroy_all', as: :destroy_all_ticket_promotion_tickets
     resources :item_tickets do
-      put :increase, on: :member
-      put :deliver, on: :member
-      get :delete, on: :member
-      post :bulk, on: :collection
+      put   :increase, on: :member
+      put   :deliver, on: :member
+      get   :delete, on: :member
+      post  :bulk, on: :collection
     end
     resources :promotion_tickets do
-      get :delete, on: :member
-      put :increase_delivered, on: :member
-      put :increase, on: :member
-      get :delete, on: :member
+      get  :delete, on: :member
+      put  :increase_delivered, on: :member
+      put  :increase, on: :member
+      put  :deliver, on: :member
+      get  :delete, on: :member
       post :bulk, on: :collection
     end
   end
