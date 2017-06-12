@@ -44,7 +44,7 @@ $(document).ready(function(){
 
   $("#show-kitchen").on("click", function(e){
     e.preventDefault();
-    id = $(this).data("id");
+    var id = $(this).data("id");
     $.ajax({
       url: "/kitchen/"+id+"/print_table",
       type: "GET",
@@ -57,6 +57,22 @@ $(document).ready(function(){
             return deliverAll(id);
           }
         }).modal('show');
+      }
+    });
+  });
+
+
+  $(".print-ticket").on("click", function(e){
+    e.preventDefault();
+    var ticket_id = $(this).data("id");
+
+    $.ajax({
+      url: "/tickets/"+ticket_id+"/print",
+      type: "PATCH",
+      dataType: "html",
+      success: function(data){
+        window.print();
+        setTimeout(function () { window.close(); location.reload(); }, 100);
       }
     });
   });

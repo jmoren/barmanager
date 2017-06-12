@@ -28,8 +28,7 @@
             - else
               %i.icon.wait.orange.big-icon
           %td.center.aligned
-            = it.id
-            -unless it.delivered
+            -unless it.delivered || @current_ticket.get_printed_at > it.updated_at
               = link_to "#", data: {ticket_id: @current_ticket.id, item_ticket_id: it.id, type: 'item_tickets'}, class: "ui button red icon delete-item" do
                 %i.trash.icon
 

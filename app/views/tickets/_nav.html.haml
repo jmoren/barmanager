@@ -28,7 +28,7 @@
           %i.icon.user
         = link_to "#", id: "show-kitchen", class: "ui button icon tooltip", data: { content: "Envia a la cocina", id: ticket.id }  do
           %i.icon.food
-        = link_to "#", class: "ui button icon", onclick: "window.print();" do
+        = link_to "#", class: "ui button icon print-ticket", data: { id: ticket.id } do
           %i.icon.print
     - else
       = link_to "#", class: "ui button basic blue", onclick: "window.print();", style: "float:left" do

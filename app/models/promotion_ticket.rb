@@ -10,6 +10,8 @@ class PromotionTicket < ActiveRecord::Base
   after_create :update_ticket_after_create, :add_promotion_ticket_item
   before_destroy :update_ticket_before_delete
 
+  acts_as_paranoid
+
   def set_sub_total
     price = self.promotion.price
     self.subtotal = price * self.quantity

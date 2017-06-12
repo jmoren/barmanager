@@ -44,7 +44,7 @@
           - unless entry.new_record?
             %tr
               %td.hiddable.left.aligned{style: "vertical-align: top"}
-                - if @ticket.open? && current_user.is_admin?
+                - if @ticket.open? && current_user.is_admin? && entry.last_updated > @ticket.get_printed_at
                   = link_to "#", data: {ticket_id: @ticket.id, item_id: entry.item_id, type: 'item_tickets'}, class: "delete-item-row" do
                     %i.icon.remove.circle.outline.red
               %td.hiddable{style: "vertical-align: top"}= entry.item.code
@@ -63,8 +63,8 @@
           - unless entry.new_record?
             %tr
               %td.left.aligned{style: "vertical-align: top"}
-                - if @ticket.open? && current_user.is_admin?
-                  = link_to destroy_all_ticket_promotion_tickets_path(@ticket, promotion_id: entry.promotion_id), method: :delete do
+                - if @ticket.open? && current_user.is_admin? && entry.last_updated > @ticket.get_printed_at
+                  = link_to "#", data: {ticket_id: @ticket.id, promo_id: entry.promotion_id, type: 'promotion_tickets'}, class: "delete-item-row" do
                     %i.icon.remove.circle.outline.red
               %td{style: "vertical-align: top"}= entry.promotion.code
               %td{style: "vertical-align: top"}= "Promo #{entry.promotion.description}"
@@ -125,7 +125,7 @@
       e.preventDefault();
       var ticket_id = $(this).data("ticket-id");
       var type = $(this).data("type");
-      var item_id = type === "promotion" ? $(this).data("promo-id") : $(this).data("item-id");
+      var item_id = type === "promotion_tickets" ? $(this).data("promo-id") : $(this).data("item-id");
 
       $.ajax({
         url: "/tickets/"+ticket_id+"/"+type+"/" + item_id + "/delete?quantity=all",

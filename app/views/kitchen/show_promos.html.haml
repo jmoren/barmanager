@@ -46,6 +46,31 @@
             - else
               %i.icon.wait.orange.big-icon
           %td.center.aligned
-            - unless pt.full_delivered?
-              = link_to ticket_promotion_ticket_path(@current_ticket, pt), method: :delete, class: "ui button red icon" do
+            - unless pt.full_delivered? || @current_ticket.get_printed_at > pt.updated_at
+              = link_to "#", data: {ticket_id: @current_ticket.id, promotion_ticket_id: pt.id, type: 'promotion_tickets'}, class: "ui button red icon delete-promo" do
                 %i.trash.icon
+
+
+:javascript
+  $(document).ready(function(){
+    $(".delete-promo").on("click", function(e){
+      e.preventDefault();
+      var ticket_id = $(this).data("ticket-id");
+      var type = $(this).data("type");
+      var item_id = type === "promotion_tickets" ? $(this).data("promotion-ticket-id") : $(this).data("item-ticket-id");
+
+      $.ajax({
+        url: "/tickets/"+ticket_id+"/"+type+"/" + item_id + "/delete",
+        type: "GET",
+        dataType: "html",
+        success: function(data){
+          $("#modal-delete-item").html(data).modal('setting', {
+            onApprove: function() {
+              location.reload();
+              return true;
+            }
+          }).modal('show');
+        }
+      });
+    });
+  });

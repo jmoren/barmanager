@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170610064414) do
+ActiveRecord::Schema.define(version: 20170612143923) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -156,8 +156,12 @@ ActiveRecord::Schema.define(version: 20170610064414) do
     t.float    "subtotal"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
+    t.integer  "cancel_reason_id"
   end
 
+  add_index "promotion_tickets", ["cancel_reason_id"], name: "index_promotion_tickets_on_cancel_reason_id", using: :btree
+  add_index "promotion_tickets", ["deleted_at"], name: "index_promotion_tickets_on_deleted_at", using: :btree
   add_index "promotion_tickets", ["promotion_id"], name: "index_promotion_tickets_on_promotion_id", using: :btree
   add_index "promotion_tickets", ["ticket_id"], name: "index_promotion_tickets_on_ticket_id", using: :btree
 
@@ -244,9 +248,11 @@ ActiveRecord::Schema.define(version: 20170610064414) do
     t.integer  "shift_id"
     t.integer  "client_id"
     t.boolean  "credit",     default: false
+    t.datetime "printed_at"
   end
 
   add_index "tickets", ["client_id"], name: "index_tickets_on_client_id", using: :btree
+  add_index "tickets", ["printed_at"], name: "index_tickets_on_printed_at", using: :btree
   add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id", using: :btree
 
   create_table "users", force: :cascade do |t|
@@ -272,4 +278,5 @@ ActiveRecord::Schema.define(version: 20170610064414) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   add_foreign_key "item_tickets", "cancel_reasons"
+  add_foreign_key "promotion_tickets", "cancel_reasons"
 end

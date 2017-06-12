@@ -25,6 +25,13 @@ class TicketsController < ApplicationController
   def show
   end
 
+  def print
+    @ticket.update(printed_at: DateTime.now)
+    respond_to do |format|
+      format.json { head :no_content }
+    end
+  end
+
   # GET /tickets/new
   def new
     @ticket = Ticket.new(date: Time.now, total: 0, status: 'open')

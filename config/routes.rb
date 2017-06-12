@@ -55,6 +55,7 @@ BarManager::Application.routes.draw do
 
   resources :tickets do
     get   :payment_form, on: :member
+    patch :print, on: :member
     patch :move_to, on: :member, as: :change
     patch :unlink_table, on: :member, as: :unlink_table
     patch :unlink_client, on: :member, as: :unlink_client
@@ -63,6 +64,7 @@ BarManager::Application.routes.draw do
     patch :deliver_all_kitchen, on: :member, as: :deliver_all_kitchen
     resources :additionals
     delete '/items/:id' => 'item_tickets#destroy_all', as: :destroy_all_ticket_item_tickets
+    delete '/promos/:id' => 'promotion_tickets#destroy_all', as: :destroy_all_ticket_promotion_tickets
     resources :item_tickets do
       put :increase, on: :member
       put :deliver, on: :member
@@ -73,7 +75,7 @@ BarManager::Application.routes.draw do
       get :delete, on: :member
       put :increase_delivered, on: :member
       put :increase, on: :member
-      delete :destroy_all, on: :collection
+      get :delete, on: :member
       post :bulk, on: :collection
     end
   end

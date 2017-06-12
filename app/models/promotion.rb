@@ -1,6 +1,6 @@
 class Promotion < ActiveRecord::Base
   has_many :promotion_items, dependent: :destroy
-
+  belongs_to :cancel_reason
   has_many :items, through: :promotion_items
 
   validates :description, :code, :day_price, :night_price, presence: true

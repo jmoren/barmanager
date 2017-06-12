@@ -73,14 +73,14 @@ class Ticket < ActiveRecord::Base
   def grouped_item_tickets
     self.item_tickets.joins(:item)
       .group(:item_id)
-      .select("sum(item_tickets.quantity) as quantity, sum(item_tickets.sub_total) as sub_total, item_id")
+      .select("sum(item_tickets.quantity) as quantity, sum(item_tickets.sub_total) as sub_total, item_id, MIN(item_tickets.updated_at) as last_updated")
       .references(:item)
   end
 
   def grouped_promotion_tickets
     self.promotion_tickets.joins(:promotion)
       .group(:promotion_id)
-      .select("sum(promotion_tickets.quantity) as quantity, sum(promotion_tickets.subtotal) as subtotal, promotion_id")
+      .select("sum(promotion_tickets.quantity) as quantity, sum(promotion_tickets.subtotal) as subtotal, promotion_id, MIN(promotion_tickets.updated_at) as last_updated")
       .references(:promotion)
   end
 
@@ -108,5 +108,9 @@ class Ticket < ActiveRecord::Base
     pending_kitchen_items = item_tickets.joins(item: :category).where(categories: { kitchen: true }).map(&:full_delivered?).include?(false)
 
     !pending_promos && !pending_kitchen_additionals && !pending_kitchen_items
+  end
+
+  def get_printed_at
+    self.printed_at || self.created_at
   end
 end

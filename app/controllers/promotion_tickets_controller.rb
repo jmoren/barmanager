@@ -8,7 +8,7 @@ class PromotionTicketsController < ApplicationController
     redirect_to @ticket
   end
 
-    def bulk
+  def bulk
     params[:promo_ticket].each do |it|
       @ticket.promotion_tickets.new(promotion_id: it["promo_id"], quantity: it["quantity"]) unless it["promo_id"].empty? || it["quantity"].empty?
     end
@@ -16,8 +16,19 @@ class PromotionTicketsController < ApplicationController
     redirect_to @ticket
   end
 
+  def delete
+    @url = params[:quantity] == "all" ? ticket_destroy_all_ticket_promotion_tickets_path : ticket_promotion_ticket_path
+    render :delete, layout: false
+  end
+
   def destroy
-    @promotion_ticket.destroy
+    reason_id = params.require(:cancel_reason_id)
+
+    ActiveRecord::Base.transaction do
+      @promotion_ticket.update(cancel_reason_id: reason_id)
+      @promotion_ticket.destroy
+    end
+
     redirect_to @ticket
   end
 
@@ -39,7 +50,13 @@ class PromotionTicketsController < ApplicationController
   end
 
   def destroy_all
-    @ticket.promotion_tickets.where(promotion_id: params[:promotion_id]).destroy_all
+    reason_id = params.require(:cancel_reason_id)
+    promos = @ticket.promotion_tickets.where(promotion_id: params[:id])
+    ActiveRecord::Base.transaction do
+      promos.update_all(cancel_reason_id: reason_id)
+      promos.destroy_all
+    end
+
     redirect_to @ticket
   end
 
