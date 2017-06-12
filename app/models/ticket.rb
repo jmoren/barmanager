@@ -71,21 +71,21 @@ class Ticket < ActiveRecord::Base
   end
 
   def grouped_item_tickets
-    self.item_tickets.joins(:item)
+    self.item_tickets.with_deleted.joins(:item, :cancel_reason)
       .group(:item_id)
-      .select("sum(item_tickets.quantity) as quantity, sum(item_tickets.sub_total) as sub_total, item_id, MIN(item_tickets.updated_at) as last_updated")
-      .references(:item)
+      .select("sum(item_tickets.quantity) as quantity, sum(item_tickets.sub_total) as sub_total, item_id, MIN(item_tickets.updated_at) as last_updated, deleted_at as deleted, cancel_reasons.text as reason")
+      .references(:item, :cancel_reason)
   end
 
   def grouped_promotion_tickets
-    self.promotion_tickets.joins(:promotion)
+    self.promotion_tickets.with_deleted.joins(:promotion, :cancel_reason)
       .group(:promotion_id)
-      .select("sum(promotion_tickets.quantity) as quantity, sum(promotion_tickets.subtotal) as subtotal, promotion_id, MIN(promotion_tickets.updated_at) as last_updated")
-      .references(:promotion)
+      .select("sum(promotion_tickets.quantity) as quantity, sum(promotion_tickets.subtotal) as subtotal, promotion_id, MIN(promotion_tickets.updated_at) as last_updated, deleted_at as deleted")
+      .references(:promotion, :cancel_reason)
   end
 
   def item_tickets_to_kitchen
-    self.item_tickets.joins(item: [:category])
+    self.item_tickets.with_deleted.joins(item: [:category])
         .where("categories.kitchen = ? and item_tickets.delivered = ?", true, false)
         .order("item_tickets.created_at desc")
   end

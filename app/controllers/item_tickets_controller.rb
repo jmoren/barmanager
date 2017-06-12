@@ -40,10 +40,12 @@ class ItemTicketsController < ApplicationController
   def destroy_all
     reason_id = params.require(:cancel_reason_id)
     items = @ticket.item_tickets.where(item_id: params[:id])
+
     ActiveRecord::Base.transaction do
       items.update_all(cancel_reason_id: reason_id)
       items.destroy_all
     end
+
     redirect_to @ticket
   end
 

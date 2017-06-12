@@ -1,6 +1,7 @@
 class PromotionTicket < ActiveRecord::Base
   belongs_to :promotion
   belongs_to :ticket
+  belongs_to :cancel_reason
   has_many   :promotion_ticket_items, dependent: :destroy
 
   validates :promotion_id, :quantity, presence: true

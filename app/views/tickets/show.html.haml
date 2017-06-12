@@ -42,7 +42,7 @@
       %tbody
         - @ticket.grouped_item_tickets.each do |entry|
           - unless entry.new_record?
-            %tr
+            %tr{ style: "opacity: #{entry.deleted ? '0.2' : 1 }", class: "#{ entry.deleted ? 'tooltip' : '' }", data: { variation: "inverted", position: 'right center', html: "<h5>Items cancelados:</h5><p style='text-align:left'>#{entry.reason}</p>" }}
               %td.hiddable.left.aligned{style: "vertical-align: top"}
                 - if @ticket.open? && current_user.is_admin? && entry.last_updated > @ticket.get_printed_at
                   = link_to "#", data: {ticket_id: @ticket.id, item_id: entry.item_id, type: 'item_tickets'}, class: "delete-item-row" do
