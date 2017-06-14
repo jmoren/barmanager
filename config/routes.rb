@@ -68,6 +68,7 @@ BarManager::Application.routes.draw do
 
     resources :additionals do
       get :delete, on: :member
+      put   :deliver, on: :member
     end
 
     resources :item_tickets do

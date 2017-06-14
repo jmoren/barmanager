@@ -52,7 +52,7 @@
                   - if entry.cancel_reason.nil?
                     %i.icon.check.green
                   - else
-                    %i.icon.warning.red.circular{ class: "tooltip", data: { html: "Adicional canceldo: <p>#{entry.cancel_reason.text}</p>" } }
+                    %i.icon.warning.red.circular{ class: "tooltip", data: { html: "Pedido canceldo: <p>#{entry.cancel_reason.text}</p>" } }
               %td.hiddable{style: "vertical-align: top"}= entry.item.code
               %td= entry.item.description
               %td.hiddable= entry.quantity
@@ -67,7 +67,7 @@
 
         - @ticket.grouped_promotion_tickets.each do |entry|
           - unless entry.new_record?
-            %tr
+            %tr{ style: " opacity: #{entry.cancel_reason.nil? ? '1' : '0.5' }"}
               %td.left.aligned{style: "vertical-align: top"}
                 - if @ticket.open?
                   - if current_user.is_admin? && entry.last_update > @ticket.get_printed_at
@@ -77,7 +77,7 @@
                   - if entry.cancel_reason.nil?
                     %i.icon.check.green
                   - else
-                    %i.icon.warning.red.circular{ class: "tooltip", data: { html: "Adicional canceldo: <p>#{entry.cancel_reason.text}</p>" } }
+                    %i.icon.warning.red.circular{ class: "tooltip", data: { html: "Pedido canceldo: <p>#{entry.cancel_reason.text}</p>" } }
               %td{style: "vertical-align: top"}= entry.promotion.code
               %td{style: "vertical-align: top"}= "Promo #{entry.promotion.description}"
               %td{style: "vertical-align: top"}= entry.quantity
@@ -111,7 +111,7 @@
                       %small{ style: "float: right", class: "tooltip", data: { html: "Adicional canceldo: <p>#{entry.cancel_reason.text}</p>" } }
                         %i.icon.warning.red.circular
                   = number_to_currency entry.amount
-                  - if @ticket.open?
+                  - if @ticket.open?  && entry.updated_at > @ticket.get_printed_at
                     = link_to "#", data: {'ticket-id' => @ticket.id, 'additional-id' => entry.id}, class: "delete-additional-row floated right" do
                       %i.icon.trash.red
 

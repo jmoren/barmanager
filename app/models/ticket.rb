@@ -99,13 +99,13 @@ class Ticket < ActiveRecord::Base
   def promotion_tickets_to_kitchen
     self.promotion_tickets.with_deleted
         .joins([{promotion: {items: :category}}, :promotion_ticket_items])
-        .where("categories.kitchen = ?", true)
+        .where("categories.kitchen = ? and promotion_ticket_items.delivered = ?", true, 0)
         .order("promotion_tickets.created_at desc")
         .uniq
   end
 
   def additionals_to_kitchen
-    self.additionals.where(kitchen: true)
+    self.additionals.where(kitchen: true, delivered: false)
   end
 
   def fully_delivered?

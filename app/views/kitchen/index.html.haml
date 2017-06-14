@@ -47,8 +47,8 @@
                 = link_to deliver_ticket_item_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
                   %i.icon.food
               - else
-                = link_to deliver_ticket_promotion_ticket_path(ki.ticket, ki), method: :put , class: "ui button icon tooltip", data: { content: "Retirar pedido" }  do
-                  %i.icon.food
+                = link_to deliver_ticket_promotion_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar Todo" }  do
+                  %i.icon.green.food
 
       - @additionals.each do |ad|
         %tr
@@ -64,6 +64,9 @@
               %i.icon.checkmark.box.big-icon
             - else
               %i.icon.wait.orange.big-icon
+          %td
+            = link_to deliver_ticket_additional_path(ad.ticket, ad), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
+              %i.icon.food
 
 
   .ui.actions

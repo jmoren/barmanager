@@ -19,6 +19,13 @@ class AdditionalsController < ApplicationController
     redirect_to @ticket
   end
 
+  def deliver
+    @additional = @ticket.additionals.find(params[:id])
+    @additional.update(delivered: true)
+
+    redirect_to :back
+  end
+
   def delete
     @url = ticket_additional_path
     render :delete, layout: false

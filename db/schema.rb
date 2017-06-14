@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20170613183404) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "additionals", force: :cascade do |t|
     t.string   "description"
     t.float    "amount"
@@ -25,9 +28,9 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.datetime "deleted_at"
   end
 
-  add_index "additionals", ["cancel_reason_id"], name: "index_additionals_on_cancel_reason_id"
-  add_index "additionals", ["deleted_at"], name: "index_additionals_on_deleted_at"
-  add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id"
+  add_index "additionals", ["cancel_reason_id"], name: "index_additionals_on_cancel_reason_id", using: :btree
+  add_index "additionals", ["deleted_at"], name: "index_additionals_on_deleted_at", using: :btree
+  add_index "additionals", ["ticket_id"], name: "index_additionals_on_ticket_id", using: :btree
 
   create_table "cancel_reasons", force: :cascade do |t|
     t.string   "text"
@@ -49,7 +52,7 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.float    "doubt",      default: 0.0
   end
 
-  add_index "clients", ["name"], name: "index_clients_on_name"
+  add_index "clients", ["name"], name: "index_clients_on_name", using: :btree
 
   create_table "daily_cashes", force: :cascade do |t|
     t.integer  "total"
@@ -71,8 +74,8 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.date     "date"
   end
 
-  add_index "expenses", ["shift_or_user_id"], name: "index_expenses_on_shift_or_user_id"
-  add_index "expenses", ["supplier_id"], name: "index_expenses_on_supplier_id"
+  add_index "expenses", ["shift_or_user_id"], name: "index_expenses_on_shift_or_user_id", using: :btree
+  add_index "expenses", ["supplier_id"], name: "index_expenses_on_supplier_id", using: :btree
 
   create_table "extractions", force: :cascade do |t|
     t.integer  "amount"
@@ -84,8 +87,8 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.boolean  "personal",    default: false
   end
 
-  add_index "extractions", ["shift_id"], name: "index_extractions_on_shift_id"
-  add_index "extractions", ["user_id"], name: "index_extractions_on_user_id"
+  add_index "extractions", ["shift_id"], name: "index_extractions_on_shift_id", using: :btree
+  add_index "extractions", ["user_id"], name: "index_extractions_on_user_id", using: :btree
 
   create_table "item_tickets", force: :cascade do |t|
     t.integer  "ticket_id"
@@ -95,14 +98,14 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "delivered",        default: false
-    t.integer  "cancel_reason_id"
     t.datetime "deleted_at"
+    t.integer  "cancel_reason_id"
   end
 
-  add_index "item_tickets", ["cancel_reason_id"], name: "index_item_tickets_on_cancel_reason_id"
-  add_index "item_tickets", ["deleted_at"], name: "index_item_tickets_on_deleted_at"
-  add_index "item_tickets", ["item_id"], name: "index_item_tickets_on_item_id"
-  add_index "item_tickets", ["ticket_id"], name: "index_item_tickets_on_ticket_id"
+  add_index "item_tickets", ["cancel_reason_id"], name: "index_item_tickets_on_cancel_reason_id", using: :btree
+  add_index "item_tickets", ["deleted_at"], name: "index_item_tickets_on_deleted_at", using: :btree
+  add_index "item_tickets", ["item_id"], name: "index_item_tickets_on_item_id", using: :btree
+  add_index "item_tickets", ["ticket_id"], name: "index_item_tickets_on_ticket_id", using: :btree
 
   create_table "items", force: :cascade do |t|
     t.string   "description"
@@ -115,7 +118,7 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.boolean  "favourite",   default: false
   end
 
-  add_index "items", ["code"], name: "index_items_on_code", unique: true
+  add_index "items", ["code"], name: "index_items_on_code", unique: true, using: :btree
 
   create_table "monthly_cashes", force: :cascade do |t|
     t.float    "total"
@@ -148,7 +151,7 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.integer "delivered",           default: 0
   end
 
-  add_index "promotion_ticket_items", ["promotion_item_id"], name: "index_promotion_ticket_items_on_promotion_item_id"
+  add_index "promotion_ticket_items", ["promotion_item_id"], name: "index_promotion_ticket_items_on_promotion_item_id", using: :btree
 
   create_table "promotion_tickets", force: :cascade do |t|
     t.integer  "ticket_id"
@@ -157,14 +160,14 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.float    "subtotal"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "cancel_reason_id"
     t.datetime "deleted_at"
+    t.integer  "cancel_reason_id"
   end
 
-  add_index "promotion_tickets", ["cancel_reason_id"], name: "index_promotion_tickets_on_cancel_reason_id"
-  add_index "promotion_tickets", ["deleted_at"], name: "index_promotion_tickets_on_deleted_at"
-  add_index "promotion_tickets", ["promotion_id"], name: "index_promotion_tickets_on_promotion_id"
-  add_index "promotion_tickets", ["ticket_id"], name: "index_promotion_tickets_on_ticket_id"
+  add_index "promotion_tickets", ["cancel_reason_id"], name: "index_promotion_tickets_on_cancel_reason_id", using: :btree
+  add_index "promotion_tickets", ["deleted_at"], name: "index_promotion_tickets_on_deleted_at", using: :btree
+  add_index "promotion_tickets", ["promotion_id"], name: "index_promotion_tickets_on_promotion_id", using: :btree
+  add_index "promotion_tickets", ["ticket_id"], name: "index_promotion_tickets_on_ticket_id", using: :btree
 
   create_table "promotions", force: :cascade do |t|
     t.string   "description"
@@ -176,7 +179,7 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.boolean  "favourite",   default: false
   end
 
-  add_index "promotions", ["code"], name: "index_promotions_on_code", unique: true
+  add_index "promotions", ["code"], name: "index_promotions_on_code", unique: true, using: :btree
 
   create_table "shifts", force: :cascade do |t|
     t.datetime "open"
@@ -191,7 +194,7 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.boolean  "fiscal_printed", default: false
   end
 
-  add_index "shifts", ["user_id"], name: "index_shifts_on_user_id"
+  add_index "shifts", ["user_id"], name: "index_shifts_on_user_id", using: :btree
 
   create_table "supplier_tickets", force: :cascade do |t|
     t.float    "amount"
@@ -203,8 +206,8 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.integer  "code_number"
   end
 
-  add_index "supplier_tickets", ["shift_id"], name: "index_supplier_tickets_on_shift_id"
-  add_index "supplier_tickets", ["supplier_id"], name: "index_supplier_tickets_on_supplier_id"
+  add_index "supplier_tickets", ["shift_id"], name: "index_supplier_tickets_on_shift_id", using: :btree
+  add_index "supplier_tickets", ["supplier_id"], name: "index_supplier_tickets_on_supplier_id", using: :btree
 
   create_table "suppliers", force: :cascade do |t|
     t.string   "name"
@@ -222,9 +225,9 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.string   "color",       default: ""
   end
 
-  add_index "tables", ["description"], name: "index_tables_on_description"
-  add_index "tables", ["id"], name: "index_tables_on_id"
-  add_index "tables", ["status"], name: "index_tables_on_status"
+  add_index "tables", ["description"], name: "index_tables_on_description", using: :btree
+  add_index "tables", ["id"], name: "index_tables_on_id", using: :btree
+  add_index "tables", ["status"], name: "index_tables_on_status", using: :btree
 
   create_table "ticket_payments", force: :cascade do |t|
     t.integer  "client_id"
@@ -234,8 +237,8 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.integer  "shift_id"
   end
 
-  add_index "ticket_payments", ["client_id"], name: "index_ticket_payments_on_client_id"
-  add_index "ticket_payments", ["shift_id"], name: "index_ticket_payments_on_shift_id"
+  add_index "ticket_payments", ["client_id"], name: "index_ticket_payments_on_client_id", using: :btree
+  add_index "ticket_payments", ["shift_id"], name: "index_ticket_payments_on_shift_id", using: :btree
 
   create_table "tickets", force: :cascade do |t|
     t.integer  "table_id"
@@ -252,9 +255,9 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.datetime "printed_at"
   end
 
-  add_index "tickets", ["client_id"], name: "index_tickets_on_client_id"
-  add_index "tickets", ["printed_at"], name: "index_tickets_on_printed_at"
-  add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id"
+  add_index "tickets", ["client_id"], name: "index_tickets_on_client_id", using: :btree
+  add_index "tickets", ["printed_at"], name: "index_tickets_on_printed_at", using: :btree
+  add_index "tickets", ["shift_id"], name: "index_tickets_on_shift_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
@@ -274,8 +277,11 @@ ActiveRecord::Schema.define(version: 20170613183404) do
     t.string   "role"
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  add_index "users", ["username"], name: "index_users_on_username", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
+  add_foreign_key "additionals", "cancel_reasons"
+  add_foreign_key "item_tickets", "cancel_reasons"
+  add_foreign_key "promotion_tickets", "cancel_reasons"
 end
