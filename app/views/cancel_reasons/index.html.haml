@@ -1,5 +1,7 @@
 %h2.ui.header
   Razones
+.ui.header.right.floated
+  = paginate @cancel_reasons
 
 %table.ui.table
   %thead
@@ -19,4 +21,4 @@
 
 %br
 
-= link_to 'Agregar', new_cancel_reason_path
+= link_to 'Agregar nueva', new_cancel_reason_path, class: "ui button blue"

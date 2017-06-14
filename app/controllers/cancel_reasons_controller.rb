@@ -4,7 +4,7 @@ class CancelReasonsController < ApplicationController
   # GET /cancel_reasons
   # GET /cancel_reasons.json
   def index
-    @cancel_reasons = CancelReason.all
+    @cancel_reasons = CancelReason.all.page params[:page]
   end
 
   # GET /cancel_reasons/1
