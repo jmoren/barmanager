@@ -42,11 +42,17 @@
       %tbody
         - @ticket.grouped_item_tickets.each do |entry|
           - unless entry.new_record?
-            %tr{ style: "opacity: #{entry.deleted ? '0.2' : 1 }", class: "#{ entry.deleted ? 'tooltip' : '' }", data: { variation: "inverted", position: 'right center', html: "<h5>Items cancelados:</h5><p style='text-align:left'>#{entry.reason}</p>" }}
+            %tr{ style: " opacity: #{entry.cancel_reason.nil? ? '1' : '0.5' }"}
               %td.hiddable.left.aligned{style: "vertical-align: top"}
-                - if @ticket.open? && current_user.is_admin? && entry.last_updated > @ticket.get_printed_at
-                  = link_to "#", data: {ticket_id: @ticket.id, item_id: entry.item_id, type: 'item_tickets'}, class: "delete-item-row" do
-                    %i.icon.remove.circle.outline.red
+                - if @ticket.open?
+                  - if current_user.is_admin? && entry.last_update > @ticket.get_printed_at
+                    = link_to "#", data: {ticket_id: @ticket.id, item_id: entry.item_id, type: 'item_tickets'}, class: "delete-item-row" do
+                      %i.icon.remove.circle.outline.red
+                - else
+                  - if entry.cancel_reason.nil?
+                    %i.icon.check.green
+                  - else
+                    %i.icon.warning.red.circular{ class: "tooltip", data: { html: "Adicional canceldo: <p>#{entry.cancel_reason.text}</p>" } }
               %td.hiddable{style: "vertical-align: top"}= entry.item.code
               %td= entry.item.description
               %td.hiddable= entry.quantity
@@ -63,9 +69,15 @@
           - unless entry.new_record?
             %tr
               %td.left.aligned{style: "vertical-align: top"}
-                - if @ticket.open? && current_user.is_admin? && entry.last_updated > @ticket.get_printed_at
-                  = link_to "#", data: {ticket_id: @ticket.id, promo_id: entry.promotion_id, type: 'promotion_tickets'}, class: "delete-item-row" do
-                    %i.icon.remove.circle.outline.red
+                - if @ticket.open?
+                  - if current_user.is_admin? && entry.last_update > @ticket.get_printed_at
+                    = link_to "#", data: {ticket_id: @ticket.id, promo_id: entry.promotion_id, type: 'promotion_tickets'}, class: "delete-item-row" do
+                      %i.icon.remove.circle.outline.red
+                - else
+                  - if entry.cancel_reason.nil?
+                    %i.icon.check.green
+                  - else
+                    %i.icon.warning.red.circular{ class: "tooltip", data: { html: "Adicional canceldo: <p>#{entry.cancel_reason.text}</p>" } }
               %td{style: "vertical-align: top"}= entry.promotion.code
               %td{style: "vertical-align: top"}= "Promo #{entry.promotion.description}"
               %td{style: "vertical-align: top"}= entry.quantity
@@ -88,14 +100,19 @@
             .content
               No hay adicionales
         - else
-          - @ticket.additionals.each do |entry|
+          - @additionals = @ticket.open? ? @ticket.additionals : @ticket.additionals.with_deleted
+          - @additionals.each do |entry|
             - unless entry.new_record?
               .card
-                .content
-                  .header= entry.description
+                .content{ style: "opacity: #{entry.deleted_at.nil? ? '1' : '0.5'}" }
+                  .header
+                    = entry.description
+                    - if !entry.cancel_reason.nil?
+                      %small{ style: "float: right", class: "tooltip", data: { html: "Adicional canceldo: <p>#{entry.cancel_reason.text}</p>" } }
+                        %i.icon.warning.red.circular
                   = number_to_currency entry.amount
                   - if @ticket.open?
-                    = link_to ticket_additional_path(@ticket, entry), method: :delete, style: "float: right;margin:0" do
+                    = link_to "#", data: {'ticket-id' => @ticket.id, 'additional-id' => entry.id}, class: "delete-additional-row floated right" do
                       %i.icon.trash.red
 
     .ui.divider
@@ -129,6 +146,26 @@
 
       $.ajax({
         url: "/tickets/"+ticket_id+"/"+type+"/" + item_id + "/delete?quantity=all",
+        type: "GET",
+        dataType: "html",
+        success: function(data){
+          $("#modal-delete-item").html(data).modal('setting', {
+            onApprove: function() {
+              location.reload();
+              return true;
+            }
+          }).modal('show');
+        }
+      });
+    });
+
+    $(".delete-additional-row").on("click", function(e){
+      e.preventDefault();
+      var ticket_id = $(this).data("ticket-id");
+      var additional = $(this).data("additional-id");
+
+      $.ajax({
+        url: "/tickets/" + ticket_id + "/additionals/" + additional + "/delete",
         type: "GET",
         dataType: "html",
         success: function(data){

@@ -62,17 +62,22 @@ BarManager::Application.routes.draw do
     patch :close, on: :member, as: :close
     get   :close_ticket, on: :member
     patch :deliver_all_kitchen, on: :member, as: :deliver_all_kitchen
-    resources :additionals
+
     delete '/items/:id' => 'item_tickets#destroy_all', as: :destroy_all_ticket_item_tickets
     delete '/promos/:id' => 'promotion_tickets#destroy_all', as: :destroy_all_ticket_promotion_tickets
+
+    resources :additionals do
+      get :delete, on: :member
+    end
+
     resources :item_tickets do
       put   :increase, on: :member
       put   :deliver, on: :member
       get   :delete, on: :member
       post  :bulk, on: :collection
     end
+
     resources :promotion_tickets do
-      get  :delete, on: :member
       put  :increase_delivered, on: :member
       put  :increase, on: :member
       put  :deliver, on: :member

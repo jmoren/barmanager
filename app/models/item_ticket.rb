@@ -1,7 +1,7 @@
 class ItemTicket < ActiveRecord::Base
   belongs_to :item
   belongs_to :ticket
-  belongs_to :cancel_reason
+  belongs_to :cancel_reason, required: false
 
   validates  :item_id, :quantity, presence: true
   validates  :quantity, numericality: { only_integer: true, greater_than: 0 }

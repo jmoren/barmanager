@@ -1,0 +1,23 @@
+%i.close.icon
+.header
+  %h2.ui.left.header
+    Porque desea eliminar este adicional?
+.content
+  = form_tag @url, html: { method: :delete, remote: true, class: "ui form"}, method: :delete do
+    .field
+      .ui.fluid.search.selection.dropdown.combo
+        = hidden_field_tag :cancel_reason_id
+        %i.dropdown.icon
+        .default.text Razon
+        .menu
+          - CancelReason.all.each do |cr|
+            .item{ data: { value: cr.id} }
+              = cr.text
+
+    .ui.divider
+    .field
+      %button.ui.button.green{type: "submit"}
+        Guardar
+
+:javascript
+  $('.dropdown').dropdown();

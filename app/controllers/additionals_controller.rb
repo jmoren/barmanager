@@ -9,10 +9,20 @@ class AdditionalsController < ApplicationController
 
   def destroy
     @additional = @ticket.additionals.find(params[:id])
-    @additional.destroy
+    reason_id = params.require(:cancel_reason_id)
+
+    ActiveRecord::Base.transaction do
+      @additional.update(cancel_reason_id: reason_id)
+      @additional.destroy
+    end
+
     redirect_to @ticket
   end
 
+  def delete
+    @url = ticket_additional_path
+    render :delete, layout: false
+  end
 private
 
   def set_ticket

@@ -71,17 +71,23 @@ class Ticket < ActiveRecord::Base
   end
 
   def grouped_item_tickets
-    self.item_tickets.with_deleted.joins(:item, :cancel_reason)
-      .group(:item_id)
-      .select("sum(item_tickets.quantity) as quantity, sum(item_tickets.sub_total) as sub_total, item_id, MIN(item_tickets.updated_at) as last_updated, deleted_at as deleted, cancel_reasons.text as reason")
-      .references(:item, :cancel_reason)
+    if self.status == 'closed'
+      self.item_tickets.with_deleted.includes(:item, :cancel_reason).group(:item_id, :cancel_reason_id)
+        .select("item_tickets.item_id, SUM(item_tickets.quantity) as quantity, SUM(item_tickets.sub_total) as sub_total, MIN(item_tickets.updated_at) as last_update, item_tickets.cancel_reason_id")
+    else
+      self.item_tickets.includes(:item).group(:item_id)
+        .select("item_tickets.item_id, SUM(item_tickets.quantity) as quantity, SUM(item_tickets.sub_total) as sub_total, MIN(item_tickets.updated_at) as last_update")
+    end
   end
 
   def grouped_promotion_tickets
-    self.promotion_tickets.with_deleted.joins(:promotion, :cancel_reason)
-      .group(:promotion_id)
-      .select("sum(promotion_tickets.quantity) as quantity, sum(promotion_tickets.subtotal) as subtotal, promotion_id, MIN(promotion_tickets.updated_at) as last_updated, deleted_at as deleted")
-      .references(:promotion, :cancel_reason)
+    if self.status == 'closed'
+      self.promotion_tickets.with_deleted.includes(:promotion, :cancel_reason).group(:promotion_id, :cancel_reason_id)
+        .select("promotion_tickets.promotion_id, SUM(promotion_tickets.quantity) as quantity, SUM(promotion_tickets.subtotal) as subtotal, MIN(promotion_tickets.updated_at) as last_update, promotion_tickets.cancel_reason_id")
+    else
+      self.promotion_tickets.joins(:promotion).group(:promotion_id)
+        .select("promotion_tickets.promotion_id, SUM(promotion_tickets.quantity) as quantity, SUM(promotion_tickets.subtotal) as subtotal, MIN(promotion_tickets.updated_at) as last_update")
+    end
   end
 
   def item_tickets_to_kitchen
