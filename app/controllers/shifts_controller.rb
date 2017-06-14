@@ -6,7 +6,7 @@ class ShiftsController < ApplicationController
   # GET /shifts
   # GET /shifts.json
   def index
-    @shifts = Shift.order(created_at: :desc)
+    @shifts = Shift.order(created_at: :desc).page params[:page]
   end
 
   # GET /shifts/1

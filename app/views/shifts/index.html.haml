@@ -5,6 +5,8 @@
     = link_to new_shift_path, class: "ui button teal" do
       %i.icon.plus
       Nuevo Turno
+  .ui.header.right.floated
+    = paginate @shifts
 
 .ui.clearing.divider
 
