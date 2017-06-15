@@ -8,6 +8,11 @@ class Ability
       can :manage, :all
       cannot :manage, :statistics
       cannot :manage, User
+    elsif user.is_cooker?
+      cannot :manage, :all
+      can :index, :kitchen
+      can :deliver, ItemTicket
+      can :deliver, PromotionTicket
     else
       can :index, Promotion
       can :index, Item

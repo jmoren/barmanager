@@ -8,6 +8,10 @@ class KitchenController < ApplicationController
     @kitchen_items = (items | promotions).flatten.compact
 
     @kitchen_items.sort{ |x,y| y.created_at <=> x.created_at }
+
+    if current_user.is_cooker?
+      render layout: "kitchen"
+    end
   end
 
   def show
