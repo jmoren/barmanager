@@ -1,13 +1,14 @@
 class KitchenController < ApplicationController
   layout "admin"
   def index
-    items        = Ticket.where(status: 'open').map(&:item_tickets_to_kitchen).flatten.compact
-    promotions   = Ticket.where(status: 'open').map(&:promotion_tickets_to_kitchen).flatten.compact
-    @additionals = Ticket.where(status: 'open').map(&:additionals_to_kitchen).flatten.compact
+    @tickets     = Ticket.where(status: 'open').sort {|a,b| a.first_kitchen_item <=> b.first_kitchen_item}
 
+    items        = @tickets.map(&:item_tickets_to_kitchen).flatten.compact
+    promotions   = @tickets.map(&:promotion_tickets_to_kitchen).flatten.compact
+    @additionals = @tickets.map(&:additionals_to_kitchen).flatten.compact.group_by { |ki| ki.ticket_id }
     @kitchen_items = (items | promotions).flatten.compact
 
-    @kitchen_items.sort{ |x,y| y.created_at <=> x.created_at }
+    @kitchen_items = @kitchen_items.group_by { |ki| ki.ticket_id }
 
     if current_user.is_cooker?
       render layout: "kitchen"

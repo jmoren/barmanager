@@ -8,65 +8,60 @@
         = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
 .clearfix
 .content
-  %table.ui.celled.structured.table
-    %thead
-      %tr
-        %th.center.aligned Mesa
-        %th.center.aligned Pendiente hace
-        %th Pedido
-        %th En cocina
-        %th Retirar
-    %tbody
-      - @kitchen_items.each do |ki|
-        - unless ki.nil? || ki.full_delivered?
-          %tr{ style: ki.deleted_at.nil? ? "" : "background-color: red; color: white"}
-            %td.center.aligned= ki.ticket.table.try(:name) || "Para llevar"
-            %td.center.aligned
-              %span{ class: (Time.at((Time.now - ki.created_at).to_i.abs).utc.strftime "%M").to_i > 10 ? "ui button red" : "ui button green"}= Time.at((Time.now - ki.created_at).to_i.abs).utc.strftime "%H:%M:%S"
-            %td
-              .ui.divided.selection.list
-                - if ki.class.name == "ItemTicket"
-                  %p
-                    .ui.horizontal.label.blue.big
-                      = ki.quantity
-                    = ki.item.description
-                - else
-                  - ki.promotion_ticket_items.each do |promo_ticket_item|
-                    - if promo_ticket_item.promotion_item.item.category.kitchen?
-                      %p
-                        .ui.horizontal.label
-                          = promo_ticket_item.promotion_item.quantity * ki.quantity
-                        = promo_ticket_item.promotion_item.item.description
-            %td
-              - if ki.full_delivered?
-                %i.icon.checkmark.box.big-icon
-              - else
-                %i.icon.wait.orange.big-icon
-            %td
-              - if ki.class.name == "ItemTicket"
-                = link_to deliver_ticket_item_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
-                  %i.icon.food
-              - else
-                = link_to deliver_ticket_promotion_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar Todo" }  do
-                  %i.icon.green.food
-
-      - @additionals.each do |ad|
-        %tr
-          %td.center.aligned= ad.ticket.table.try(:name) || "Para llevar"
-          %td.center.aligned= ad.created_at.strftime('%H:%M %p')
-          %td
-            %p
-              .ui.horizontal.label
-                = ad.amount
-              = ad.description
-          %td
-            - if ad.full_delivered?
-              %i.icon.checkmark.box.big-icon
+  .ui.grid
+    - @tickets.each do |ti|
+      .five.wide.column.field
+        .ui.segment{style: "padding: 0.6em 1em; margin:0;box-shadow:none"}
+          .ui.header
+            - if ti.table.nil?
+              = "Para llevar - Ticket: #{ti.id}"
             - else
-              %i.icon.wait.orange.big-icon
-          %td
-            = link_to deliver_ticket_additional_path(ad.ticket, ad), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
-              %i.icon.food
+              = "MESA: #{ti.table.try(:name)}"
+          %table.ui.celled.structured.table
+            %thead
+              %tr
+                %th.center.aligned Pendiente hace
+                %th Pedido
+                %th Retirar
+            %tbody
+              - @kitchen_items[ti.id].try(:each) do |ki|
+                - unless ki.nil? || ki.full_delivered?
+                  %tr{ style: ki.deleted_at.nil? ? "" : "background-color: red; color: white"}
+                    %td.center.aligned
+                      %span{ class: (Time.at((Time.now - ki.created_at).to_i.abs).utc.strftime "%M").to_i > 10 ? "ui button red" : "ui button green"}= Time.at((Time.now - ki.created_at).to_i.abs).utc.strftime "%H:%M:%S"
+                    %td
+                      .ui.divided.selection.list
+                        - if ki.class.name == "ItemTicket"
+                          %p
+                            .ui.horizontal.label.blue.big
+                              = ki.quantity
+                            = ki.item.description
+                        - else
+                          - ki.promotion_ticket_items.each do |promo_ticket_item|
+                            - if promo_ticket_item.promotion_item.item.category.kitchen?
+                              %p
+                                .ui.horizontal.label.blue.big
+                                  = promo_ticket_item.promotion_item.quantity * ki.quantity
+                                = promo_ticket_item.promotion_item.item.description
+                    %td
+                      - if ki.class.name == "ItemTicket"
+                        = link_to deliver_ticket_item_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
+                          %i.icon.food
+                      - else
+                        = link_to deliver_ticket_promotion_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar Todo" }  do
+                          %i.icon.green.food
+              - @additionals[ti.id].try(:each) do |ad|
+                %tr{ style: ad.deleted_at.nil? ? "" : "background-color: red; color: white"}
+                  %td.center.aligned
+                    %span{ class: (Time.at((Time.now - ad.created_at).to_i.abs).utc.strftime "%M").to_i > 10 ? "ui button red" : "ui button green"}= Time.at((Time.now - ad.created_at).to_i.abs).utc.strftime "%H:%M:%S"
+                  %td
+                    %p
+                      .ui.horizontal.label.blue.big
+                        = ad.amount
+                      = ad.description
+                  %td
+                    = link_to deliver_ticket_additional_path(ad.ticket, ad), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
+                      %i.icon.food
 
 
   .ui.actions

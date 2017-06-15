@@ -93,14 +93,14 @@ class Ticket < ActiveRecord::Base
   def item_tickets_to_kitchen
     self.item_tickets.with_deleted.joins(item: [:category])
         .where("categories.kitchen = ? and item_tickets.delivered = ?", true, false)
-        .order("item_tickets.created_at desc")
+        .order("item_tickets.created_at asc")
   end
 
   def promotion_tickets_to_kitchen
     self.promotion_tickets.with_deleted
         .joins([{promotion: {items: :category}}, :promotion_ticket_items])
         .where("categories.kitchen = ? and promotion_ticket_items.delivered = ?", true, 0)
-        .order("promotion_tickets.created_at desc")
+        .order("promotion_tickets.created_at asc")
         .uniq
   end
 
@@ -118,5 +118,12 @@ class Ticket < ActiveRecord::Base
 
   def get_printed_at
     self.printed_at || self.created_at
+  end
+
+  def first_kitchen_item
+    item_ticket_date = item_tickets_to_kitchen.try(:first).try(:created_at) || DateTime.now
+    promo_ticket_date = promotion_tickets_to_kitchen.try(:first).try(:created_at) || DateTime.now
+    additional_date = additionals_to_kitchen.try(:first).try(:created_at) || DateTime.now
+    [item_ticket_date, promo_ticket_date, additional_date].min
   end
 end
