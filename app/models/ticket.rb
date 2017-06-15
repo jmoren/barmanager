@@ -97,11 +97,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def promotion_tickets_to_kitchen
-    self.promotion_tickets.with_deleted
-        .joins([{promotion: {items: :category}}, :promotion_ticket_items])
-        .where("categories.kitchen = ? and promotion_ticket_items.delivered = ?", true, 0)
-        .order("promotion_tickets.created_at asc")
-        .uniq
+    PromotionTicketItem.joins(:promotion_ticket, promotion_item: { item: :category}).where(delivered: 0).where('categories.kitchen = ?', true).map(&:promotion_ticket).uniq
   end
 
   def additionals_to_kitchen

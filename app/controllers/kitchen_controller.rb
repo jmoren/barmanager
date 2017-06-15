@@ -9,6 +9,10 @@ class KitchenController < ApplicationController
     @kitchen_items = (items | promotions).flatten.compact
 
     @kitchen_items = @kitchen_items.group_by { |ki| ki.ticket_id }
+    tickets_ids = (items.map(&:ticket_id) | promotions.map(&:ticket_id) | @additionals.map(&:ticket_id)).flatten.compact.uniq
+
+    @tickets = @tickets.select { |t| tickets_ids.include? t.id }
+
 
     if current_user.is_cooker?
       render layout: "kitchen"

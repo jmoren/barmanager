@@ -8,10 +8,13 @@
         = "Ticket nro. #{@current_ticket.formatted_number}-#{@current_ticket.created_at.strftime('%y')}"
 .clearfix
 .content
+  - if @tickets.size == 0
+    .ui.green.header
+      = "No hay pedidos de cocina pendientes."
   .ui.grid
     - @tickets.each do |ti|
       .five.wide.column.field
-        .ui.segment{style: "padding: 0.6em 1em; margin:0;box-shadow:none"}
+        .ui
           .ui.header
             - if ti.table.nil?
               = "Para llevar - Ticket: #{ti.id}"
@@ -62,12 +65,3 @@
                   %td
                     = link_to deliver_ticket_additional_path(ad.ticket, ad), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
                       %i.icon.food
-
-
-  .ui.actions
-    %button.ui.button.green.icon.labeled.ok.print
-      %i.icon.print
-      Imprimir
-    = link_to "#", class: "ui button labeled icon close" do
-      %i.icon.cancel
-      Cancelar
