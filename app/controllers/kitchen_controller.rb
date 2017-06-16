@@ -13,10 +13,23 @@ class KitchenController < ApplicationController
 
     @tickets = @tickets.select { |t| tickets_ids.include? t.id }
 
-
     if current_user.is_cooker?
       render layout: "kitchen"
     end
+  end
+
+  def check_update
+    last_render = params[:last_render]
+
+    last_item = ItemTicket.joins(item: [:category]).where("categories.kitchen = ? and item_tickets.delivered = ?", true, false).last.try(:created_at) || last_render
+    last_promo = PromotionTicketItem.joins(:promotion_ticket, promotion_item: { item: :category}).where(delivered: 0).where('categories.kitchen = ?', true).last.try(:promotion_ticket).try(:created_at) || last_render
+    last_add = Additional.where(kitchen: true, delivered: false).last.try(:created_at) || last_render
+
+
+    last_item_date = [last_item, last_promo, last_add].max
+
+    render json: { should_render: last_render.to_datetime < last_item_date ? true : false }
+
   end
 
   def show

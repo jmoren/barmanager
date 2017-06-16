@@ -99,6 +99,7 @@ BarManager::Application.routes.draw do
   post '/fiscal_printer/close_shift' => 'fiscal_printer#close_shift', as: :fiscal_close_shift
 
   get 'kitchen', to: 'kitchen#index'
+  get 'kitchen/check_update', to: 'kitchen#check_update'
   get 'kitchen/:ticket_id/show/:item_id/:type', to: 'kitchen#show'
   get 'kitchen/:ticket_id/print_table', as: 'print_table', to: 'kitchen#print_table'
   get 'close_day', to: 'daily_cashes#show_daily_cash'
