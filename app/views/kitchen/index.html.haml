@@ -68,11 +68,9 @@
             = link_to deliver_ticket_additional_path(ad.ticket, ad), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
               %i.icon.food
 
-
-  .ui.actions
-    %button.ui.button.green.icon.labeled.ok.print
-      %i.icon.print
-      Imprimir
-    = link_to "#", class: "ui button labeled icon close" do
-      %i.icon.cancel
-      Cancelar
+:javascript
+  $(document).ready(function(){
+    setTimeout(function () { 
+      location.reload();
+    }, 10000);
+  });
