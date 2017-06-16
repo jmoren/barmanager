@@ -1,0 +1,14 @@
+.ui.menu.inverted.fixed
+  .container
+    = link_to "Bar Manager", home_index_path, class: "item"
+    - if current_user
+      = link_to kitchen_path, class: "item" do
+        %i.icon.food
+        Cocina
+      .menu.right
+        .ui.dropdown.item.config
+          = current_user.login
+          %i.dropdown.icon
+          .menu
+            = link_to destroy_user_session_path, method: :delete, class: "item" do
+              Salir

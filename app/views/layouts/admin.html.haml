@@ -35,6 +35,5 @@
       .main.container
         - flash.each do |name, msg|
           = content_tag :div, msg, class: "ui message #{name.to_s == 'alert' ? 'error' : 'green'}"
-        
         .segment.ui
           = yield

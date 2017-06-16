@@ -152,3 +152,7 @@ i.icon.big-icon {
   padding-top: 1rem !important;
   padding-bottom: 0 !important;
 }
+
+.kitchentable td {
+  margin: 0 !important;
+}

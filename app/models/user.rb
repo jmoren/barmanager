@@ -49,4 +49,8 @@ class User < ActiveRecord::Base
   def is_manager?
     role.downcase == "manager"
   end
+
+  def is_cooker?
+    role.downcase == "cooker"
+  end
 end

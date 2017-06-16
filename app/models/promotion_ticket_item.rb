@@ -6,6 +6,10 @@ class PromotionTicketItem < ActiveRecord::Base
     self.delivered == (self.promotion_item.quantity * self.promotion_ticket.quantity)
   end
 
+  def deliver_all
+    self.update(delivered: (self.promotion_item.quantity * self.promotion_ticket.quantity))
+  end
+
   def pending
     (self.promotion_item.quantity * self.promotion_ticket.quantity) - self.delivered
   end
