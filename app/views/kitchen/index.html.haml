@@ -52,7 +52,7 @@
                         = link_to deliver_ticket_item_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
                           %i.icon.food
                       - else
-                        = link_to deliver_ticket_promotion_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar Todo" }  do
+                        = link_to deliver_ticket_promotion_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" }  do
                           %i.icon.green.food
               - @additionals[ti.id].try(:each) do |ad|
                 %tr{ style: ad.deleted_at.nil? ? "" : "background-color: red; color: white"}
