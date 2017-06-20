@@ -9,12 +9,24 @@
   .ui.sub.header
     Agregar items
 
+- if @promotion.errors.any?
+  .ui.message.negative
+    %ul.list
+      - @promotion.errors.full_messages.each do |msg|
+        %li= msg
+
+- if params["errors"].try(:any?)
+  .ui.message.negative
+    %ul.list
+      - params["errors"].each do |msg|
+        %li= msg.split(' ')[1..-1].join(' ')
+
 .ui.divider
 
 = form_for [@promotion, @promotion.promotion_items.new], html: { class: "form ui"}  do |f|
   .ui.grid
     .eight.wide.column.field
-      = f.hidden_field :prmotion_id, value: @promotion.id
+      = f.hidden_field :promotion_id, value: @promotion.id
       .ui.fluid.search.selection.dropdown.combo
         = f.hidden_field :item_id
         %i.dropdown.icon

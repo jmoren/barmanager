@@ -23,11 +23,11 @@ class PromotionItemsController < ApplicationController
 
     respond_to do |format|
       if @promotion_item.save
-        format.html { redirect_to @promotion_item.promotion }
-        format.json { render action: 'show', status: :created}
+        format.html { redirect_to @promotion_item.promotion}
       else
-        format.html { render action: 'new' }
-        format.json { render json: @item_ticket.errors, status: :unprocessable_entity }
+        format.html {
+          redirect_to promotion_path(@promotion_item.promotion, errors: @promotion_item.errors.full_messages)
+        }
       end
     end
   end
