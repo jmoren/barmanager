@@ -6,6 +6,8 @@ class ItemTicket < ActiveRecord::Base
   validates  :item_id, :quantity, presence: true
   validates  :quantity, numericality: { only_integer: true, greater_than: 0 }
 
+  scope :pending_kitchen, -> { joins(item: [:category]).where("categories.kitchen = ? and item_tickets.delivered = ?", true, false) }
+
   before_save :set_sub_total
 
   acts_as_paranoid

@@ -97,7 +97,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def promotion_tickets_to_kitchen
-    PromotionTicketItem.joins(:promotion_ticket, promotion_item: { item: :category}).where(delivered: 0).where('categories.kitchen = ?', true).map(&:promotion_ticket).uniq
+    self.promotion_tickets.joins(promotion_ticket_items: {promotion_item: { item: :category}}).where('categories.kitchen = ? and promotion_ticket_items.delivered < promotion_tickets.quantity * promotion_items.quantity', true)
   end
 
   def additionals_to_kitchen

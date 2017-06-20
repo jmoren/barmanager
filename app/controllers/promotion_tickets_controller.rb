@@ -42,7 +42,11 @@ class PromotionTicketsController < ApplicationController
   end
 
   def deliver
-    @promotion_ticket.deliver_all_kitchen
+    if params[:promotion_ticket_item]
+      PromotionTicketItem.find(params[:promotion_ticket_item]).deliver_all
+    else
+      @promotion_ticket.deliver_all_kitchen
+    end
 
     redirect_to :back
   end
