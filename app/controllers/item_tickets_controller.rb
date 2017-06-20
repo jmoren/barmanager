@@ -9,10 +9,17 @@ class ItemTicketsController < ApplicationController
   end
 
   def bulk
-    params[:item_ticket].each do |it|
-      @ticket.item_tickets.new(item_id: it["item_id"], quantity: it["quantity"]) unless it["item_id"].empty? || it["quantity"].empty?
+    Ticket.transaction do
+      params[:item_ticket].each do |it|
+        unless it["item_id"].empty? || it["quantity"].empty?
+          item_ticket = ItemTicket.create(item_id: it["item_id"], quantity: it["quantity"])
+          item_ticket.comments.create(title: "Item ticket comment", comment: it["comment"]) unless it["comment"].empty?
+          @ticket.item_tickets << item_ticket
+        end
+      end
+
+      @ticket.save
     end
-    @ticket.save
     redirect_to @ticket
   end
 

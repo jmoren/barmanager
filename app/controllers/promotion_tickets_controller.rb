@@ -9,8 +9,12 @@ class PromotionTicketsController < ApplicationController
   end
 
   def bulk
-    params[:promo_ticket].each do |it|
-      @ticket.promotion_tickets.new(promotion_id: it["promo_id"], quantity: it["quantity"]) unless it["promo_id"].empty? || it["quantity"].empty?
+    params[:promo_ticket].each do |pt|
+      unless pt["promo_id"].empty? || pt["quantity"].empty?
+        promo_ticket = PromotionTicket.create(promotion_id: pt["promo_id"], quantity: pt["quantity"], ticket: @ticket)
+        @ticket.promotion_tickets << promo_ticket
+        promo_ticket.comments.create(title: "Promo ticket comment", comment: pt["comment"]) unless pt["comment"].empty?
+      end
     end
     @ticket.save
     redirect_to @ticket

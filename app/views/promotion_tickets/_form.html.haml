@@ -16,6 +16,8 @@
           - Promotion.all.each do |promo|
             .item{ data: { value: promo.id, code: promo.code } }
               = promo.description
+    .sixteen.wide.column.field
+      = text_field_tag "promo_ticket[][comment]", nil, placeholder: "Commentario"
       %input{type: "submit", style: "display: none"}
   .ui.red.message.promo-code{style: "display:none"}
     No se encontro ninguna promocion

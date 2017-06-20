@@ -31,7 +31,7 @@
                         %p
                           .ui.horizontal.label.blue
                             = ki.quantity
-                          = ki.item.description
+                          = "#{ki.item.description} #{ki.comments.first.try(:comment)}"
                       - elsif ki.class.name == "Additional"
                         %p
                           .ui.horizontal.label.blue

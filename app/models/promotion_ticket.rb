@@ -12,6 +12,8 @@ class PromotionTicket < ActiveRecord::Base
   before_destroy :update_ticket_before_delete
 
   acts_as_paranoid
+  acts_as_commentable
+
 
   def set_sub_total
     price = self.promotion.price

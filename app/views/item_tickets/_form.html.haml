@@ -16,6 +16,8 @@
           - Item.all.each do |item|
             .item{ data: { value: item.id, code: item.code } }
               = item.description
+    .sixteen.wide.column.field
+      = text_field_tag "item_ticket[][comment]", nil, placeholder: "Commentario"
       %input{type: "submit", style: "display: none"}
   .ui.red.message.item-code{style: "display:none"}
     No se encontro ningun item

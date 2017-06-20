@@ -32,6 +32,7 @@ gem 'ffi'
 gem 'kaminari'
 gem 'puma'
 gem 'acts_as_paranoid', '~> 0.5.0'
+gem 'acts_as_commentable'
 
 group :production do
   gem 'mysql2'

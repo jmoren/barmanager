@@ -11,6 +11,7 @@ class ItemTicket < ActiveRecord::Base
   before_save :set_sub_total
 
   acts_as_paranoid
+  acts_as_commentable
 
   def set_sub_total
     price = self.item.price
