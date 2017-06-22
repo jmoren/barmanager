@@ -153,6 +153,7 @@ i.icon.big-icon {
   padding-bottom: 0 !important;
 }
 
-.kitchentable td {
+.kitchentable .table, .kitchentable .table .segment, .kitchentable .table .segment table tr td {
   margin: 0 !important;
+  padding: 5px !important;
 }

@@ -9,40 +9,44 @@
   - if @kitchen_items.size == 0
     .ui.green.header
       = "No hay pedidos de cocina pendientes."
-  .ui.grid
+  .ui.grid.kitchentable
     - @kitchen_items.each do |ti, val|
-      .six.wide.column.field
-        .ui.segment
+      .five.wide.column.field.table
+        .ui.segment.center.aligned
           %b
             - if ti.table.nil?
               = "Para llevar - Ticket: #{ti.id}"
             - else
               = "MESA: #{ti.table.try(:name)}"
-          %table.ui.celled.structured.table.kitchentable
+          %table.ui.table.kitchentable{class: ti.table.try(:color)}
             %tbody
               - val.try(:each) do |ki|
                 %tr{ style: ki.deleted_at.nil? ? "" : "background-color: red; color: white"}
-                  %td.center.aligned
-                    %span{ class: (Time.at((Time.now - ki.created_at).to_i.abs).utc.strftime "%M").to_i > 10 ? "ui button red small" : "ui button green small"}= Time.at((Time.now - ki.created_at).to_i.abs).utc.strftime "%H:%M:%S"
-                    %p= ti.first_kitchen_item
+                  %td.collapsing
+                    %input{type: "hidden", value: ki.created_at, class: 'timer'}
+                    %span{ class: ((Time.now - ki.created_at.to_time) / 60).to_i > 10 ? "ui horizontal label red" : "ui horizontal label green"}= Time.at((Time.now - ki.created_at).to_i.abs).utc.strftime "%H:%M:%S"
                   %td
-                    .ui.divided.selection.list
-                      - if ki.class.name == "ItemTicket"
-                        %p
-                          .ui.horizontal.label.blue
-                            = ki.quantity
-                          = "#{ki.item.description} #{ki.comments.first.try(:comment)}"
-                      - elsif ki.class.name == "Additional"
-                        %p
-                          .ui.horizontal.label.blue
-                            = ki.amount
-                          = ki.description
-                      - else
-                        %p
-                          .ui.horizontal.label.blue
-                            = ki.quantity
-                          = ki.promotion_item.item.description
-                  %td
+                    - if ki.class.name == "ItemTicket"
+                      .ui.horizontal.label.blue
+                        = ki.quantity
+                      = ki.item.description
+                      - unless ki.comments.first.try(:comment).nil?
+                        .clearfix
+                        .ui.mini.label
+                          = ki.comments.first.try(:comment)
+                    - elsif ki.class.name == "Additional"
+                      .ui.horizontal.label.blue
+                        = ki.amount
+                      = ki.description
+                    - else
+                      .ui.horizontal.label.blue
+                        = ki.quantity
+                      = ki.promotion_item.item.description
+                      - unless ki.promotion_ticket.comments.first.try(:comment).nil?
+                        .clearfix
+                        .ui.mini.label
+                          = ki.promotion_ticket.comments.first.try(:comment)
+                  %td.collapsing
                     - if ki.class.name == "ItemTicket"
                       = link_to deliver_ticket_item_ticket_path(ki.ticket, ki), method: :put, class: "ui button icon tooltip", data: { content: "Retirar pedido" } do
                         %i.icon.food
@@ -65,7 +69,21 @@
           console.log("SHOULD RENDER --> " + JSON.parse(data).should_render);
           if (JSON.parse(data).should_render)
             location.reload();
+          else
+            updateTimers();
         }
       });
-    }, 10000);
+    }, 5000);
+
+    function updateTimers(){
+      $(".timer").each(function(index, item){
+        total_sec = Math.round((Date.now() / 1000) - (Date.parse(item.value) / 1000));
+
+        var date = new Date(null);
+        date.setSeconds(total_sec);
+        var result = date.toISOString().substr(11, 8);
+
+        $(item).next().html(result);
+      })
+    };
   });
