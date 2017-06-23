@@ -1,11 +1,11 @@
 class KitchenController < ApplicationController
   layout "admin"
   def index
-    its = ItemTicket.pending_kitchen.group_by(&:ticket)
+    its = ItemTicket.where("item_tickets.created_at > ?", 1.days.ago).pending_kitchen.group_by(&:ticket)
 
-    pts =  PromotionTicketItem.pending_kitchen.group_by(&:ticket)
+    pts =  PromotionTicketItem.where("promotion_tickets.created_at > ?", 1.days.ago).pending_kitchen.group_by(&:ticket)
 
-    ats = Additional.pending_kitchen.group_by(&:ticket)
+    ats = Additional.where("additionals.created_at > ?", 1.days.ago).pending_kitchen.group_by(&:ticket)
 
     @kitchen_items = its.merge!(pts){|k, o, n| o | n }.merge!(ats){|k, o, n| o | n }.sort { |a , b| a.first.first_kitchen_item <=> b.first.first_kitchen_item}
 
@@ -17,9 +17,9 @@ class KitchenController < ApplicationController
   def check_update
     last_render = params[:last_render]
 
-    last_item = ItemTicket.pending_kitchen.last.try(:created_at) || last_render
-    last_promo = PromotionTicketItem.pending_kitchen.last.try(:promotion_ticket).try(:created_at) || last_render
-    last_add = Additional.pending_kitchen.last.try(:created_at) || last_render
+    last_item = ItemTicket.where("item_tickets.created_at > ?", 1.days.ago).pending_kitchen.last.try(:created_at) || last_render
+    last_promo = PromotionTicketItem.where("promotion_tickets.created_at > ?", 1.days.ago).pending_kitchen.last.try(:promotion_ticket).try(:created_at) || last_render
+    last_add = Additional.where("additionals.created_at > ?", 1.days.ago).pending_kitchen.last.try(:created_at) || last_render
 
 
     last_item_date = [last_item, last_promo, last_add].max
