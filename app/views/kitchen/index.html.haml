@@ -59,21 +59,26 @@
 
 :javascript
   $(document).ready(function(){
-    setInterval(function(){
+    var interval = setInterval(function(){
       var lastRender = $("#last_render").val();
       $.ajax({
         url: "/kitchen/check_update?last_render=" + lastRender,
         type: "GET",
         dataType: "html",
         success: function(data){
-          console.log("SHOULD RENDER --> " + JSON.parse(data).should_render);
-          if (JSON.parse(data).should_render)
-            location.reload();
+          if (JSON.parse(data).should_render) {
+            clearInterval(interval);
+            var sound = new Audio("http://localhost:3000/bell.wav");
+            sound.onended = function() {
+              location.reload();
+            };
+            sound.play();
+          }
           else
             updateTimers();
         }
       });
-    }, 5000);
+    }, 20000);
 
     function updateTimers(){
       $(".timer").each(function(index, item){

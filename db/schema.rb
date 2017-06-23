@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170620043346) do
+ActiveRecord::Schema.define(version: 20170623164833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,9 @@ ActiveRecord::Schema.define(version: 20170620043346) do
     t.datetime "updated_at"
     t.boolean  "kitchen",    default: false
   end
+
+  add_index "categories", ["id"], name: "index_categories_on_id", using: :btree
+  add_index "categories", ["kitchen"], name: "index_categories_on_kitchen", using: :btree
 
   create_table "clients", force: :cascade do |t|
     t.string   "name"
@@ -119,6 +122,7 @@ ActiveRecord::Schema.define(version: 20170620043346) do
 
   add_index "item_tickets", ["cancel_reason_id"], name: "index_item_tickets_on_cancel_reason_id", using: :btree
   add_index "item_tickets", ["deleted_at"], name: "index_item_tickets_on_deleted_at", using: :btree
+  add_index "item_tickets", ["delivered"], name: "index_item_tickets_on_delivered", using: :btree
   add_index "item_tickets", ["item_id"], name: "index_item_tickets_on_item_id", using: :btree
   add_index "item_tickets", ["ticket_id"], name: "index_item_tickets_on_ticket_id", using: :btree
 
@@ -133,7 +137,9 @@ ActiveRecord::Schema.define(version: 20170620043346) do
     t.boolean  "favourite",   default: false
   end
 
+  add_index "items", ["category_id"], name: "index_items_on_category_id", using: :btree
   add_index "items", ["code"], name: "index_items_on_code", unique: true, using: :btree
+  add_index "items", ["id"], name: "index_items_on_id", using: :btree
 
   create_table "monthly_cashes", force: :cascade do |t|
     t.float    "total"
@@ -166,7 +172,10 @@ ActiveRecord::Schema.define(version: 20170620043346) do
     t.integer "delivered",           default: 0
   end
 
+  add_index "promotion_ticket_items", ["delivered"], name: "index_promotion_ticket_items_on_delivered", using: :btree
+  add_index "promotion_ticket_items", ["id"], name: "index_promotion_ticket_items_on_id", using: :btree
   add_index "promotion_ticket_items", ["promotion_item_id"], name: "index_promotion_ticket_items_on_promotion_item_id", using: :btree
+  add_index "promotion_ticket_items", ["promotion_ticket_id"], name: "index_promotion_ticket_items_on_promotion_ticket_id", using: :btree
 
   create_table "promotion_tickets", force: :cascade do |t|
     t.integer  "ticket_id"
